@@ -69,6 +69,10 @@ namespace Vsite.Battleship.Model
                             availableSquares.Add(listFound);
                         }
                     }
+                    else
+                    {
+                        squareInSequence = 0;
+                    }
                 }
             }
 
@@ -99,6 +103,10 @@ namespace Vsite.Battleship.Model
 
                             availableSquares.Add(listFound);
                         }
+                    }
+                    else
+                    {
+                        squareInSequence = 0;
                     }
                 }
             }
