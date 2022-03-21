@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model;
 
-namespace UnitTests
+using Vsite.Battleship.Model;
+
+namespace Vsite.Battleship
 {
     [TestClass]
     public class TestSquare
