@@ -43,16 +43,21 @@ namespace Vsite.Battleship.Model
                 {
                     if (squares[r, c] != null)
                     {
+                        //umjesto ovog pomocu Queue napraviti da se ne provjerava duplo
+                        //znaci ako je duljina jednaka prekopiraj sve elemente u kju
                         ++squaresInSequence;
                         if (squaresInSequence >= length)
                         {
                             List<Square> s = new List<Square>();
                             for (int cc = c - length + 1; cc <= c; ++cc)
-                            { s.Add(squares[r, cc]);
+                            {
+                                s.Add(squares[r, cc]);
                             }
                             result.Add(s);
                         }
                     }
+                    else
+                        squaresInSequence = 0;
                 }
 
             }
@@ -62,6 +67,7 @@ namespace Vsite.Battleship.Model
         {
             List<SquareSequence> result = new List<SquareSequence>();
             return result;
+            //TODO for homework
         }
 
         public readonly int Rows;
