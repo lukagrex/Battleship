@@ -52,26 +52,18 @@ namespace Vsite.Battleship.Model
 
             for (int row = 0; row < this.numOfRows; row++)
             {
-                int squareInSequence = 0;
+                var listFound = new LimitedQueue<Square>(shipSize);
+
                 for (int column = 0; column < this.numOfColumns; column++)
                 {
                     if (squares[row, column] != null)
                     {
-                        squareInSequence++;
-                        if (squareInSequence >= shipSize)
-                        {
-                            var listFound = new List<Square>(shipSize);
-                            for (int i = column - squareInSequence + 1; i <= column; i++)
-                            {
-                                listFound.Add(squares[row, i]);
-                            }
+                        listFound.Enqueue(squares[row, column]);
 
+                        if (listFound.Count == shipSize)
+                        {
                             availableSquares.Add(listFound);
                         }
-                    }
-                    else
-                    {
-                        squareInSequence = 0;
                     }
                 }
             }
@@ -84,29 +76,18 @@ namespace Vsite.Battleship.Model
             var availableSquares = new List<SquareSequence>();
             for (int column = 0; column < this.numOfColumns; column++)
             {
-                int squareInSequence = 0;
+                var listFound = new LimitedQueue<Square>(shipSize);
 
                 for (int row = 0; row < this.numOfRows; row++)
                 {
-
                     if (squares[row, column] != null)
                     {
-                        squareInSequence++;
+                        listFound.Enqueue(squares[row, column]);
 
-                        if (squareInSequence >= shipSize)
+                        if (listFound.Count == shipSize)
                         {
-                            var listFound = new List<Square>(shipSize);
-                            for (int i = row - squareInSequence + 1; i <= row; i++)
-                            {
-                                listFound.Add(squares[i, column]);
-                            }
-
                             availableSquares.Add(listFound);
                         }
-                    }
-                    else
-                    {
-                        squareInSequence = 0;
                     }
                 }
             }
