@@ -53,13 +53,15 @@ namespace Vsite.BattleShip.Model
                         if (squaresInSequence >= length)
                         {
                             List<Square> s = new List<Square>();
-                            for (int cc = c - length +1; cc <= c; ++c)
+                            for (int cc = c - length +1; cc <= c; ++cc)
                             {
                                 s.Add(squares[r, cc]);
                             }
                             result.Add(s);
                         }
                     }
+                    else
+                        squaresInSequence = 0;
                 }
             }
 
@@ -70,26 +72,7 @@ namespace Vsite.BattleShip.Model
         {
             List<SquareSequence> result = new List<SquareSequence>();
 
-            //for (int r = 0; r < Rows; ++r)
-            //{
-            //    int squaresInSequence = 0;
-            //    for (int c = 0; c < Columns; ++c)
-            //    {
-            //        if (squares[r, c] != null)
-            //        {
-            //            ++squaresInSequence;
-            //            if (squaresInSequence >= length)
-            //            {
-            //                List<Square> s = new List<Square>();
-            //                for (int cc = c - length + 1; cc <= c; ++c)
-            //                {
-            //                    s.Add(squares[r, cc]);
-            //                }
-            //                result.Add(s);
-            //            }
-            //        }
-            //    }
-            //}
+            //TODO HomeWork
 
             return result;
         }
