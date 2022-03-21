@@ -1,10 +1,11 @@
-﻿namespace Model
+﻿namespace Vsite.BattleShip.Model
 {
     public class Square
     {
         public Square(int row, int column)
         {
-
+            Row = row;
+            Column = column;
         }
 
         public readonly int Row;

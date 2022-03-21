@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-namespace UnitTests
+
+namespace Vsite.BattleShip
 {
     [TestClass]
     public class TestSquare
