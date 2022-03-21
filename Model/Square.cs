@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Vsite.Battleship.Model
 {
     public class Square
     {

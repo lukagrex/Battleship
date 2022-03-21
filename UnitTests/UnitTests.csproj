@@ -8,7 +8,7 @@
     <ProjectGuid>{AB283870-482C-4924-9C44-E68C76536B5E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
+    <RootNamespace>Vsite.Battleship</RootNamespace>
     <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
