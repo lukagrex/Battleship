@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using Vsite.Battleship.Model;
-
-
 
 namespace Vsite.Battleship
 {
@@ -9,9 +8,9 @@ namespace Vsite.Battleship
     public class TestLimitedQueue
     {
         [TestMethod]
-        public void EnqueueAddsUpToNelementsToQueueWhereNisProvidedInConstructor()
+        public void EnqueAddUpToNElementsToQueueWhereIsNProvidedInConstructor()
         {
-            var queue = new LimitedQueue<int>(5);
+            var queue = new LimitedQueue<int>(3);
             queue.Enqueue(1);
             Assert.AreEqual(1, queue.Count);
             queue.Enqueue(2);
@@ -27,9 +26,9 @@ namespace Vsite.Battleship
 
             queue.Enqueue(5);
             Assert.AreEqual(3, queue.Count);
+            Assert.IsTrue(queue.Contains(5));
             Assert.IsTrue(queue.Contains(3));
             Assert.IsTrue(queue.Contains(4));
-            Assert.IsTrue(queue.Contains(5));
         }
     }
 }
