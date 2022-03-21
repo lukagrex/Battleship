@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Vsite.BattleShip.Model
@@ -31,7 +30,40 @@ namespace Vsite.BattleShip.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacement(int length)
         {
-            throw new NotImplementedException();
+            throw GetHorizontalPlacement(length).Concat(GetVerticalPlacement(length));
+        }
+
+        public IEnumerable<SquareSequence> GetHorizontalPlacement(int length)
+        {
+            List<SquareSequence> result = new List<SquareSequence>();
+            for (int r = 0; r < Rows; r++)
+            {
+                int squaresInSequence = 0;
+                for (int c = 0; c < Columns; c++)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        squaresInSequence++;
+                        if (squaresInSequence >= length)
+                        {
+                            List<Square> s = new List<Square>();
+                            for (int cc = c - length + 1; cc <= c; cc++)
+                                s.Add(squares[r, cc]);
+
+                            result.Add(s);
+                        }
+
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public IEnumerable<SquareSequence> GetVerticalPlacement(int length)
+        {
+            List<SquareSequence> result = new List<SquareSequence>();
+            return result;
         }
         public readonly int Rows;
         public readonly int Columns;
