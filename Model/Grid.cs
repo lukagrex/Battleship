@@ -43,7 +43,68 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int shipSize)
         {
-            return null;
+            return this.GetHorizontalPlacements(shipSize).Concat(this.GetVerticalPlacements(shipSize));
         }
+
+        private IEnumerable<SquareSequence> GetHorizontalPlacements(int shipSize)
+        {
+            var availableSquares = new List<SquareSequence>();
+
+            for (int row = 0; row < this.numOfRows; row++)
+            {
+                int squareInSequence = 0;
+                for (int column = 0; column < this.numOfColumns; column++)
+                {
+                    if (squares[row, column] != null)
+                    {
+                        squareInSequence++;
+                        if (squareInSequence >= shipSize)
+                        {
+                            var listFound = new List<Square>(shipSize);
+                            for (int i = column - squareInSequence + 1; i <= column; i++)
+                            {
+                                listFound.Add(squares[row, i]);
+                            }
+
+                            availableSquares.Add(listFound);
+                        }
+                    }
+                }
+            }
+
+            return availableSquares;
+        }
+
+        private IEnumerable<SquareSequence> GetVerticalPlacements(int shipSize)
+        {
+            var availableSquares = new List<SquareSequence>();
+            for (int column = 0; column < this.numOfColumns; column++)
+            {
+                int squareInSequence = 0;
+
+                for (int row = 0; row < this.numOfRows; row++)
+                {
+
+                    if (squares[row, column] != null)
+                    {
+                        squareInSequence++;
+
+                        if (squareInSequence >= shipSize)
+                        {
+                            var listFound = new List<Square>(shipSize);
+                            for (int i = row - squareInSequence + 1; i <= row; i++)
+                            {
+                                listFound.Add(squares[i, column]);
+                            }
+
+                            availableSquares.Add(listFound);
+                        }
+                    }
+                }
+            }
+
+            return availableSquares;
+        }
+
     }
 }
