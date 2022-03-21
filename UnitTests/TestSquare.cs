@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model;
+using Vsite.BattleShip.Model;
 using System;
 
 namespace UnitTests
