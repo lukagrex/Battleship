@@ -52,6 +52,10 @@ namespace Vsite.Battleship.Model
                             result.Add(s);
                         }
                     }
+                    else
+                    {
+                        squaresInSequence = 0;
+                    }
                 }
             }
             return result;
@@ -77,6 +81,10 @@ namespace Vsite.Battleship.Model
                             }
                             result.Add(s);
                         }
+                    }
+                    else
+                    {
+                        squaresInSequence = 0;
                     }
                 }
             }
