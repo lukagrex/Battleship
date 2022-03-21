@@ -58,6 +58,8 @@ namespace Vsite.Battleship.Model
                             result.Add(s);
                         }
                     }
+                    else
+                        squaresInSequence = 0;
                 }
             }
 
