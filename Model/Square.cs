@@ -8,13 +8,32 @@ namespace Model
 {
     public class Square
     {
+        public readonly int Row;
+        public readonly int Column;
+
         public Square(int row, int column)
         {
             Row = row;
             Column = column;
         }
 
-        public readonly int Column;
-        public readonly int Row;
+        public bool Equals(Square other)
+        {
+            return other != null && Row == other.Row && Column == other.Column;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (GetType() != obj.GetType())
+                return false;
+            return base.Equals((Square)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Row ^ Column;
+        }
     }
 }
