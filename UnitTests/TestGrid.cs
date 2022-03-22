@@ -28,13 +28,13 @@ namespace Vsite.Battleship
         }
 
         [TestMethod]
-        public void GetAvailablePlacementsReturns2PlacementsForAShip3SquaresLongOnGrid5Rowx1Column()
+        public void GetAvailablePlacementsReturns2PlacmentsForAShip3SquaresLongOnGrid5Rows1Columns()
         {
-            Grid grid = new Grid(5, 1);
+            var grid = new Grid(5, 1);
+
             var placements = grid.GetAvailablePlacements(3);
+
             Assert.AreEqual(3, placements.Count());
-
-
         }
     }
 }

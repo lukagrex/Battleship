@@ -10,8 +10,8 @@ namespace Vsite.Battleship.Model
 
         public Square(int row, int column)
         {
-            Row = row;
-            Column = column;
+            this.Row = row;
+            this.Column = column;
         }
 
         public bool Equals(Square other)

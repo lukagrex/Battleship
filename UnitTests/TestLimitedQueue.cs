@@ -9,7 +9,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void EnqueueAddsUpToNelementsToQueueWhereNisProvidedInConstructor()
         {
-            var queue = new LimitedQueue<int>(5);
+            var queue = new LimitedQueue<int>(3);
             queue.Enqueue(1);
             Assert.AreEqual(1, queue.Count);
             queue.Enqueue(2);

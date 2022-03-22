@@ -13,9 +13,13 @@ namespace Vsite.Battleship.Model
         public new void Enqueue(T item)
         {
 
-            if (Count >= length)
+            if (this.Count < this.length)
             {
-                Dequeue();
+                base.Enqueue(item);
+            }
+            else
+            {
+                this.Dequeue();
                 base.Enqueue(item);
             }
 
