@@ -43,20 +43,23 @@ namespace Vsite.Battleship.Model
             {
                 int squaresInSequence = 0;
                 for (int c = 0; c < Columns; ++c)
-                { 
+                {
                     if (squares[r, c] != null)
                     {
                         ++squaresInSequence;
                         if (squaresInSequence >= length)
                         {
                             List<Square> s = new List<Square>();
-                            for (int cc = c - length +1; cc<=c; ++cc)
+                            for (int cc = c - length + 1; cc <= c; ++cc)
                             {
                                 s.Add(squares[r, cc]);
                             }
                             result.Add(s);
                         }
                     }
+                    else
+                        squaresInSequence = 0;
+
                 }
             }
             return result;
