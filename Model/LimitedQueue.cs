@@ -21,6 +21,7 @@ namespace Model
             {
                 Dequeue();
             }
+
             base.Enqueue(item);
         }
     }
