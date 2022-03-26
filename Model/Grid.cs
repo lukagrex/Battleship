@@ -74,7 +74,24 @@ namespace Vsite.Battleship.Model
         private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
-            // TODO DZ dovrši
+            LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
+            for (int c = 0; c < Columns; ++c)
+            {
+                lqueue.Clear();
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        lqueue.Enqueue(squares[r, c]);
+                        if (lqueue.Count == length)
+                        {
+                            result.Add(lqueue);
+                        }
+                    }
+                    else
+                        lqueue.Clear();
+                }
+            }
             return result;
         }
 
