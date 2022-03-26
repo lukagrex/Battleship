@@ -37,62 +37,50 @@ namespace Vsite.Battleship.Model
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
+            LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
 
             for (int r = 0; r < Rows; ++r)
             {
-                int squaresInSequence = 0;
-
-                for(int c = 0; c < Columns; ++c)
+                lqueue.Clear();
+                for (int c = 0; c < Columns; ++c)
                 {
                     if (squares[r, c] != null)
                     {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        lqueue.Enqueue(squares[r, c]);
+                        if (lqueue.Count == length)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; ++cc)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-
-                            result.Add(s);
+                            result.Add(lqueue);
                         }
                     }
                     else
-                        squaresInSequence = 0;
+                        lqueue.Clear();
                 }
             }
-
             return result;
         }
 
         private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
-            //DZ
-            //for (int r = 0; r < Rows; ++r)
-            //{
-            //    int squaresInSequence = 0;
+            LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
 
-            //    for (int c = 0; c < Columns; ++c)
-            //    {
-            //        if (squares[r, c] != null)
-            //        {
-            //            ++squaresInSequence;
-
-            //            if (squaresInSequence >= length)
-            //            {
-            //                List<Square> s = new List<Square>();
-            //                for (int rr = r - length + 1; rr <= r; ++rr)
-            //                {
-            //                    s.Add(squares[rr, c]);
-            //                }
-
-            //                result.Add(s);
-            //            }
-            //        }
-            //    }
-            //}
+            for (int c = 0; c < Columns; ++c)
+            {
+                lqueue.Clear();
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        lqueue.Enqueue(squares[r, c]);
+                        if (lqueue.Count == length)
+                        {
+                            result.Add(lqueue);
+                        }
+                    }
+                    else
+                        lqueue.Clear();
+                }
+            }
             return result;
 
         }
