@@ -37,21 +37,20 @@ namespace Vsite.Battleship.Model
             List<SquareSequence> result = new List<SquareSequence>();
             for (int r = 0; r < Rows; ++r)
             {
-                int squaresInSequence = 0;
+                LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
                     if (squares[r, c] != null)
                     {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        queue.Enqueue(squares[r, c]);
+                        if (queue.Count >= length)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; ++cc)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-                            result.Add(s);
+                            result.Add(queue);
                         }
+                    }
+                    else
+                    {
+                        queue.Clear();
                     }
                 }
             }
@@ -60,6 +59,25 @@ namespace Vsite.Battleship.Model
         private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
+            for (int c = 0; c < Columns; ++c)
+            {
+                LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        queue.Enqueue(squares[r, c]);
+                        if (queue.Count >= length)
+                        {
+                            result.Add(queue);
+                        }
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+            }
             return result;
         }
 

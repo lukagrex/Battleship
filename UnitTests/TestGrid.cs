@@ -26,6 +26,7 @@ namespace Vsite.Battleship
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(2, placements.Count());
         }
+
         [TestMethod]
         public void GetAvailablePlacementsReturns3PlacementsForAShip3SquaresLongOnGrid5Rows1Column()
         {
