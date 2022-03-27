@@ -63,6 +63,26 @@ namespace Vsite.Battleship.Model
         private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
+            LimitedQueue<Square> limitedQueue = new LimitedQueue<Square>(length);
+
+            for (int c = 0; c < Columns; ++c)
+            {
+                limitedQueue.Clear();
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        limitedQueue.Enqueue(squares[r, c]);
+                        if (limitedQueue.Count == length)
+                        {
+                            result.Add(limitedQueue);
+                        }
+                    }
+                    else
+                        limitedQueue.Clear();
+                }
+            }
+
             return result;
         }
 
