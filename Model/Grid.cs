@@ -28,12 +28,12 @@ namespace Vsite.BattleShip.Model
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
 
-        public IEnumerable<SquareSequence> GetAvailablePlacement(int length)
+        public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            throw GetHorizontalPlacement(length).Concat(GetVerticalPlacement(length));
+            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
         }
 
-        public IEnumerable<SquareSequence> GetHorizontalPlacement(int length)
+        public IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
             for (int r = 0; r < Rows; r++)
@@ -54,17 +54,50 @@ namespace Vsite.BattleShip.Model
                         }
 
                     }
+                    else
+                    {
+                        squaresInSequence = 0;
+                    }
                 }
             }
 
             return result;
         }
 
-        public IEnumerable<SquareSequence> GetVerticalPlacement(int length)
+        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
+
+            for (int c = 0; c < Columns; c++)
+            {
+                int squaresInSequence = 0;
+                for (int r = 0; r < Rows; r++)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        squaresInSequence++;
+                        if (squaresInSequence >= length)
+                        {
+                            List<Square> s = new List<Square>();
+
+                            for (int cc = r - length + 1; cc <= r; ++cc)
+                            {
+                                s.Add(squares[cc, c]);
+                            }
+                            result.Add(s);
+
+                        }
+                    }
+                    else
+                    {
+                        squaresInSequence = 0;
+                    }
+                }
+            }
+
             return result;
         }
+
         public readonly int Rows;
         public readonly int Columns;
 

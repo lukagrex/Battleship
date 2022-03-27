@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Vsite.BattleShip.Model;
+
 namespace Vsite.BattleShip
 {
     [TestClass]
