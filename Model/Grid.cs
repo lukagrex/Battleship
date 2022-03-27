@@ -37,26 +37,23 @@ namespace Vsite.Battleship.Model
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
+            LimitedQueue<Square> limitedQueue = new LimitedQueue<Square>(length);
+
             for (int r = 0; r < Rows; ++r)
             {
-                int squaresInSequence = 0;
+                limitedQueue.Clear();
                 for (int c = 0; c < Columns; ++c)
                 {
                     if (squares[r, c] != null)
                     {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        limitedQueue.Enqueue(squares[r, c]);
+                        if (limitedQueue.Count == length)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; ++cc)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-                            result.Add(s);
+                            result.Add(limitedQueue);
                         }
-                        else
-                            squaresInSequence = 0;
                     }
+                    else
+                        limitedQueue.Clear();
                 }
             }
 
