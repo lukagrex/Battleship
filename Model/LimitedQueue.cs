@@ -13,7 +13,7 @@ namespace Vsite.Battleship.Model
             this.length = length;
         }
 
-        public void Enqueue(T item)
+        public new void Enqueue(T item)
         {
             if (Count >= length)
             {

@@ -28,7 +28,7 @@ namespace Vsite.Battleship.Model
                 return false;
             if (GetType() != obj.GetType())
                 return false;
-            return base.Equals((Square)obj);
+            return Equals((Square)obj);
         }
 
         public override int GetHashCode()
