@@ -23,6 +23,11 @@ namespace Vsite.Battleship.Model
             }
         }
 
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -32,6 +37,7 @@ namespace Vsite.Battleship.Model
         {
             return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
         }
+
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
         {
             List<SquareSequence> result = new List<SquareSequence>();
