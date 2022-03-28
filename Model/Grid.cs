@@ -25,7 +25,10 @@ namespace Vsite.Battleship.Model
             }
         }
 
-
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
 
         public IEnumerable<Square> Squares
         {
