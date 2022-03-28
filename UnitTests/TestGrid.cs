@@ -33,5 +33,15 @@ namespace Vsite.Battleship
             Assert.IsTrue(grid.Squares.Contains(new Square(0, 9)));
             Assert.IsTrue(grid.Squares.Contains(new Square(9, 0)));
         }
+
+        [TestMethod]
+        public void GetAvailablePlacementsReturns3PlacementsFor2SquaresLongOnGrid1Row6ColumnsAfterSqureInColumn2IsEliminated()
+        {
+            Grid grid = new Grid(1, 6);
+            grid.EliminateSquare(0, 2);
+            Assert.AreEqual(5, grid.squares.Count());
+            var placements = grid.GetAvailablePlacements(2);
+            Assert.AreEqual(3, placements.Count());
+        }
     }
 }
