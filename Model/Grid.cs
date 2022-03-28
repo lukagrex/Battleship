@@ -32,6 +32,12 @@ namespace Vsite.Battleship.Model
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
 
+
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
