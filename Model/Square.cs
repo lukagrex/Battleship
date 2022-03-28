@@ -6,14 +6,37 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
-    public class Square
+    public class Square : IEquatable<Square>
     {
         public Square(int row, int column)
         {
             Row = row;
             Column = column;
         }
+
         public readonly int Row;
         public readonly int Column;
+
+        public bool Equals(Square other)
+        {
+            return other != null && Row == other.Row && Column == other.Column;
+        }
+
+        public override bool Equals(object obj)
+        {
+            // usporedba sa objektom
+            // 1. provjeriti da li je null referenca
+            // 2. usporedba da li su istog tipa
+            if (obj == null)
+                return false;
+            if (GetType() != obj.GetType())
+                return false;
+            return Equals((Square)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Row ^ Column;
+        }
     }
 }
