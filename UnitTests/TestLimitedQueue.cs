@@ -12,7 +12,7 @@ namespace UnitTests
     public class TestLimitedQueue
     {
         [TestMethod]
-        public void EnqueAddUpToNElementsToQueueWhereIsNProvidedInConstructor()
+        public void EnqueueAddUpToNElementsToQueueWhereIsNProvidedInConstructor()
         {
             var queue = new LimitedQueue<int>(3);
             queue.Enqueue(1);

@@ -29,6 +29,11 @@ namespace Model
             }
         }
 
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }

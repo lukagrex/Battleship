@@ -23,7 +23,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TGetAvailablePlacementsReturns2PlacementsForAShip3SquaresLongOnGrid1Row4Columns()
+        public void GetAvailablePlacements_Returns2PlacementsForAShip3SquaresLongOnGrid1Row4Columns()
         {
             Grid grid = new Grid(1, 4);
             var placements = grid.GetAvailablePlacements(3);
@@ -31,10 +31,21 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TGetAvailablePlacementsReturns3PlacementsForAShip3SquaresLongOnGrid5Rows1Column()
+        public void GetAvailablePlacements_Returns3PlacementsForAShip3SquaresLongOnGrid5Rows1Column()
         {
             Grid grid = new Grid(5, 1);
             var placements = grid.GetAvailablePlacements(3);
+            Assert.AreEqual(3, placements.Count());
+        }
+
+        [TestMethod]
+        public void GetAvailablePlacements_Returns3PlacementsForAShip2SquaresLongOnGrid1Row6ColumnsAfterSquareInColumn2IsEliminated()
+        {
+            Grid grid = new Grid(1, 6);
+            grid.EliminateSquare(0,2);
+            Assert.AreEqual(5, grid.Squares.Count());
+
+            var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
         }
     }
