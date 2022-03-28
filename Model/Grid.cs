@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vsite.BattleShip.Model
@@ -40,7 +41,9 @@ namespace Vsite.BattleShip.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return this.GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            //return this.GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+//            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns)).Concat(GetVerticalPlacements(length));
+            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns),(i, j) => squares[i,j]).Concat(this.GetPlacements(length, new LoopIndex(this.Columns, this.Rows), (i, j) => squares[j, i]));
         }
 
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
@@ -85,6 +88,63 @@ namespace Vsite.BattleShip.Model
                     if (squares[row, column] != null)
                     {
                         foundSquares.Enqueue(squares[row, column]);
+
+                        if (foundSquares.Count == length)
+                        {
+                            availableSquares.Add(foundSquares);
+                        }
+                    }
+                    else
+                    {
+                        foundSquares.Clear();
+                    }
+                }
+            }
+
+            return availableSquares;
+        }
+
+        private class LoopIndex
+        {
+            private int outerBound;
+            private int innerBound;
+
+
+
+            public LoopIndex(int outerBound, int innerBound)
+            {
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
+            }
+
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < this.outerBound; ++i)
+                {
+                    yield return i;
+                }
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < this.innerBound; ++i)
+                {
+                    yield return i;
+                }
+            }
+        }
+
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int,int, Square> ss)
+        {
+            var availableSquares = new List<SquareSequence>();
+            foreach (int o in loopIndex.Outer())
+            {
+                var foundSquares = new LimitedQueue<Square>(length);
+                foreach (int i in loopIndex.Inner())
+                {
+                    if (ss(o, i) != null)
+                    {
+                        foundSquares.Enqueue(squares[i, o]);
 
                         if (foundSquares.Count == length)
                         {
