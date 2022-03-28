@@ -59,17 +59,28 @@ namespace Vsite.Battleship.Model
 
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int shipSize)
         {
+            return GetPlacements(shipSize, new LoopIndex(this.numOfRows, this.numOfColumns), (i, j) => squares[i, j]);
+        }
+
+        private IEnumerable<SquareSequence> GetVerticalPlacements(int shipSize)
+        {
+            return GetPlacements(shipSize, new LoopIndex(this.numOfColumns, this.numOfRows), (i, j) => squares[j, i]);
+        }
+
+
+        private IEnumerable<SquareSequence> GetPlacements(int shipSize, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
+        {
             var availableSquares = new List<SquareSequence>();
 
-            for (int row = 0; row < this.numOfRows; row++)
+            foreach (var o in loopIndex.Outer())
             {
                 var listFound = new LimitedQueue<Square>(shipSize);
 
-                for (int column = 0; column < this.numOfColumns; column++)
+                foreach (var i in loopIndex.Inner())
                 {
-                    if (squares[row, column] != null)
+                    if (squareSelect(o, i) != null)
                     {
-                        listFound.Enqueue(squares[row, column]);
+                        listFound.Enqueue(squareSelect(o, i));
 
                         if (listFound.Count == shipSize)
                         {
@@ -86,32 +97,28 @@ namespace Vsite.Battleship.Model
             return availableSquares;
         }
 
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int shipSize)
+        class LoopIndex
         {
-            var availableSquares = new List<SquareSequence>();
-            for (int column = 0; column < this.numOfColumns; column++)
+            private int OuterBound;
+            private int InnerBound;
+
+            public LoopIndex(int outerBound, int innerBound)
             {
-                var listFound = new LimitedQueue<Square>(shipSize);
-
-                for (int row = 0; row < this.numOfRows; row++)
-                {
-                    if (squares[row, column] != null)
-                    {
-                        listFound.Enqueue(squares[row, column]);
-
-                        if (listFound.Count == shipSize)
-                        {
-                            availableSquares.Add(listFound);
-                        }
-                    }
-                    else
-                    {
-                        listFound.Clear();
-                    }
-                }
+                this.OuterBound = outerBound;
+                this.InnerBound = innerBound;
             }
 
-            return availableSquares;
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < OuterBound; i++)
+                    yield return i;
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < InnerBound; i++)
+                    yield return i;
+            }
         }
 
     }
