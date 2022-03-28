@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,63 +42,63 @@ namespace Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => 
+                squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
 
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
-            List<SquareSequence> result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; r++)
+            var result = new List<SquareSequence>();
+            foreach (var o in loopIndex.Outer())
             {
-                int squaresInSequence = 0;
-                for (int c = 0; c < Columns; c++)
+                var queue = new LimitedQueue<Square>(length);
+                foreach (var i in loopIndex.Inner())
                 {
-                    if (squares[r, c] != null)
+                    if (squareSelect(o, i) != null)
                     {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        queue.Enqueue(squareSelect(o, i));
+                        if (queue.Count >= length)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; cc++)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-                            result.Add(s);
+                            result.Add(queue);
                         }
                     }
                     else
-                        squaresInSequence = 0;
+                    {
+                        queue.Clear();
+                    }
                 }
             }
+
             return result;
+        }
+    }
+
+    internal class LoopIndex
+    {
+        private readonly int outerBound;
+        private readonly int innerBound;
+
+        public LoopIndex(int outerBound, int innerBound)
+        {
+            this.outerBound = outerBound;
+            this.innerBound = innerBound;
         }
 
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
+        public IEnumerable<int> Outer()
         {
-            List<SquareSequence> result = new List<SquareSequence>();
-            for (int c = 0; c < Columns; ++c)
+            for (int i = 0; i < outerBound; i++)
             {
-                int squaresInSequence = 0;
-                for (int r = 0; r < Rows; r++)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
-                        {
-                            List<Square> s = new List<Square>();
-                            for (int rr = r - length + 1; rr <= r; ++rr)
-                            {
-                                s.Add(squares[rr, c]);
-                            }
-                            result.Add(s);
-                        }
-                    }
-                    else
-                        squaresInSequence = 0;
-                }
+                yield return i;
             }
-            return result;
         }
+
+        public IEnumerable<int> Inner()
+        {
+            for (int i = 0; i < innerBound; i++)
+            {
+                yield return i;
+            }
+        }
+
     }
 }

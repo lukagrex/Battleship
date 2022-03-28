@@ -48,5 +48,7 @@ namespace UnitTests
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
         }
+
+        //napraviti isti test za mrežu s jednim stupcem i pet redaka 
     }
 }
