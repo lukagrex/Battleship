@@ -35,7 +35,7 @@ namespace Vsite.Battleship.Model
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
-                .Concat(GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[j, i]));
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
 
         public class LoopIndex
