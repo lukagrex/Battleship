@@ -37,7 +37,7 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<Square> GetAvailablePlacements(int length)
         {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length))
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[i, j])
         }
 
         public IEnumerable<Square> GetHorizontalPlacements(int length)
@@ -57,6 +57,66 @@ namespace Vsite.Battleship.Model
                             List<Square> s = new List<Square>();
 
                             for(int k = j - length; k <= j; ++k)
+                            {
+                                s.Add(new Square(i, k));
+                            }
+                            result.Add(s);
+                        }
+                    }
+                    else
+                    {
+                        squaresInSequence = 0;
+                    }
+                }
+            }
+            return result;
+        }
+
+        class LoopIndex
+        {
+            public LoopIndex(int outerBound, int innerBound)
+            {
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
+            }
+
+            public IEnumerable<int> Outer()
+            {
+                for(int i = 0; i <= outerBound; i++)
+                {
+                    yield return i;
+                }
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i <= innerBound; i++)
+                {
+                    yield return i;
+                }
+            }
+
+            private int outerBound;
+            private int innerBound;
+        }
+
+        public IEnumerable<Square> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
+        {
+            List<SquareSequence> result = new List<SquareSequence>();
+
+            foreach(int o in loopIndex.Outer())
+            {
+                int squaresInSequence = 0;
+                foreach (int o in loopIndex.Inner())
+                {
+                    if (squareSelect(o, i) != null)
+                    {
+                        squaresInSequence++;
+                        if (squaresInSequence >= length)
+                        {
+                            List<Square> s = new List<Square>();
+
+                            for (int k = j - length; k <= j; ++k)
                             {
                                 s.Add(new Square(i, k));
                             }
