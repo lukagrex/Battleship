@@ -52,6 +52,7 @@ namespace Vsite.Battleship
             Assert.AreEqual(5, grid.Squares.Count());
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
+            //DZ TEST ZA SLUCAJ S VISE REDOVA
         }
     }
 }
