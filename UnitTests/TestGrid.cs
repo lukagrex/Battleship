@@ -57,5 +57,20 @@ namespace Vsite.Battleship
 
             Assert.AreEqual(3, availablePlacements.Count());
         }
+
+        [TestMethod]
+        public void
+            GetAvailablePlacmentsReturn3PlacementsForAShip2SquaresLongOnGrid5Row1ColumnsAfterSquareInRow1IsEliminated()
+        {
+            var grid = new Grid(5, 1);
+
+            grid.EliminateSquare(1, 0);
+
+            Assert.AreEqual(4, grid.Squares.Count());
+
+            var availablePlacements = grid.GetAvailablePlacements(2);
+
+            Assert.AreEqual(2, availablePlacements.Count());
+        }
     }
 }
