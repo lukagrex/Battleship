@@ -35,17 +35,45 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            //return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
+
+        class LoopIndex
+        {
+            public LoopIndex(int outerBound, int innerBound)
+            {
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
+            }
+
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < outerBound; ++i)
+                    yield return i;
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < innerBound; ++i)
+                    yield return i;
+            }
+
+            private int outerBound;
+            private int innerBound;
+        }
+
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             List<SquareSequence> result = new List<SquareSequence>();
-            for (int r = 0; r< Rows; ++r)
+
+            foreach (int o in loopIndex.Outer())
             {
                 int squaresInSequence = 0;
-                for (int c = 0; c< Columns; ++c)
+                foreach (int i in loopIndex.Inner())
                 {
-                    if (squares[r, c] != null)
+                    if (squareSelect(0,i) != null)
                     {
                         //umjesto ovog pomocu Queue napraviti da se ne provjerava duplo
                         //znaci ako je duljina jednaka prekopiraj sve elemente u kju
@@ -53,9 +81,9 @@ namespace Vsite.Battleship.Model
                         if (squaresInSequence >= length)
                         {
                             List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; ++cc)
+                            for (int cc = i - length + 1; cc <= i; ++cc)
                             {
-                                s.Add(squares[r, cc]);
+                                s.Add(squares[o, cc]);
                             }
                             result.Add(s);
                         }
@@ -66,12 +94,6 @@ namespace Vsite.Battleship.Model
 
             }
             return result;
-        }
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
-        {
-            List<SquareSequence> result = new List<SquareSequence>();
-            return result;
-            //TODO for homework
         }
 
         public readonly int Rows;

@@ -45,5 +45,7 @@ namespace Vsite.Battleship
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
         }
+
+        // TODO: napraviti za onaj drugi slucaj b
     }
 }
