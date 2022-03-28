@@ -108,6 +108,66 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
+        class LoopIndex
+        {
+            public LoopIndex(int outerBound, int innerBound)
+            {
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
+            }
+
+            private int outerBound;
+            private int innerBound;
+
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < outerBound; ++i)
+                {
+                    yield return i;
+                }
+            }
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < innerBound; ++i)
+                {
+                    yield return i;
+                }
+            }
+
+        }
+
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex)
+        {
+            List<SquareSequence> result = new List<SquareSequence>();
+
+            foreach (int o in loopIndex.Outer())
+            {
+                List<SquareSequence> queue = new List<SquareSequence>();
+                foreach (int i in loopIndex.Inner())
+                {
+                    if (squares[o, i] != null)
+                    {
+                        queue.Enqueue(squares);
+                        if (squaresInSequence >= length)
+                        {
+                            List<Square> s = new List<Square>();
+
+                            for (int cc = c - length + 1; cc <= c; ++cc)
+                            {
+                                s.Add(squares[r, cc]);
+                            }
+                            result.Add(s);
+                        }
+                    }
+                    else squaresInSequence = 0;
+                }
+
+
+            }
+
+            return result;
+        }
+
 
     }
 }

@@ -47,5 +47,6 @@ namespace Vsite.Battleship
             Assert.AreEqual(3, placements.Count());
 
         }
+        //TODO: za stupce eliminirati 
     }
 }
