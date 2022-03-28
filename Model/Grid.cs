@@ -21,6 +21,11 @@ namespace Vsite.Battleship.Model
             }
         }
 
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -39,6 +44,7 @@ namespace Vsite.Battleship.Model
                 int squaresInSequence = 0;
                 for (int c = 0; c < Columns; c++)
                 {
+                    //TODO replace code below with LimitedQueue
                     if (squares[r, c] != null)
                     {
                         ++squaresInSequence;
@@ -69,6 +75,7 @@ namespace Vsite.Battleship.Model
                 int squaresInSequence = 0;
                 for (int r = 0; r < Rows; r++)
                 {
+                    //TODO replace code below with LimitedQueue
                     if (squares[r, c] != null)
                     {
                         ++squaresInSequence;
