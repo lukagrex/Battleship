@@ -37,48 +37,45 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
-        {
-            List<SquareSequence> result = new List<SquareSequence>();
-            LimitedQueue<Square> limitedQueue = new LimitedQueue<Square>(length);
 
-            for (int r = 0; r < Rows; ++r)
+        class LoopIndex
+        {
+            public LoopIndex(int outerBound, int innerBound)
             {
-                limitedQueue.Clear();
-                for (int c = 0; c < Columns; ++c)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        limitedQueue.Enqueue(squares[r, c]);
-                        if (limitedQueue.Count == length)
-                        {
-                            result.Add(limitedQueue);
-                        }
-                    }
-                    else
-                        limitedQueue.Clear();
-                }
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
             }
 
-            return result;
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < outerBound; ++i)
+                    yield return i;
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < innerBound; ++i)
+                    yield return i;
+            }
+
+            private int outerBound;
+            private int innerBound;
         }
-        
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
+
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             List<SquareSequence> result = new List<SquareSequence>();
-            LimitedQueue<Square> limitedQueue = new LimitedQueue<Square>(length);
-
-            for (int c = 0; c < Columns; ++c)
+            foreach (int o in loopIndex.Outer())
             {
-                limitedQueue.Clear();
-                for (int r = 0; r < Rows; ++r)
+                LimitedQueue<Square> limitedQueue = new LimitedQueue<Square>(length);
+                foreach (int i in loopIndex.Inner())
                 {
-                    if (squares[r, c] != null)
+                    if (squareSelect(o, i) != null)
                     {
-                        limitedQueue.Enqueue(squares[r, c]);
-                        if (limitedQueue.Count == length)
+                        limitedQueue.Enqueue(squareSelect(o, i));
+                        if (limitedQueue.Count >= length)
                         {
                             result.Add(limitedQueue);
                         }
