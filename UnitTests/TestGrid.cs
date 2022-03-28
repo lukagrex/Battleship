@@ -48,5 +48,7 @@ namespace Vsite.Battleship
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
         }
+
+        //TODO HW1: napisati test za slučaj (d) 
     }
 }

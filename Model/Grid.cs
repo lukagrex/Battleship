@@ -36,63 +36,58 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
 
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
+        class LoopIndex
         {
-            List<SquareSequence> result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; ++r)
+            public LoopIndex(int outerBound, int innerBound)
             {
-                int squaresInSequence = 0;
-                for (int c = 0; c < Columns; c++)
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
+            }
+
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < outerBound; ++i)
                 {
-                    if (squares[r, c] != null)
-                    {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
-                        {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; ++cc)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-                            result.Add(s);
-                        }
-                    }
-                    else
-                        squaresInSequence = 0;
-                    
+                    yield return i;
                 }
             }
 
-            return result;
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < innerBound; ++i)
+                {
+                    yield return i;
+                }
+            }
+
+            private int outerBound;
+            private int innerBound;
         }
 
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             List<SquareSequence> result = new List<SquareSequence>();
-            for (int c = 0; c < Columns; ++c)
+            foreach (int o in loopIndex.Outer())
             {
-                int squaresInSequence = 0;
-                for (int r = 0; r < Rows; r++)
+                LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
+                foreach (int i in loopIndex.Inner())
                 {
-                    if (squares[r, c] != null)
+                    if (squareSelect(o, i) != null)
                     {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        queue.Enqueue(squareSelect(o, i));
+                        if (queue.Count >= length)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int rr = r - length + 1; rr <= r; ++rr)
-                            {
-                                s.Add(squares[rr, c]);
-                            }
-                            result.Add(s);
+                            result.Add(queue);
                         }
                     }
                     else
-                        squaresInSequence = 0;
-
+                    {
+                        queue.Clear();
+                    }
                 }
             }
             return result;
