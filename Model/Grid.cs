@@ -28,6 +28,11 @@ namespace Vsite.BattleShip.Model
             }
         }
 
+        public void EliminateSquares(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -75,7 +80,6 @@ namespace Vsite.BattleShip.Model
             for (var column = 0; column < this.Columns; column++)
             {
                 var foundSquares = new LimitedQueue<Square>(length);
-
                 for (var row = 0; row < this.Rows; row++)
                 {
                     if (squares[row, column] != null)

@@ -33,5 +33,16 @@ namespace Vsite.BattleShip.UnitTests
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(3, placements.Count());
         }
+
+        [TestMethod]
+        public void GetAvailablePlacementsReturns3PlacementsForShip2SquaresLongOnGrid5Rows1Row6ColumnAfterSquareInColumn2IsEliminated()
+        {
+            var grid = new Grid(1, 6);
+            grid.EliminateSquares(0, 2);
+            Assert.AreEqual(5, grid.Squares.Count());
+
+            var placements = grid.GetAvailablePlacements(2);
+            Assert.AreEqual(3, placements.Count());
+        }
     }
 }
