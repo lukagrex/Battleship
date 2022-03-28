@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vsite.Battleship.Model
@@ -39,6 +40,16 @@ namespace Vsite.Battleship.Model
                     squares[row, column] = new Square(row, column);
                 }
             }
+        }
+
+        public void EliminateSquare(int row, int column)
+        {
+            if (row < 0 || column < 0 || row >= numOfRows || column >= numOfColumns)
+            {
+                throw new ArgumentException("index is out of grid");
+            }
+
+            squares[row, column] = null;
         }
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int shipSize)
