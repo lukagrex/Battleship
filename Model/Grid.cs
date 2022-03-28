@@ -19,9 +19,9 @@ namespace Vsite.BattleShip.Model
             this.Columns = columns;
             this.squares = new Square[Rows, Columns];
 
-            for (int r = 0; r < Rows; ++r)
+            for (var r = 0; r < Rows; ++r)
             {
-                for (int c = 0; c < Columns; ++c)
+                for (var c = 0; c < Columns; ++c)
                 {
                     this.squares[r, c] = new Square(r, c);
                 }
@@ -35,46 +35,66 @@ namespace Vsite.BattleShip.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetHorinzontallacements(length).Concat(GetVerticalPlacements(length));
+            return this.GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
         }
 
-        private IEnumerable<SquareSequence> GetHorinzontallacements(int length)
+        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
         {
-            List<SquareSequence> result = new List<SquareSequence>();
-
-            for (int r = 0; r < Rows; ++r)
+            var availableSquares = new List<SquareSequence>();
+            for (var r = 0; r < this.Rows; ++r)
             {
-                int squaresInSequence = 0;
-                for (int c = 0; c < Columns; ++c)
+                var squaresInSequence = 0;
+                for (var c = 0; c < this.Columns; ++c)
                 {
                     if (squares[r, c] != null)
                     {
                         ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        if (squaresInSequence < length)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length +1; cc <= c; ++cc)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-                            result.Add(s);
+                            continue;
                         }
+
+                        var square = new List<Square>();
+                        for (var cc = c - length +1; cc <= c; ++cc)
+                        {
+                            square.Add(squares[r, cc]);
+                        }
+                        availableSquares.Add(square);
                     }
                     else
                         squaresInSequence = 0;
                 }
             }
 
-            return result;
+            return availableSquares;
         }
 
         private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
         {
-            List<SquareSequence> result = new List<SquareSequence>();
+            var availableSquares = new List<SquareSequence>();
+            for (var column = 0; column < this.Columns; column++)
+            {
+                var foundSquares = new LimitedQueue<Square>(length);
 
-            //TODO HomeWork
+                for (var row = 0; row < this.Rows; row++)
+                {
+                    if (squares[row, column] != null)
+                    {
+                        foundSquares.Enqueue(squares[row, column]);
 
-            return result;
+                        if (foundSquares.Count == length)
+                        {
+                            availableSquares.Add(foundSquares);
+                        }
+                    }
+                    else
+                    {
+                        foundSquares.Clear();
+                    }
+                }
+            }
+
+            return availableSquares;
         }
     }
 }

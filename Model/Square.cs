@@ -18,9 +18,7 @@ namespace Vsite.BattleShip.Model
         {
             if (obj == null) return false;
 
-            if (GetType() != obj.GetType()) return false;
-
-            return Equals((Square)obj);
+            return GetType() == obj.GetType() && Equals((Square)obj);
         }
 
         public bool Equals(Square other)

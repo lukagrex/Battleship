@@ -10,7 +10,7 @@ namespace Vsite.BattleShip.UnitTests
         [TestMethod]
         public void ConstructorCreatesGridOf100SquaresForGridWith10Rows10Columns()
         {
-            Grid grid = new Grid(10, 10);
+            var grid = new Grid(10, 10);
             Assert.AreEqual(100, grid.Squares.Count());
             Assert.IsTrue(grid.Squares.Contains(new Square(0, 0)));
             Assert.IsTrue(grid.Squares.Contains(new Square(9, 9)));
@@ -21,7 +21,7 @@ namespace Vsite.BattleShip.UnitTests
         [TestMethod]
         public void GetAvailablePlacementsReturns2PlacementsForShip3SquaresOnGrid1Row4Columns()
         {
-            Grid grid = new Grid(1, 4);
+            var grid = new Grid(1, 4);
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(2, placements.Count());
         }
@@ -29,7 +29,7 @@ namespace Vsite.BattleShip.UnitTests
         [TestMethod]
         public void GetAvailablePlacementsReturns2PlacementsForShip3SquaresOnGrid5Rows1Column()
         {
-            Grid grid = new Grid(5, 1);
+            var grid = new Grid(5, 1);
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(3, placements.Count());
         }
