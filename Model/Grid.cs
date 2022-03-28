@@ -29,6 +29,11 @@ namespace Vsite.Battleship.Model
         // iz mreže izvlačimo polja
         // nul reference za svako polje
 
+        public void EliminateSquares(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         // enkapsuliramo dohvaćanje square-ova
         public IEnumerable<Square> Squares
         {
