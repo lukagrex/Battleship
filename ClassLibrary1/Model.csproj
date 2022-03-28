@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fleet.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="LimitQueue.cs" />
+    <Compile Include="Ship.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

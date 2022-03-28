@@ -1,90 +1,125 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-
-
 
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-
-
-
     public class Grid
     {
-        public Grid(int rows, int columns)
-        {
-            Rows = rows;
-            Columns = columns;
-            squares = new Square[Rows, Columns];
-            for (int r = 0; r < Rows; r++)
-            {
-                for (int c = 0; c < Columns; c++)
-                {
-                    squares[r, c] = new Square(r, c);
-                }
-            }
-        }
 
-
+        private Square[,] squares;
 
         public IEnumerable<Square> Squares
         {
-            get { return squares.Cast<Square>().Where(s => s != null); }
-        }
-
-
-
-        public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
-        {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
-        }
-
-
-
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
-        {
-            List<SquareSequence> result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; r++)
+            get
             {
-                int squaresInSequence = 0;
-                for (int c = 0; c < Columns; c++)
+                return this.squares.Cast<Square>().Where(s => s != null);
+            }
+        }
+
+        public readonly int numOfRows;
+        public readonly int numOfColumns;
+
+        public Grid(int numOfRows, int numOfColumns)
+        {
+            this.numOfColumns = numOfColumns;
+            this.numOfRows = numOfRows;
+
+            this.CreateGrid();
+        }
+
+        private void CreateGrid()
+        {
+            squares = new Square[numOfRows, numOfColumns];
+
+            for (int row = 0; row < numOfRows; row++)
+            {
+                for (int column = 0; column < numOfColumns; column++)
                 {
-                    if (squares[r, c] != null)
+                    squares[row, column] = new Square(row, column);
+                }
+            }
+        }
+
+        public void EliminateSquare(int row, int column)
+        {
+            if (row < 0 || column < 0 || row >= numOfRows || column >= numOfColumns)
+            {
+                throw new ArgumentException("index is out of grid");
+            }
+
+            squares[row, column] = null;
+        }
+
+        public IEnumerable<SquareSequence> GetAvailablePlacements(int shipSize)
+        {
+            return this.GetHorizontalPlacements(shipSize).Concat(this.GetVerticalPlacements(shipSize));
+        }
+
+        private IEnumerable<SquareSequence> GetHorizontalPlacements(int shipSize)
+        {
+            return GetPlacements(shipSize, new LoopIndex(this.numOfRows, this.numOfColumns), (i, j) => squares[i, j]);
+        }
+
+        private IEnumerable<SquareSequence> GetVerticalPlacements(int shipSize)
+        {
+            return GetPlacements(shipSize, new LoopIndex(this.numOfColumns, this.numOfRows), (i, j) => squares[j, i]);
+        }
+
+
+        private IEnumerable<SquareSequence> GetPlacements(int shipSize, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
+        {
+            var availableSquares = new List<SquareSequence>();
+
+            foreach (var o in loopIndex.Outer())
+            {
+                var listFound = new LimitedQueue<Square>(shipSize);
+
+                foreach (var i in loopIndex.Inner())
+                {
+                    if (squareSelect(o, i) != null)
                     {
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
+                        listFound.Enqueue(squareSelect(o, i));
+
+                        if (listFound.Count == shipSize)
                         {
-                            List<Square> s = new List<Square>();
-                            for (int cc = c - length + 1; cc <= c; cc++)
-                            {
-                                s.Add(squares[r, cc]);
-                            }
-                            result.Add(s);
+                            availableSquares.Add(listFound);
                         }
                     }
                     else
-                        squaresInSequence = 0;
+                    {
+                        listFound.Clear();
+                    }
                 }
             }
-            return result;
+
+            return availableSquares;
         }
 
-
-
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
+        class LoopIndex
         {
-            List<SquareSequence> result = new List<SquareSequence>();
-            // TODO DZ dovrši
-            return result;
+            private int OuterBound;
+            private int InnerBound;
+
+            public LoopIndex(int outerBound, int innerBound)
+            {
+                this.OuterBound = outerBound;
+                this.InnerBound = innerBound;
+            }
+
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < OuterBound; i++)
+                    yield return i;
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < InnerBound; i++)
+                    yield return i;
+            }
         }
 
-
-
-        public readonly int Rows;
-        public readonly int Columns;
-
-
-
-        private Square[,] squares;
     }
 }
