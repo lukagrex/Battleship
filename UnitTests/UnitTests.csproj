@@ -54,6 +54,7 @@
     <Compile Include="TestGrid.cs" />
     <Compile Include="TestShip.cs" />
     <Compile Include="TestFleet.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
