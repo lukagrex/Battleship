@@ -44,6 +44,16 @@ namespace Vsite.Battleship
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
         }
-        //TODO Dodaj test za vertikalni slučaj 5 redaka elimirano drugo polje
+
+        [TestMethod]
+        public void
+            GetAvailablePlacementsReturns2PlacementsForAShip2SquaresLongOnGrid5Row1ColumnsAfterSquareInRow2IsEliminated()
+        {
+            Grid grid = new Grid(5, 1);
+            grid.EliminateSquare(2, 0);
+            Assert.AreEqual(4, grid.Squares.Count());
+            var placements = grid.GetAvailablePlacements(2);
+            Assert.AreEqual(2, placements.Count());
+        }
     }
 }

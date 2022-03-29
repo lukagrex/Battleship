@@ -6,7 +6,7 @@ namespace Vsite.Battleship.Model
     {
         public void CreateShip(IEnumerable<Square> squares)
         {
-            //TODO ship contructor and add it to ships collection
+            ships.Add(new Ship(squares));
         }
 
         public IEnumerable<Ship> Ships
