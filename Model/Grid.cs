@@ -134,26 +134,25 @@ namespace Vsite.BattleShip.Model
             }
         }
 
-        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int,int, Square> ss)
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int,int, Square> squareSelect)
         {
             var availableSquares = new List<SquareSequence>();
-            foreach (int o in loopIndex.Outer())
+            foreach (var o in loopIndex.Outer())
             {
-                var foundSquares = new LimitedQueue<Square>(length);
-                foreach (int i in loopIndex.Inner())
+                var queue = new LimitedQueue<Square>(length);
+                foreach (var i in loopIndex.Inner())
                 {
-                    if (ss(o, i) != null)
+                    if (squareSelect(o, i) != null)
                     {
-                        foundSquares.Enqueue(squares[i, o]);
-
-                        if (foundSquares.Count == length)
+                        queue.Enqueue(squareSelect(o, i));
+                        if (queue.Count >= length)
                         {
-                            availableSquares.Add(foundSquares);
+                            availableSquares.Add(queue);
                         }
                     }
                     else
                     {
-                        foundSquares.Clear();
+                        queue.Clear();
                     }
                 }
             }

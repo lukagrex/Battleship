@@ -8,12 +8,9 @@ namespace Vsite.BattleShip.Model
 {
     public class Fleet
     {
-        private List<Ship> ships = new List<Ship>();
+        private readonly List<Ship> ships = new List<Ship>();
 
-        public IEnumerable<Ship> Ships
-        {
-            get { return ships; }
-        }
+        public IEnumerable<Ship> Ships => ships;
 
         public Fleet()
         {
@@ -22,7 +19,7 @@ namespace Vsite.BattleShip.Model
 
         public void CreateShip(IEnumerable<Square> squares)
         {
-
+            this.ships.Add(new Ship(squares));
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Vsite.BattleShip.UnitTests
         [TestMethod]
         public void CreateShipAddsNewShipToFleet()
         {
-            Fleet fleet = new Fleet();
+            var fleet = new Fleet();
             fleet.CreateShip(new List<Square>
             {
                 new Square(1, 1),
