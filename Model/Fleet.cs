@@ -12,14 +12,9 @@ namespace Model
 
         public IEnumerable<Ship> Ships => ships;
 
-        public Fleet()
-        {
-            
-        }
-
         public void CreateShip(IEnumerable<Square> squares)
         {
-            //napraviti implementaciju
+            this.ships.Add(new Ship(squares));
         }
     }
 }

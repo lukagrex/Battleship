@@ -49,6 +49,15 @@ namespace UnitTests
             Assert.AreEqual(3, placements.Count());
         }
 
-        //napraviti isti test za mrežu s jednim stupcem i pet redaka 
+        [TestMethod]
+        public void GetAvailablePlacements_Returns3PlacementsForAShip2SquaresLongOnGrid6Rows1ColumnAfterSquareInColumn2IsEliminated()
+        {
+            Grid grid = new Grid(6, 1);
+            grid.EliminateSquare(2, 0);
+            Assert.AreEqual(5, grid.Squares.Count());
+
+            var placements = grid.GetAvailablePlacements(2);
+            Assert.AreEqual(3, placements.Count());
+        }
     }
 }
