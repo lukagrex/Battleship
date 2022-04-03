@@ -8,38 +8,41 @@ namespace Vsite.Battleship.Model
 {
     public class Square : IEquatable<Square>
     {
-        public Square(int row, int column)
-        {
-            Row = row;
-            Column = column;
-        }
-
         public readonly int Row;
         public readonly int Column;
 
-        public bool Equals(Square other)
+        public Square(int row, int column)
         {
-            return other != null && Row == other.Row && Column == other.Column;
+            this.Row = row;
+            this.Column = column;
         }
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
-            {
+            if (obj == null)
                 return false;
-            }
-            if(obj.GetType() != obj.GetType())
-            {
+
+            if (this.GetType() != obj.GetType())
                 return false;
-            }
-            return Equals((Square)obj);
+
+            return this.Equals(obj as Square);
+        }
+
+        public bool Equals(Square other)
+        {
+            if (other == null)
+                return false;
+
+            return this.Row == other.Row && this.Column == other.Column;
         }
 
         public override int GetHashCode()
         {
             int hashCode = 240067226;
+
             hashCode = hashCode * -1521134295 + Row.GetHashCode();
             hashCode = hashCode * -1521134295 + Column.GetHashCode();
+
             return hashCode;
         }
     }

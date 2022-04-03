@@ -8,20 +8,24 @@ namespace Vsite.Battleship.Model
 {
     public class LimitedQueue<T> : Queue<T>
     {
+        private readonly int length;
+
         public LimitedQueue(int length)
         {
-            this.length = length;   
+            this.length = length;
         }
 
         public new void Enqueue(T item)
         {
-            if(Count >= length)
+            if (this.Count < this.length)
             {
-                Dequeue();
+                base.Enqueue(item);
+            }
+            else
+            {
+                this.Dequeue();
                 base.Enqueue(item);
             }
         }
-
-        private readonly int length;
     }
 }
