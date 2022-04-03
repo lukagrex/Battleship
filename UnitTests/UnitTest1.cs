@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using Vsite.BattleShip.Model;
+using System.Collections.Generic;
 
 namespace Vsite.BattleShip
 {
