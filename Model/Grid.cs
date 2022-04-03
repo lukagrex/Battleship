@@ -42,19 +42,46 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (j, i) => squares[j, i]));
         }
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
+
+        class LoopIndex
+        {
+            public LoopIndex(int outerBound, int innerBound)
+            {
+                this.outerBound = outerBound;
+                this.innerBound = innerBound;
+                // Ctrl+k+d ... podešavanje zagrada
+
+            }
+
+            public IEnumerable<int> Outer()
+            {
+                for (int i = 0; i < outerBound; ++i)
+                    yield return i;
+            }
+
+            public IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < innerBound; ++i)
+                    yield return i;
+            }
+
+            private int outerBound;
+            private int innerBound;
+        }
+        //
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             List<SquareSequence> result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; ++r)
+            foreach (int o in loopIndex.Outer())
             {
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
-                for (int c = 0; c < Columns; ++c)
+                foreach (int i in loopIndex.Inner())
                 {
-                    if (squares[r, c] != null)
+                    if (squareSelect(o, i) != null)
                     {
-                        queue.Enqueue(squares[r, c]);
+                        queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
                         {
                             result.Add(queue);
@@ -68,30 +95,55 @@ namespace Vsite.Battleship.Model
             }
             return result;
         }
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
-        {
-            List<SquareSequence> result = new List<SquareSequence>();
-            for (int c = 0; c < Columns; ++c)
-            {
-                LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
-                for (int r = 0; r < Rows; ++r)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        queue.Enqueue(squares[r, c]);
-                        if (queue.Count >= length)
-                        {
-                            result.Add(queue);
-                        }
-                    }
-                    else
-                    {
-                        queue.Clear();
-                    }
-                }
-            }
-            return result;
-        }
+        //
+        //private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
+        //{
+        //    List<SquareSequence> result = new List<SquareSequence>();
+        //    for (int r = 0; r < Rows; ++r)
+        //    {
+        //        LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
+        //        for (int c = 0; c < Columns; ++c)
+        //        {
+        //            if (squares[r, c] != null)
+        //            {
+        //                queue.Enqueue(squares[r, c]);
+        //                if (queue.Count >= length)
+        //                {
+        //                    result.Add(queue);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                queue.Clear();
+        //            }
+        //        }
+        //    }
+        //    return result;
+        //}
+        //private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
+        //{
+        //    List<SquareSequence> result = new List<SquareSequence>();
+        //    for (int c = 0; c < Columns; ++c)
+        //    {
+        //        LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
+        //        for (int r = 0; r < Rows; ++r)
+        //        {
+        //            if (squares[r, c] != null)
+        //            {
+        //                queue.Enqueue(squares[r, c]);
+        //                if (queue.Count >= length)
+        //                {
+        //                    result.Add(queue);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                queue.Clear();
+        //            }
+        //        }
+        //    }
+        //    return result;
+        //}
 
         public readonly int Rows;
         public readonly int Columns;
