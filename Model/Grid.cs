@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Vsite.BattleShip.Model
 {
@@ -24,6 +26,10 @@ namespace Vsite.BattleShip.Model
             }
         }
 
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -31,11 +37,11 @@ namespace Vsite.BattleShip.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j]).
-                Concat(GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[j, i]));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
 
-        public class LoopIndex
+        class LoopIndex
         {
             public LoopIndex(int outerBound, int innerBound)
             {
@@ -45,22 +51,20 @@ namespace Vsite.BattleShip.Model
 
             public IEnumerable<int> Outer()
             {
-                for (int i = 0; i < outerBound; i++)
+                for (int i = 0; i < outerBound; ++i)
                     yield return i;
             }
 
             public IEnumerable<int> Inner()
             {
-                for (int i = 0; i < innerBound; i++)
+                for (int i = 0; i < innerBound; ++i)
                     yield return i;
             }
             private int outerBound;
             private int innerBound;
         }
 
-
-
-        public IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             List<SquareSequence> result = new List<SquareSequence>();
             foreach (int o in loopIndex.Outer())
@@ -68,60 +72,25 @@ namespace Vsite.BattleShip.Model
                 int squaresInSequence = 0;
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null)
+                    if (squareSelect(0, i) != null)
                     {
-                        squaresInSequence++;
+                        ++squaresInSequence;
                         if (squaresInSequence >= length)
                         {
                             List<Square> s = new List<Square>();
-                            for (int cc = i - length + 1; cc <= i; cc++)
-                                s.Add(squares[o, cc]);
-
-                            result.Add(s);
-                        }
-
-                    }
-                    else
-                    {
-                        squaresInSequence = 0;
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
-        {
-            List<SquareSequence> result = new List<SquareSequence>();
-
-            for (int c = 0; c < Columns; c++)
-            {
-                int squaresInSequence = 0;
-                for (int r = 0; r < Rows; r++)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        squaresInSequence++;
-                        if (squaresInSequence >= length)
-                        {
-                            List<Square> s = new List<Square>();
-
-                            for (int cc = r - length + 1; cc <= r; ++cc)
+                            for (int cc = i - length + 1; cc <= i; ++cc)
                             {
-                                s.Add(squares[cc, c]);
+                                s.Add(squares[o, cc]);
                             }
                             result.Add(s);
 
                         }
                     }
                     else
-                    {
                         squaresInSequence = 0;
-                    }
                 }
-            }
 
+            }
             return result;
         }
 

@@ -12,11 +12,11 @@ namespace Vsite.BattleShip
         public void ToEliminateReturns18SquaresForShipInSquares4x3_4x6()
         {
             var eliminator = new SquareEliminator(10, 10);
-            eliminator.ToEliminate(new List<Square>()
+            var toEliminate = eliminator.ToEliminate(new List<Square>()
             {
                 new Square(4, 3), new Square(4, 4), new Square(4, 5), new Square(4, 6)
             });
-            Assert.AreEqual(18, ToEliminate.Count());
+            Assert.AreEqual(18, toEliminate.Count());
         }
     }
 }

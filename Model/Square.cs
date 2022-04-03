@@ -14,7 +14,7 @@ namespace Vsite.BattleShip.Model
         public readonly int Column;
         public bool Equals(Square other)
         {
-            return Row == other.Row && Column == other.Column;
+            return other != null && Row == other.Row && Column == other.Column;
         }
 
         public override bool Equals(object obj)
@@ -28,12 +28,7 @@ namespace Vsite.BattleShip.Model
 
         public override int GetHashCode()
         {
-            int hashCode = 240067226;
-
-            hashCode = hashCode * -1521134295 + Row.GetHashCode();
-            hashCode = hashCode * -1521134295 + Column.GetHashCode();
-
-            return hashCode;
+            return Row ^ Column;
         }
     }
 }

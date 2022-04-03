@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Vsite.BattleShip.Model
 {
@@ -7,9 +11,10 @@ namespace Vsite.BattleShip.Model
         public void CreateShip(IEnumerable<Square> squares)
         {
             //pozovi konstruktor broda i dodaj ga u kolekciju
+            ships.Add(new Ship(squares));
         }
 
-        IEnumerable<Ship> Ships
+        public IEnumerable<Ship> Ships
         {
             get { return ships; }
         }
