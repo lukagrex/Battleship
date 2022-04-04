@@ -16,18 +16,27 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
         {
-            HashSet<Square> eliminated = new HashSet<Square>();
-            foreach (var square in shipSquares)
+            int startRow = shipSquares.First().Row;
+            if (startRow > 0)
+                --startRow;
+            int endRow = shipSquares.Last().Row;
+            if (endRow < rows - 1)
+                ++endRow;
+            int startColumn = shipSquares.First().Column;
+            if (startColumn > 0)
+                --startColumn;
+            int endColumn = shipSquares.Last().Column;
+            if (endColumn < columns - 1)
+                ++endColumn;
+            List<Square> result = new List<Square>();
+            for (int r = startRow; r <= endRow; ++r)
             {
-                for (int i = Math.Max(square.Row - 1, 0); i <= Math.Min(square.Row + 1, rows - 1); ++i)
+                for (int c = startColumn; c <= endColumn; ++c)
                 {
-                    for (int j = Math.Max(square.Column - 1, 0); j <= Math.Min(square.Column + 1, columns - 1); ++j)
-                    {
-                        eliminated.Add(new Square(i, j));
-                    }
+                    result.Add(new Square(r, c));
                 }
             }
-            return eliminated;
+            return result;
         }
 
         private readonly int rows;
