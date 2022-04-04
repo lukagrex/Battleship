@@ -14,7 +14,7 @@ namespace Vsite.Battleship.Model
 
         public bool Equals (Square otherSquare)
         {
-            return this.Row == otherSquare.Row && this.Column == otherSquare.Column;   
+            return otherSquare != null && this.Row == otherSquare.Row && this.Column == otherSquare.Column;
         }
 
         public override bool Equals(object obj)

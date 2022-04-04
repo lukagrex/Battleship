@@ -19,8 +19,8 @@ namespace Vsite.Battleship.Model
             if (Count >= length)
             {
                 Dequeue();  //Removes first element            }
-                base.Enqueue(item);
             }
+            base.Enqueue(item);
         }
 
         private readonly int length;
