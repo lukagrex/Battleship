@@ -22,8 +22,8 @@ namespace Vsite.Battleship.Model
                     foreach (var j in ii)
                     {
                         // Do not eliminate squares out of boundaries
-                        if ((shipSquare.Row + i) > rows || (shipSquare.Row + i <= 0) ||
-                            (shipSquare.Column + j) > columns || (shipSquare.Column + j) <= 0)
+                        if (shipSquare.Row + i >= rows || shipSquare.Row + i < 0 ||
+                            shipSquare.Column + j >= columns || shipSquare.Column + j < 0)
                         {
                             continue;
                         }
