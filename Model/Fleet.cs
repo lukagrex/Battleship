@@ -12,6 +12,7 @@ namespace Vsite.Battleship.Model
         
         public void CreateShip(IEnumerable<Square> squares)
         {
+            var ship = new Ship(squares);
             ships.Add(new Ship(squares));
         }
         

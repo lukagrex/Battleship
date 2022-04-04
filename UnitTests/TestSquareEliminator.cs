@@ -9,10 +9,9 @@ namespace Vsite.Battleship
     public class TestSquareEliminator
     {
         [TestMethod]
-        public void ToEliminateReturn18SquaresShipInSquares4x3_4x6()
+        public void ToEliminateReturns18SquaresForShipInSquares4x3_4x6()
         {
             var eliminator = new SquareEliminator(10, 10);
-
             var toEliminate = eliminator.ToEliminate(new List<Square>
             {
                 new Square(4, 3),
@@ -22,17 +21,38 @@ namespace Vsite.Battleship
             });
 
             Assert.AreEqual(18, toEliminate.Count());
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 5));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 5));
 
-            for (int i = 3; i <= 5; i++)
-            {
-                for (int j = 2; j <= 7; j++)
-                {
-                    Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
-                }
-            }
+            //for (int i = 3; i <= 5; i++)
+            //{
+            //    for (int j = 2; j <= 7; j++)
+            //    {
+            //        Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
+            //    }
+            //}
         }
 
         [TestMethod]
+        public void ToEliminateReturns8SquaresForShipInSquares0x3_0x4()
+        {
+            var eliminator = new SquareEliminator(10, 10);
+            var toEliminate = eliminator.ToEliminate(new List<Square>
+            {
+                new Square(0, 3),
+                new Square(0, 4),
+            });
+
+            Assert.AreEqual(8, toEliminate.Count());
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 5));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 5));
+        }
+
+            [TestMethod]
         public void ToEliminateReturn31SquaresShipInSquares4x3_4x6AndSecondShip6x7_8x7()
         {
             var eliminator = new SquareEliminator(10, 10);
