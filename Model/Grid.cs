@@ -54,7 +54,7 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int shipSize)
         {
-            return this.GetHorizontalPlacements(shipSize).Concat(this.GetVerticalPlacements(shipSize));
+            return this.GetHorizontalPlacements(shipSize).Concat(this.GetVerticalPlacements(shipSize)).Where(pl => pl.Count() > 0);
         }
 
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int shipSize)
