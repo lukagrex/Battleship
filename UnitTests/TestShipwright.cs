@@ -12,10 +12,10 @@ namespace Vsite.Battleship
         [TestMethod]
         public void CreateFleetCreatesFleetForShipLengthsProvided()
         {
-            IEnumerable<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2};
+            IEnumerable<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2};
             var shipwright = new Shipwright(10, 10, shipLengths);
             var fleet = shipwright.CreateFleet();
-            Assert.AreEqual(7, fleet.Ships.Count());
+            Assert.AreEqual(10, fleet.Ships.Count());
             Assert.AreEqual(1, fleet.Ships.Count(s => s.Squares.Count() == 5));
         }
     }
