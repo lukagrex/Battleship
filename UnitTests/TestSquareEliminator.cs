@@ -47,7 +47,7 @@ namespace Vsite.BattleShip
             {
                 new Square(7, 5), new Square(8, 5), new Square(9, 5)
             });
-            Assert.AreEqual(8, toEliminate.Count());
+            Assert.AreEqual(12, toEliminate.Count());
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(6, 4));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(9, 4));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(6, 6));
