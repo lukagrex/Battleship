@@ -10,7 +10,8 @@ namespace Vsite.Battleship.Model
     {
         public void CreateShip(IEnumerable<Square> squares)
         {
-
+            var ship = new Ship(squares);
+            ships.Add(ship);
         }
 
         public IEnumerable<Ship> Ships
