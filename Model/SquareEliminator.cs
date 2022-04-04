@@ -14,6 +14,46 @@ namespace Vsite.Battleship.Model
             this.columns = columns;
         }
 
+        public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
+        {
+            int startRow = shipSquares.First().Row;
+            if (startRow > 1)
+            {
+                --startRow;
+            }
+
+            int endRow = shipSquares.Last().Row;
+            if (endRow < rows - 1)
+            {
+                ++endRow;
+            }
+
+
+            int startColumn = shipSquares.First().Column;
+            if (startColumn > 1)
+            {
+                --startColumn;
+            }
+
+            int endColumn = shipSquares.Last().Column;
+            if (endRow < columns - 1)
+            {
+                ++endRow;
+            }
+
+            List<Square> result = new List<Square>();
+
+            for (int r = startRow; r <= endRow; r++)
+            {
+                for (int c = startColumn; c <= endColumn; c++)
+                {
+                    result.Add(new Square(r, c));
+                }
+            }
+
+            return result;
+        }
+
         private readonly int rows;
         private readonly int columns;
 
