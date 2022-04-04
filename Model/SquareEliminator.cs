@@ -23,6 +23,7 @@ namespace Vsite.Battleship.Model
             var lastShipSquare = shipSquares.Last();
 
             var isVertical = firstShipSquare.Column == lastShipSquare.Column;
+
             var leftSideIncluded = firstShipSquare.Column != 0;
             var rightSideIncluded = lastShipSquare.Column != columns - 1;
             var upperSideIncluded = firstShipSquare.Row != 0;
