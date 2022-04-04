@@ -54,7 +54,7 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int shipSize)
         {
-            return this.GetHorizontalPlacements(shipSize).Concat(this.GetVerticalPlacements(shipSize)).Where(pl => pl.Count() > 0);
+            return this.GetHorizontalPlacements(shipSize).Concat(this.GetVerticalPlacements(shipSize));
         }
 
         private IEnumerable<SquareSequence> GetHorizontalPlacements(int shipSize)
@@ -85,11 +85,12 @@ namespace Vsite.Battleship.Model
                         if (listFound.Count == shipSize)
                         {
                             availableSquares.Add(listFound);
+
                         }
                     }
                     else
                     {
-                        listFound.Clear();
+                        listFound = new LimitedQueue<Square>(shipSize);
                     }
                 }
             }
