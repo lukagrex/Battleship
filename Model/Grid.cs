@@ -41,67 +41,8 @@ namespace Vsite.BattleShip.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            //return this.GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
-//            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns)).Concat(GetVerticalPlacements(length));
-            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns),(i, j) => squares[i,j]).Concat(this.GetPlacements(length, new LoopIndex(this.Columns, this.Rows), (i, j) => squares[j, i]));
-        }
-
-        private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
-        {
-            var availableSquares = new List<SquareSequence>();
-            for (var r = 0; r < this.Rows; ++r)
-            {
-                var squaresInSequence = 0;
-                for (var c = 0; c < this.Columns; ++c)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        ++squaresInSequence;
-                        if (squaresInSequence < length)
-                        {
-                            continue;
-                        }
-
-                        var square = new List<Square>();
-                        for (var cc = c - length +1; cc <= c; ++cc)
-                        {
-                            square.Add(squares[r, cc]);
-                        }
-                        availableSquares.Add(square);
-                    }
-                    else
-                        squaresInSequence = 0;
-                }
-            }
-
-            return availableSquares;
-        }
-
-        private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
-        {
-            var availableSquares = new List<SquareSequence>();
-            for (var column = 0; column < this.Columns; column++)
-            {
-                var foundSquares = new LimitedQueue<Square>(length);
-                for (var row = 0; row < this.Rows; row++)
-                {
-                    if (squares[row, column] != null)
-                    {
-                        foundSquares.Enqueue(squares[row, column]);
-
-                        if (foundSquares.Count == length)
-                        {
-                            availableSquares.Add(foundSquares);
-                        }
-                    }
-                    else
-                    {
-                        foundSquares.Clear();
-                    }
-                }
-            }
-
-            return availableSquares;
+            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns),(i, j) => squares[i,j])
+                       .Concat(this.GetPlacements(length, new LoopIndex(this.Columns, this.Rows), (i, j) => squares[j, i]));
         }
 
         private class LoopIndex
@@ -152,7 +93,7 @@ namespace Vsite.BattleShip.Model
                     }
                     else
                     {
-                        queue.Clear();
+                        queue = new LimitedQueue<Square>(length);
                     }
                 }
             }

@@ -23,13 +23,13 @@ namespace Vsite.BattleShip.Model
             int firstRow = shipsSquares.First().Row;
             if (firstRow > 0)
             {
-                --firstRow;
+                firstRow--;
             }
 
             int lastRow = shipsSquares.Last().Row;
-            if (lastRow < rows - 1)
+            if (lastRow < rows-1)
             {
-                ++lastRow;
+                lastRow++;
             }
 
             int firstColumn = shipsSquares.First().Column;
@@ -45,9 +45,9 @@ namespace Vsite.BattleShip.Model
             }
 
             List<Square> result = new List<Square>();
-            for (int i = firstRow; i < lastRow; ++i)
+            for (int i = firstRow; i <= lastRow; ++i)
             {
-                for (int j = firstColumn; j < lastColumn; ++j)
+                for (int j = firstColumn; j <= lastColumn; ++j)
                 {
                     result.Add(new Square(i, j));
                 }
