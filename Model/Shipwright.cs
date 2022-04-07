@@ -16,6 +16,7 @@ namespace Vsite.Battleship.Model
         {
             grid = new Grid(rows, columns);
             squareEliminator = new SquareEliminator(rows, columns);
+            this.shipLengths = shipLengths;
         }
 
 
@@ -35,7 +36,7 @@ namespace Vsite.Battleship.Model
                     grid.EliminateSquare(square.Row, square.Column);
                 }
             }
-
+            // TODO DZ grafičko sučelje da prikaže grid s brodovima
             return fleet;
         }
 
