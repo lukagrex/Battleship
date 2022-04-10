@@ -45,6 +45,35 @@ namespace UnitTests
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(9, 6));
         }
 
-        ////TODO napraviti testove za ostale slučajeve
+
+        [TestMethod]
+        public void ToEliminateReturns8SquaresForShipIn3x9To4x9()
+        {
+            var eliminator = new SquareEliminator(10, 10);
+            var toEliminate = eliminator.ToEliminate(new List<Square> { new Square(3, 9), new Square(4, 9)});
+            Assert.AreEqual(8, toEliminate.Count());
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(2, 9));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(5, 9));
+        }
+
+        [TestMethod]
+        public void ToEliminateReturns6SquaresForShipIn0x0To0x1()
+        {
+            var eliminator = new SquareEliminator(10, 10);
+            var toEliminate = eliminator.ToEliminate(new List<Square> { new Square(0, 0), new Square(0, 1) });
+            Assert.AreEqual(6, toEliminate.Count());
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 0));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 2));
+        }
+
+        [TestMethod]
+        public void ToEliminateReturns6SquaresForShipIn8x9To9x9()
+        {
+            var eliminator = new SquareEliminator(10, 10);
+            var toEliminate = eliminator.ToEliminate(new List<Square> { new Square(8, 9), new Square(9, 9) });
+            Assert.AreEqual(6, toEliminate.Count());
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(7, 9));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(9, 8));
+        }
     }
 }

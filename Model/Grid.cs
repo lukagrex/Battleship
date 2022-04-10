@@ -60,6 +60,7 @@ namespace Model
                         if (queue.Count >= length)
                         {
                             result.Add(queue);
+                            queue = new LimitedQueue<Square>(length);
                         }
                     }
                     else
