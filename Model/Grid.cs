@@ -28,10 +28,9 @@ namespace Vsite.Battleship.Model
         }
         // iz mreže izvlačimo polja
         // nul reference za svako polje
-
-        public void EliminateSquares(int row, int column)
+        public void EliminateSquare(int row, int column)
         {
-            squares[row, column] = null;
+           squares[row, column] = null;
         }
 
         // enkapsuliramo dohvaćanje square-ova
@@ -84,7 +83,8 @@ namespace Vsite.Battleship.Model
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
                         {
-                            result.Add(queue);
+                            //result.Add(queue); krivo, iduća linija je točno
+                            result.Add(queue.ToArray());
                         }
                     }
                     else

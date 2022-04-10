@@ -40,7 +40,7 @@ namespace Vsite.Battleship
         public void GetAvaliablePlacementsReturns3PlacementsForAShip2SquaresLongOnGrid1Row6ColumnsAfterSquareInColumn2IsEliminated()
         {
             Grid grid = new Grid(1, 6);
-            grid.EliminateSquares(0, 2);
+            grid.EliminateSquare(0, 2);
             Assert.AreEqual(5, grid.Squares.Count());
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
@@ -50,10 +50,12 @@ namespace Vsite.Battleship
         public void GetAvailablePlacementsReturns2PlacementsForAShip2SquaresLongOnGrid5Rows1ColumnAfterSquareInRow2IsEliminated()
         {
             Grid grid = new Grid(5, 1);
-            grid.EliminateSquares(2, 0);
+            grid.EliminateSquare(2, 0);
             Assert.AreEqual(4, grid.Squares.Count());
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(2, placements.Count());
         }
+
+
     }
 }
