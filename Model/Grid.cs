@@ -80,7 +80,7 @@ namespace Vsite.Battleship.Model
                         limitedQueue.Enqueue(squareSelect(o, i));
                         if (limitedQueue.Count >= length)
                         {
-                            result.Add(limitedQueue);
+                            result.Add(limitedQueue.ToArray());
                         }
                     }
                     else

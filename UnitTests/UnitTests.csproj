@@ -56,6 +56,8 @@
     <Compile Include="TestLimitedQueue.cs" />
     <Compile Include="TestShip.cs" />
     <Compile Include="TestFleet.cs" />
+    <Compile Include="TestShipWright.cs" />
+    <Compile Include="TestSquareEliminator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
