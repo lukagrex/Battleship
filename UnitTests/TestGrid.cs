@@ -46,6 +46,15 @@ namespace Vsite.Battleship
             Assert.AreEqual(3, placements.Count());
         }
 
-        // TODO: napraviti za onaj drugi slucaj b
+        [TestMethod]
+        public void GetAvailablePlacementsReturns3PlacementsForAShip2SquaresLongOnGrid6Rows1ColumnAfterSquareInColumn2IsEliminated()
+        {
+            Grid grid = new Grid(6, 1);
+            grid.EliminateSquare(2, 0);
+            Assert.AreEqual(5, grid.Squares.Count());
+
+            var placements = grid.GetAvailablePlacements(2);
+            Assert.AreEqual(3, placements.Count());
+        }
     }
 }

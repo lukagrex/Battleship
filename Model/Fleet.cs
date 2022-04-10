@@ -10,7 +10,7 @@ namespace Vsite.Battleship.Model
     {
         public void CreateShip(IEnumerable<Square> squares)
         {
-            //TODO
+            this.ships.Add(new Ship(squares));
         }
 
 
