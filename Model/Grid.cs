@@ -43,7 +43,10 @@ namespace Vsite.Battleship.Model
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
         }
-
+        public void ChangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column].ChangeState(newState);
+        }
 
         class LoopIndex
         {
@@ -88,7 +91,7 @@ namespace Vsite.Battleship.Model
                         if (queue.Count() >= length)
                         {
 
-                            result.Add(queue);
+                            result.Add(queue.ToArray());
 
                         }
                     }
