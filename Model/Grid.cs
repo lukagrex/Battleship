@@ -59,8 +59,7 @@ namespace Model
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
                         {
-                            result.Add(queue);
-                            queue = new LimitedQueue<Square>(length);
+                            result.Add(queue.ToArray());
                         }
                     }
                     else
