@@ -22,10 +22,13 @@ namespace Vsite.Battleship.Model
 
         public Fleet CreateFleet()
         {
+            //for(int i = 0;) DZ, vanjska petlja, 3x
             Fleet fleet = new Fleet();
             foreach (int shipLength in shipLengths)
             {
                 var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                //if (availablePlacements.Count() = 0)
+                //    break;
                 int index = random.Next(availablePlacements.Count());
                 var selectedPlacement = availablePlacements.ElementAt(index);
                 fleet.CreateShip(selectedPlacement);

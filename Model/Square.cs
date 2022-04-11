@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
+    public enum SquareState
+    {
+        Initial,
+        Missed,
+        Hit,
+        Sunken
+    }
+
     public class Square : IEquatable<Square>
     {
         public Square(int row, int column)
@@ -16,6 +24,14 @@ namespace Vsite.Battleship.Model
 
         public readonly int Row;
         public readonly int Column;
+        private SquareState squareState = SquareState.Initial;
+
+        public void ChangeState(SquareState newState)
+        {
+            squareState = newState;
+        }
+
+        public SquareState SquareState { get { return squareState; } }
 
         public bool Equals(Square other)
         {
