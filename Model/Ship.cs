@@ -32,5 +32,29 @@ namespace Vsite.Battleship.Model
 
             return this.Squares.SequenceEqual(other.Squares);
         }
+
+        public HitResult Shoot(int row, int column)
+        {
+            var square = Squares.FirstOrDefault(shipSquare => shipSquare.Row == row && shipSquare.Column == column);
+            if (square == null)
+                return HitResult.Missed;
+
+            if (square.SquareState == SquareState.Sunken)
+                return HitResult.Sunken;
+
+            square.ChangeState(SquareState.Hit);
+
+            if (Squares.All(shipSquare => shipSquare.SquareState == SquareState.Hit))
+            {
+                foreach (var shipSquare in Squares)
+                {
+                    shipSquare.ChangeState(SquareState.Sunken);
+                }
+
+                return HitResult.Sunken;
+            }
+
+            return HitResult.Hit;
+        }
     }
 }
