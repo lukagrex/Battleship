@@ -33,8 +33,7 @@ namespace Vsite.Battleship
         public void ToEliminateReturns8SquaresForShipInSquares0x3_0x4()
         {
             var eliminator = new SquareEliminator(10, 10);
-            var toEliminate = eliminator.ToEliminate(new List<Square>
-            {new Square(0, 3), new Square(0, 4)});
+            var toEliminate = eliminator.ToEliminate(new List<Square> {new Square(0, 3), new Square(0, 4)});
             Assert.AreEqual(8, toEliminate.Count());
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(3, 2));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(5, 2));
@@ -87,9 +86,8 @@ namespace Vsite.Battleship
         public void ToEliminateReturns8SquaresForShipInSquares0x0_0x1()
         {
             var eliminator = new SquareEliminator(10, 10);
-            var toEliminate = eliminator.ToEliminate(new List<Square>
-            {new Square(0, 0), new Square(0, 1)});
-            Assert.AreEqual(8, toEliminate.Count());
+            var toEliminate = eliminator.ToEliminate(new List<Square> {new Square(0, 0), new Square(0, 1)});
+            Assert.AreEqual(6, toEliminate.Count());
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 0));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 2));
         }
