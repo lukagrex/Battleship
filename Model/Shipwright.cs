@@ -26,7 +26,14 @@ namespace Vsite.Battleship.Model
 
             foreach (var shipLength in shipLengths)
             {
+
                 var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                if (availablePlacements.Count() == 0)
+                {
+                    //TODO dodaj petlju oko ovog koda i istraži jel ok
+                    break;
+                }
+
                 int index = random.Next(availablePlacements.Count());
                 var selectedPlacement = availablePlacements.ElementAt(index);
                 fleet.CreateShip(selectedPlacement);
@@ -35,8 +42,8 @@ namespace Vsite.Battleship.Model
                 {
                     grid.EliminateSquare(square.Row, square.Column);
                 }
+
             }
-            // TODO DZ grafičko sučelje da prikaže grid s brodovima
             return fleet;
         }
 
