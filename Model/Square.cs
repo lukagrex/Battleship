@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+    public enum SquareState
+    {
+        Initial,
+        Missed,
+        Hit,
+        Sunken,
+    }
+
     public class Square : IEquatable<Square>
     {
+        private SquareState squareState = SquareState.Initial;
+        
         public Square(int row, int column)
         {
             Row = row;
@@ -16,6 +26,13 @@ namespace Model
 
         public readonly int Row;
         public readonly int Column;
+        public SquareState SquareState => squareState;
+
+
+        public void ChangeState(SquareState newState)
+        {
+            squareState = newState;
+        }
 
         public bool Equals(Square other)
         {

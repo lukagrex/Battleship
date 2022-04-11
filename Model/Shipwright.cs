@@ -20,10 +20,15 @@ namespace Model
 
         public Fleet CreateFleet()
         {
+            //TODO napraviti petlju od 3 prolaska, nakon toga exception (kada ne može 9 brodova izgraditi)
             var fleet = new Fleet();
             foreach (var shipLength in shipLengths)
             {
                 var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                if (!availablePlacements.Any())
+                {
+                    break;
+                }
                 int index = random.Next(availablePlacements.Count());
                 var selectedPlacements = availablePlacements.ElementAt(index);
                 fleet.CreateShip(selectedPlacements);
