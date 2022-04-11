@@ -28,6 +28,12 @@ namespace Vsite.Battleship.Model
         {
             squares[row, column] = null;
         }
+
+        public void ChangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column].ChangeState(newState);
+        }
+
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
