@@ -21,20 +21,30 @@ namespace Vsite.Battleship.Model
         public Fleet CreateFleet()
         {
             var fleet = new Fleet();
-
-            foreach (var shipLength in shipLengths)
+            do
             {
-                var availablePlacements = grid.GetAvailablePlacements(shipLength);
-                int index = random.Next(availablePlacements.Count());
-                var selectedPlacement = availablePlacements.ElementAt(index);
-                fleet.CreateShip(selectedPlacement);
-
-                var squaresToEliminate = squareEliminator.ToEliminate(selectedPlacement);
-                foreach (var square in squaresToEliminate)
+                foreach (var shipLength in shipLengths)
                 {
-                    grid.EliminateSquare(square.Row, square.Column);
+                    var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                    if (availablePlacements.Count() == 0)
+                    {
+                        fleet = new Fleet();
+                        grid = new Grid(grid.numOfRows, grid.numOfRows);
+                        squareEliminator = new SquareEliminator(grid.numOfRows, grid.numOfRows);
+                        break;
+                    }
+
+                    int index = random.Next(availablePlacements.Count());
+                    var selectedPlacement = availablePlacements.ElementAt(index);
+                    fleet.CreateShip(selectedPlacement);
+
+                    var squaresToEliminate = squareEliminator.ToEliminate(selectedPlacement);
+                    foreach (var square in squaresToEliminate)
+                    {
+                        grid.EliminateSquare(square.Row, square.Column);
+                    }
                 }
-            }
+            } while (fleet.Ships.Count() != shipLengths.Count());
 
             return fleet;
         }

@@ -42,6 +42,11 @@ namespace Vsite.Battleship.Model
             }
         }
 
+        public void ChangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column].ChangeState(newState);
+        }
+
         public void EliminateSquare(int row, int column)
         {
             if (row < 0 || column < 0 || row >= numOfRows || column >= numOfColumns)
