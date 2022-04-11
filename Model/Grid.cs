@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
+    using static Vsite.Battleship.Model.Square;
     using SquareSequence = IEnumerable<Square>;
     public class Grid
     {
@@ -26,6 +27,11 @@ namespace Vsite.Battleship.Model
         public void EliminateSquare(int row, int column)
         {
             squares[row, column] = null;
+        }
+
+        public void ChangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column].ChangeState(newState);
         }
 
         public IEnumerable<Square> Squares
