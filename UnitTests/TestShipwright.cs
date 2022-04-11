@@ -17,8 +17,6 @@ namespace Vsite.Battleship
             var fleet = shipwright.CreateFleet();
             Assert.AreEqual(10, fleet.Ships.Count());
             Assert.AreEqual(1, fleet.Ships.Count(s => s.Squares.Count() == 5));
-            //DZ testovi za 2 broda duljine 4 itd..
-            //Dz
         }
     }
 }
