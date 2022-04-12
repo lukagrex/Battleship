@@ -18,9 +18,14 @@ namespace Vsite.Battleship.Model
             }
 
             var hitSquare = Squares.First(s => s.Row == row && s.Column == column);
+            if (hitSquare.SquareState == SquareState.Sunken)
+            {
+                return HitResult.Sunken;
+            }
+
             hitSquare.ChangeState(SquareState.Hit);
 
-            int squaresHit = Squares.Count(s => s.SquareState == SquareState.Hit || s.SquareState == SquareState.Sunken);
+            int squaresHit = Squares.Count(s => s.SquareState == SquareState.Hit);
             if (squaresHit == Squares.Count())
             {
                 foreach (var square in Squares)
