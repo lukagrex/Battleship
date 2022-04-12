@@ -88,7 +88,7 @@ namespace Vsite.Battleship
         }
 
         [TestMethod]
-        public void ShootReturnsHitWhenHittinhSameSquare()
+        public void ShootReturnsHitWhenHittingSameSquareWhichIsAlreadyHit()
         {
             var ship = new Ship(new List<Square>
             {
@@ -104,7 +104,7 @@ namespace Vsite.Battleship
         }
 
         [TestMethod]
-        public void ShootReturnsSunkenHitSunkenShip()
+        public void ShootReturnsSunkenWhenHittingAgainSunkenShip()
         {
             var ship = new Ship(new List<Square>
             {
@@ -121,6 +121,26 @@ namespace Vsite.Battleship
             Assert.AreEqual(HitResult.Sunken, hitResult);
             hitResult = ship.Shoot(1, 1);
             Assert.AreEqual(HitResult.Sunken, hitResult);
+        }
+
+        [TestMethod]
+        public void ShootReturnsMissedWhenMissingSunkenShip()
+        {
+            var ship = new Ship(new List<Square>
+            {
+                new Square(1, 1),
+                new Square(1, 2),
+                new Square(1, 3)
+            });
+
+            var hitResult = ship.Shoot(1, 1);
+            Assert.AreEqual(HitResult.Hit, hitResult);
+            hitResult = ship.Shoot(1, 2);
+            Assert.AreEqual(HitResult.Hit, hitResult);
+            hitResult = ship.Shoot(1, 3);
+            Assert.AreEqual(HitResult.Sunken, hitResult);
+            hitResult = ship.Shoot(3, 1);
+            Assert.AreEqual(HitResult.Missed, hitResult);
         }
     }
 }
