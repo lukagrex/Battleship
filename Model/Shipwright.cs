@@ -24,26 +24,30 @@ namespace Vsite.Battleship.Model
         {
             var fleet = new Fleet();
 
-            foreach (var shipLength in shipLengths)
+            do
             {
-
-                var availablePlacements = grid.GetAvailablePlacements(shipLength);
-                if (availablePlacements.Count() == 0)
+                foreach (var shipLength in shipLengths)
                 {
-                    //TODO dodaj petlju oko ovog koda i istraži jel ok
-                    break;
-                }
+                    var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                    if (!availablePlacements.Any())
+                    {
+                        fleet = new Fleet();
+                        grid = new Grid(grid.Rows, grid.Columns);
+                        break;
+                    }
 
-                int index = random.Next(availablePlacements.Count());
-                var selectedPlacement = availablePlacements.ElementAt(index);
-                fleet.CreateShip(selectedPlacement);
-                var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
-                foreach (var square in toEliminate)
-                {
-                    grid.EliminateSquare(square.Row, square.Column);
-                }
+                    int index = random.Next(availablePlacements.Count());
+                    var selectedPlacement = availablePlacements.ElementAt(index);
+                    fleet.CreateShip(selectedPlacement);
+                    var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
+                    foreach (var square in toEliminate)
+                    {
+                        grid.EliminateSquare(square.Row, square.Column);
+                    }
 
-            }
+                }
+            } while (fleet.Ships.Count() != shipLengths.Count());
+
             return fleet;
         }
 
