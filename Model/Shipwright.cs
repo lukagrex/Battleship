@@ -22,10 +22,23 @@ namespace Vsite.Battleship.Model
 
         public Fleet CreateFleet()
         {
+            for (int i = 0; i < 3; ++i)
+            {
+                var fleet = BuildFleet();
+                if (fleet != null)
+                    return fleet;
+            }
+            throw new InvalidOperationException();
+        }
+
+        private Fleet BuildFleet()
+        {
             Fleet fleet = new Fleet();
             foreach (int shipLength in shipLengths)
             {
                 var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                if (availablePlacements.Count() == 0)
+                    return null;
                 int index = random.Next(availablePlacements.Count());
                 var selectedPlacement = availablePlacements.ElementAt(index);
                 fleet.CreateShip(selectedPlacement);
