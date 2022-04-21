@@ -12,13 +12,13 @@ namespace Vsite.Battleship
         public void ToEliminateReturns18SquaresForShipInSquares4x3_4x6()
         {
             var eliminator = new SquareEliminator(10, 10);
-            var toEliminate = eliminator.ToEliminate(new List<Square>
+            var toEliminate = eliminator.ToEliminate(new List<Square> 
             {new Square(4, 3), new Square(4, 4), new Square(4, 5), new Square(4, 6)});
             Assert.AreEqual(18, toEliminate.Count());
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 2));
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 2));
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 5));
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 5));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(3, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(5, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(3, 7));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(5, 7));
 
             //for (int i = 3; i <= 5; i++)
             //{
@@ -35,10 +35,10 @@ namespace Vsite.Battleship
             var eliminator = new SquareEliminator(10, 10);
             var toEliminate = eliminator.ToEliminate(new List<Square> {new Square(0, 3), new Square(0, 4)});
             Assert.AreEqual(8, toEliminate.Count());
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(3, 2));
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(5, 2));
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(3, 7));
-            CollectionAssert.Contains(toEliminate.ToArray(), new Square(5, 7));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 2));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(0, 5));
+            CollectionAssert.Contains(toEliminate.ToArray(), new Square(1, 5));
         }
 
         [TestMethod]
@@ -56,12 +56,12 @@ namespace Vsite.Battleship
 
         // DZ a)
         [TestMethod]
-        public void ToEliminateReturns8SquaresForShipInSquares5x0_5x1()
+        public void ToEliminateReturns9SquaresForShipInSquares5x0_5x1()
         {
             var eliminator = new SquareEliminator(10, 10);
             var toEliminate = eliminator.ToEliminate(new List<Square>
             {new Square(5, 0), new Square(5, 1)});
-            Assert.AreEqual(8, toEliminate.Count());
+            Assert.AreEqual(9, toEliminate.Count());
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(4, 0));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(4, 2));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(6, 0));
@@ -83,7 +83,7 @@ namespace Vsite.Battleship
 
         // DZ b)
         [TestMethod]
-        public void ToEliminateReturns8SquaresForShipInSquares0x0_0x1()
+        public void ToEliminateReturns6SquaresForShipInSquares0x0_0x1()
         {
             var eliminator = new SquareEliminator(10, 10);
             var toEliminate = eliminator.ToEliminate(new List<Square> {new Square(0, 0), new Square(0, 1)});
@@ -93,12 +93,12 @@ namespace Vsite.Battleship
         }
 
         [TestMethod]
-        public void ToEliminateReturns8SquaresForShipInSquares8x9_9x9()
+        public void ToEliminateReturns6SquaresForShipInSquares8x9_9x9()
         {
             var eliminator = new SquareEliminator(10, 10);
             var toEliminate = eliminator.ToEliminate(new List<Square>
             {new Square(8, 9), new Square(9, 9)});
-            Assert.AreEqual(8, toEliminate.Count());
+            Assert.AreEqual(6, toEliminate.Count());
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(7, 8));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(7, 9));
             CollectionAssert.Contains(toEliminate.ToArray(), new Square(9, 8));
@@ -146,50 +146,6 @@ namespace Vsite.Battleship
         }
 
         [TestMethod]
-        public void ToEliminateReturn8SquaresShipInSquares0x3_0x4()
-        {
-            var eliminator = new SquareEliminator(10, 10);
-
-            var toEliminate = eliminator.ToEliminate(new List<Square>
-            {
-                new Square(0, 3),
-                new Square(0, 4)
-            });
-
-            Assert.AreEqual(8, toEliminate.Count());
-
-            for (int i = 0; i <= 1; i++)
-            {
-                for (int j = 2; j <= 5; j++)
-                {
-                    Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ToEliminateReturn8SquaresShipInSquares3x9_4x9()
-        {
-            var eliminator = new SquareEliminator(10, 10);
-
-            var toEliminate = eliminator.ToEliminate(new List<Square>
-            {
-                new Square(3, 9),
-                new Square(4, 9)
-            });
-
-            Assert.AreEqual(8, toEliminate.Count());
-
-            for (int i = 2; i <= 5; i++)
-            {
-                for (int j = 8; j <= 9; j++)
-                {
-                    Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
-                }
-            }
-        }
-
-        [TestMethod]
         public void ToEliminateReturn12SquaresShipInSquares7x5_9x5()
         {
             var eliminator = new SquareEliminator(10, 10);
@@ -213,29 +169,6 @@ namespace Vsite.Battleship
         }
 
         [TestMethod]
-        public void ToEliminateReturn9SquaresShipInSquares5x0_5x1()
-        {
-            var eliminator = new SquareEliminator(10, 10);
-
-            var toEliminate = eliminator.ToEliminate(new List<Square>
-            {
-                new Square(5, 0),
-                new Square(5, 1)
-            });
-
-            Assert.AreEqual(9, toEliminate.Count());
-
-            for (int i = 4; i <= 6; i++)
-            {
-                for (int j = 0; j <= 2; j++)
-                {
-                    Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
-                }
-            }
-        }
-
-
-        [TestMethod]
         public void ToEliminateReturn6SquaresShipInSquares0x0_0x1()
         {
             var eliminator = new SquareEliminator(10, 10);
@@ -251,28 +184,6 @@ namespace Vsite.Battleship
             for (int i = 0; i <= 1; i++)
             {
                 for (int j = 0; j <= 2; j++)
-                {
-                    Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ToEliminateReturn6SquaresShipInSquares8x9_9x9()
-        {
-            var eliminator = new SquareEliminator(10, 10);
-
-            var toEliminate = eliminator.ToEliminate(new List<Square>
-            {
-                new Square(8, 9),
-                new Square(9, 9)
-            });
-
-            Assert.AreEqual(6, toEliminate.Count());
-
-            for (int i = 7; i <= 9; i++)
-            {
-                for (int j = 8; j <= 9; j++)
                 {
                     Assert.IsTrue(toEliminate.Contains(new Square(i, j)));
                 }

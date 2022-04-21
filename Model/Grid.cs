@@ -33,6 +33,14 @@ namespace Vsite.Battleship.Model
            squares[row, column] = null;
         }
 
+        //
+        public void ChangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column].ChangeState(newState); 
+
+        }
+
+
         // enkapsuliramo dohvaćanje square-ova
         public IEnumerable<Square> Squares
         {
@@ -41,7 +49,8 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (j, i) => squares[j, i]));
+            return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (j, i) => squares[j, i]));
         }
 
         class LoopIndex
@@ -89,7 +98,8 @@ namespace Vsite.Battleship.Model
                     }
                     else
                     {
-                        queue.Clear();
+                        //queue.Clear();
+                        queue = new LimitedQueue<Square>(length);
                     }
                 }
             }
