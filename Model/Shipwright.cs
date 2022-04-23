@@ -31,7 +31,20 @@ namespace Model
                 }
                 int index = random.Next(availablePlacements.Count());
                 var selectedPlacements = availablePlacements.ElementAt(index);
-                fleet.CreateShip(selectedPlacements);
+                for (int i = 0; i < 3; i++)
+                {
+                    fleet.CreateShip(selectedPlacements);
+                    if (fleet.Ships.Last().Squares.SequenceEqual(selectedPlacements))
+                    {
+                        break;
+                    }
+
+                    if (i == 2)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                }
+                
                 var toEliminate =squareEliminator.ToEliminate(selectedPlacements);
                 foreach (var square in toEliminate)
                 {

@@ -11,10 +11,7 @@ namespace Model
 
     public class Grid
     {
-        public readonly int Rows;
-        public readonly int Columns;
-
-        private Square[,] squares;
+        private readonly Square[,] squares;
 
         public Grid(int rows, int columns)
         {
@@ -30,25 +27,31 @@ namespace Model
             }
         }
 
+        public readonly int Rows;
+        public readonly int Columns;
+
         public void EliminateSquare(int row, int column)
         {
             squares[row, column] = null;
         }
 
-        public void ChangeSquareState(int row, int column, SquareState newState)
+        public SquareSequence Squares
         {
-            squares[Rows, column].ChangeState(newState);
-        }
-
-        public IEnumerable<Square> Squares
-        {
-            get { return squares.Cast<Square>().Where(s => s != null); }
+            get
+            {
+                return squares
+                    .Cast<Square>()
+                    .Where(s => s != null);
+            }
         }
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => 
-                squares[i, j]).Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i])).Where(pl => pl.Count() != 0);
+                squares[i, j])
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => 
+                    squares[j, i]))
+                .Where(pl => pl.Count() != 0);
         }
 
         private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
