@@ -13,6 +13,27 @@ namespace Vsite.Battleship.Model
             this.Squares = squares;   
         }
 
+        public HitResult Shoot(int row, int column)
+        {
+            if (!Squares.Contains(new Square(row, column)))
+                return HitResult.Missed;
+            var hitSquare = Squares.First(s => s.Row == row && s.Column == column);
+            if (hitSquare.SquareState == SquareState.Sunken)
+                return HitResult.Sunken;
+            hitSquare.ChangeState(SquareState.Hit);
+            int squaresHit = Squares.Count(s => s.SquareState == SquareState.Hit);
+            if (squaresHit == Squares.Count())
+            {
+                foreach(var square in Squares)
+                {
+                    square.ChangeState(SquareState.Sunken);
+                }
+                return HitResult.Sunken;
+            }
+            return HitResult.Hit;
+
+        }
+
         public readonly IEnumerable<Square> Squares;
     }
 }

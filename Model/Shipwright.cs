@@ -22,23 +22,28 @@ namespace Vsite.Battleship.Model
 
         public Fleet CreateFleet()
         {
-            //for(int i = 0;) DZ, vanjska petlja, 3x
-            Fleet fleet = new Fleet();
-            foreach (int shipLength in shipLengths)
+            for(int i = 0; i < 3; ++i)
             {
-                var availablePlacements = grid.GetAvailablePlacements(shipLength);
-                //if (availablePlacements.Count() = 0)
-                //    break;
-                int index = random.Next(availablePlacements.Count());
-                var selectedPlacement = availablePlacements.ElementAt(index);
-                fleet.CreateShip(selectedPlacement);
-                var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
-                foreach (var square in toEliminate)
+                Fleet fleet = new Fleet();
+                foreach (int shipLength in shipLengths)
                 {
-                    grid.EliminateSquare(square.Row, square.Column);
+                    var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                    if (availablePlacements.Count() == 0)
+                    {
+                        break;
+                    }
+                    int index = random.Next(availablePlacements.Count());
+                    var selectedPlacement = availablePlacements.ElementAt(index);
+                    fleet.CreateShip(selectedPlacement);
+                    var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
+                    foreach (var square in toEliminate)
+                    {
+                        grid.EliminateSquare(square.Row, square.Column);
+                    }
                 }
+                return fleet;
             }
-            return fleet;
+            return null;
         }
 
   
