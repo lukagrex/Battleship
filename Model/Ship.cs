@@ -15,6 +15,14 @@ namespace Vsite.Battleship.Model
 
         public HitResult Shoot(int row, int column)
         {
+            /*
+             * var found = Squares.FirstOrDefault(s => s.Row == row && s.Column == column)
+             * if (found = null)
+             *  return HitResult.Missed
+             * if (found.SquareState == Sunken)
+             *      return HitResult.Sunken
+             * if (found.SquareState == Initial)
+             * */
             if (!Squares.Contains(new Square(row, column)))
                 return HitResult.Missed;
             var hitSquare = Squares.First(s => s.Row == row && s.Column == column);
