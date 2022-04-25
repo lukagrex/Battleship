@@ -82,5 +82,16 @@ namespace Vsite.Battleship
 
             Assert.AreEqual(ShootingTactics.Random, gunnary.ShootingTactics);
         }
+
+        [TestMethod]
+        public void HitResultSunkenGunnaryStateIsRandomIfPreviousStateIsSourrounding()
+        {
+            var gunnary = new Gunnery(10, 10, new List<int>() { 5, 2 });
+
+            gunnary.ProcessHitResult(HitResult.Hit);
+            gunnary.ProcessHitResult(HitResult.Sunken);
+
+            Assert.AreEqual(ShootingTactics.Random, gunnary.ShootingTactics);
+        }
     }
 }
