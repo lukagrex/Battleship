@@ -8,7 +8,7 @@ namespace Vsite.Battleship.Model
 {
     public class Ship
     {
-        // za dz metoda CreateShip
+        // za DZ metoda CreateShip
         
         public Ship(IEnumerable<Square> squares)
         {
@@ -17,6 +17,7 @@ namespace Vsite.Battleship.Model
 
         public HitResult Shoot(int row, int column)
         {
+            // tu možda fali var found, za DZ ispraviti
             if (Squares.Contains(new Square(row, column)))
                 return HitResult.Missed;
             
