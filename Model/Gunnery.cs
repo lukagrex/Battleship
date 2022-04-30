@@ -12,10 +12,11 @@ namespace Vsite.Battleship.Model
     public class Gunnery
     {
         private ShootingTactics currentTactics = ShootingTactics.Random;
+        private EvidenceGrid evidenceGrid;
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            //TODO create evidenceGrid
+            evidenceGrid = new EvidenceGrid(rows, columns);
         }
 
         public void ProcessHitResult(HitResult hitResult)
