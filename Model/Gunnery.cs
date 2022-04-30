@@ -27,7 +27,21 @@ namespace Vsite.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            //DZ
+            if (currentTactics.Equals(ShootingTactics.Random) && hitResult.Equals(HitResult.Hit))
+            {
+                currentTactics = ShootingTactics.Surrounding;
+                return;
+            }
+            if (currentTactics.Equals(ShootingTactics.Surrounding) && hitResult.Equals(HitResult.Hit))
+            {
+                currentTactics = ShootingTactics.Inline;
+                return;
+            }
+            if (hitResult.Equals(HitResult.Sunken))
+            {
+                currentTactics = ShootingTactics.Random;
+                return;
+            }
         }
 
         private Grid grid;
