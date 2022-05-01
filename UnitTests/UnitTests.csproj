@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="TestFleet.cs" />
     <Compile Include="TestGrid.cs" />
+    <Compile Include="TestGunnery.cs" />
     <Compile Include="TestLimitedQueue.cs" />
     <Compile Include="TestShip.cs" />
     <Compile Include="TestShipwright.cs" />

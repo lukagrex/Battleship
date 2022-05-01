@@ -20,7 +20,6 @@ namespace Model
 
         public Fleet CreateFleet()
         {
-            //TODO napraviti petlju od 3 prolaska, nakon toga exception (kada ne može 9 brodova izgraditi)
             var fleet = new Fleet();
             foreach (var shipLength in shipLengths)
             {
