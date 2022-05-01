@@ -68,5 +68,33 @@ namespace Vsite.Battleship
             result = ship.Shoot(1, 3);
             Assert.AreEqual(HitResult.Sunken, result);
         }
+
+        [TestMethod]
+        public void ShootReturnsSunkenForShipConsistingOfSingleSquareIfItIsHit()
+        {
+            var ship = new Ship(new List<Square> { new Square(1, 2) });
+            var result = ship.Shoot(1, 2);
+            Assert.AreEqual(HitResult.Sunken, result);
+        }
+
+        [TestMethod]
+        public void ShootReturnsMissedIfTargetSquareIsNotInShipThatHasAlredyBeenHit()
+        {
+            var ship = new Ship(new List<Square> { new Square(1, 1), new Square(1, 2), new Square(1, 3) });
+            var result = ship.Shoot(1, 2);
+            result = ship.Shoot(1, 5);
+            Assert.AreEqual(HitResult.Missed, result);
+        }
+
+        [TestMethod]
+        public void ShootReturnsMissedIfTargetSquareIsNotInShipThatHasAlredyBeenSunken()
+        {
+            var ship = new Ship(new List<Square> { new Square(1, 1), new Square(1, 2), new Square(1, 3) });
+            ship.Shoot(1, 2);
+            ship.Shoot(1, 3);
+            ship.Shoot(1, 1);
+            var result = ship.Shoot(1, 5);
+            Assert.AreEqual(HitResult.Missed, result);
+        }
     }
 }
