@@ -15,18 +15,18 @@ namespace Vsite.Battleship.Model
         }
         public Square NextTarget()
         {
-            if (grid.Squares.Contains(new Square(this.firstSquareHit.Row - 1, this.firstSquareHit.Column)))
+            if (grid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row - 1, this.firstSquareHit.Column)))
             {
                 return new Square(this.firstSquareHit.Row - 1, this.firstSquareHit.Column);
-            }else if (grid.Squares.Contains(new Square(this.firstSquareHit.Row + 1, this.firstSquareHit.Column)))
+            }else if (grid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row + 1, this.firstSquareHit.Column)))
             {
                 return new Square(this.firstSquareHit.Row + 1, this.firstSquareHit.Column);
             }
-            else if (grid.Squares.Contains(new Square(this.firstSquareHit.Row, this.firstSquareHit.Column - 1)))
+            else if (grid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row, this.firstSquareHit.Column - 1)))
             {
                 return new Square(this.firstSquareHit.Row, this.firstSquareHit.Column - 1);
             }
-            else if (grid.Squares.Contains(new Square(this.firstSquareHit.Row, this.firstSquareHit.Column + 1)))
+            else if (grid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row, this.firstSquareHit.Column + 1)))
             {
                 return new Square(this.firstSquareHit.Row, this.firstSquareHit.Column + 1);
             }
