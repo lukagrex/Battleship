@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Vsite.Battleship.Model;
 using Vsite.BattleShip.Model;
 
 namespace Vsite.BattleShip.UnitTests
@@ -19,7 +20,7 @@ namespace Vsite.BattleShip.UnitTests
         public void ShootingTacticsRemainsRandomIfHitResultIsMissed()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 5, 3 });
-            gunnery.ProcessHitResults(HitResult.Missed);
+            gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
         }
 
@@ -27,7 +28,7 @@ namespace Vsite.BattleShip.UnitTests
         public void ShootingTacticsChangesToSurroundingAfterFirstSquareIsHit()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 5, 3 });
-            gunnery.ProcessHitResults(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         }
 
@@ -35,8 +36,8 @@ namespace Vsite.BattleShip.UnitTests
         public void ShootingTacticsRemainsSurroundingAfterSecondSquareIsMissed()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 5, 3 });
-            gunnery.ProcessHitResults(HitResult.Hit);
-            gunnery.ProcessHitResults(HitResult.Missed);
+            gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         }
 
@@ -44,8 +45,8 @@ namespace Vsite.BattleShip.UnitTests
         public void ShootingTacticsChangesFromSurroundingToInlineAfterSecondSquareIsHit()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 5, 3 });
-            gunnery.ProcessHitResults(HitResult.Hit);
-            gunnery.ProcessHitResults(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
         }
 
@@ -53,9 +54,9 @@ namespace Vsite.BattleShip.UnitTests
         public void ShootingTacticsRemainsInlineAfterThirdSquareIsMissed()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 5, 3 });
-            gunnery.ProcessHitResults(HitResult.Hit);
-            gunnery.ProcessHitResults(HitResult.Hit);
-            gunnery.ProcessHitResults(HitResult.Missed);
+            gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
         }
 
@@ -63,8 +64,8 @@ namespace Vsite.BattleShip.UnitTests
         public void ShootingTacticsChangesToRandomAfterIsSunken()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 5, 2 });
-            gunnery.ProcessHitResults(HitResult.Hit);
-            gunnery.ProcessHitResults(HitResult.Sunken);
+            gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.ProcessHitResult(HitResult.Sunken);
             Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
         }
     }

@@ -16,6 +16,7 @@ namespace Vsite.Battleship.Model
     {
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
+        private Square lastTarget;
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
@@ -25,7 +26,8 @@ namespace Vsite.Battleship.Model
 
         public Square NextTarget()
         {
-            return targetSelector.NextTarget();
+            lastTarget = targetSelector.NextTarget();
+            return lastTarget;
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -35,10 +37,12 @@ namespace Vsite.Battleship.Model
                 case HitResult.Missed:
                     return;
                 case HitResult.Hit:
+                    squaresHit.Add(lastTarget);
                     if (currentTactics == ShootingTactics.Inline)
                         return;
                     break;
                 case HitResult.Sunken:
+                    squaresHit.Clear();
                     break;
                 default:
                     Debug.Assert(false);
