@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,25 +18,35 @@ namespace Vsite.Battleship.Model
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
+            monitoringGrid = new Grid(rows, columns);
+            ChangeToRandomTactics();
+        }
 
+        private Grid monitoringGrid;
+        private List<Square> squaresHit = new List<Square>();
+
+        public Square NextTarget()
+        {
+            return targetSelector.NextTarget();
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
-
-            if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Random)
+            switch (hitResult)
             {
-                currentTactics = ShootingTactics.Surrounding;
+                case HitResult.Missed:
+                    return;
+                case HitResult.Hit:
+                    if (currentTactics == ShootingTactics.Inline)
+                        return;
+                    break;
+                case HitResult.Sunken:
+                    break;
+                default:
+                    Debug.Assert(false);
+                    return;
             }
-            else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
-            {
-                currentTactics = ShootingTactics.Inline;
-            } 
-            else if (hitResult == HitResult.Sunken)
-            {
-                currentTactics = ShootingTactics.Random;
-            }
-
+            ChangeCurrentTactics(hitResult);
         }
 
         private ShootingTactics currentTactics = ShootingTactics.Random;
@@ -43,5 +54,48 @@ namespace Vsite.Battleship.Model
         {
             get { return currentTactics; }
         }
+
+        private void ChangeCurrentTactics(HitResult hitResult)
+        {
+            if (hitResult == HitResult.Sunken)
+            {
+                ChangeToRandomTactics();
+            }
+            else
+            {
+                switch (currentTactics)
+                {
+                    case ShootingTactics.Random:
+                        ChangeToSurroundingTactics();
+                        break;
+                    case ShootingTactics.Surrounding:
+                        ChangeToInlineTactics();
+                        break;
+                    default:
+                        Debug.Assert(false);
+                        break;
+                }
+            }
+        }
+
+        private void ChangeToSurroundingTactics()
+        {
+            currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
+        }
+
+        private void ChangeToInlineTactics()
+        {
+            currentTactics = ShootingTactics.Inline;
+            targetSelector = new InlineShooting(monitoringGrid, squaresHit);
+        }
+
+        private void ChangeToRandomTactics()
+        {
+            currentTactics = ShootingTactics.Random;
+            targetSelector = new RandomShooting(monitoringGrid);
+        }
+
+        private INextTarget targetSelector;
     }
 }
