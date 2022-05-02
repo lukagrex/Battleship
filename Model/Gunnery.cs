@@ -32,25 +32,57 @@ namespace Vsite.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
+
             if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Random)
             {
                 squaresHit.Add(lastTarget);
+                RecordOnMonitoringGrid(hitResult);
                 currentTactics = ShootingTactics.Surrounding;
                 targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
             }
             else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
             {
                 squaresHit.Add(lastTarget);
+                RecordOnMonitoringGrid(hitResult);
                 currentTactics = ShootingTactics.Inline;
                 targetSelector = new InlineShooting(monitoringGrid, squaresHit);
             }
             else if (hitResult == HitResult.Sunken)
             {
+                RecordOnMonitoringGrid(hitResult);
                 squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
                 targetSelector = new RandomShooting(monitoringGrid);
             }
+            else if (hitResult == HitResult.Missed)
+            {
+                RecordOnMonitoringGrid(hitResult);
+            }
         }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
+                case HitResult.Hit:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
+                case HitResult.Sunken:
+                    foreach (var s in squaresHit)
+                    {
+                        monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
+                    }
+
+                    //TODO: Mark surrounding squares as Missed
+                    break;
+
+
+            }
+        }
+
         private ShootingTactics currentTactics = ShootingTactics.Random;
         public ShootingTactics ShootingTactics
         {
