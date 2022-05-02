@@ -22,7 +22,7 @@ namespace Vsite.Battleship
             Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
         }
        [TestMethod]
-        public void ShootingTacticsChangesToSurrouniAfterFirstSquareIsHit()
+        public void ShootingTacticsChangesToSurroundingAfterFirstSquareIsHit()
         {
             var g = new Gunnery(10, 10, new List<int> { 5, 3 });
             g.ProcessHitResult(HitResult.Hit);
