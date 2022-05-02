@@ -42,6 +42,7 @@ namespace Vsite.Battleship.Model
             if (currentTactics.Equals(ShootingTactics.Random) && hitResult.Equals(HitResult.Hit))
             {
                 squaresHit.Add(lastTarget);
+                RecordOnMonitoringGrid(hitResult);
                 currentTactics = ShootingTactics.Surrounding;
                 targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
                 return;
@@ -49,16 +50,41 @@ namespace Vsite.Battleship.Model
             if (currentTactics.Equals(ShootingTactics.Surrounding) && hitResult.Equals(HitResult.Hit))
             {
                 squaresHit.Add(lastTarget);
+                RecordOnMonitoringGrid(hitResult);
                 currentTactics = ShootingTactics.Inline;
                 targetSelector = new InlineShooting(monitoringGrid, squaresHit);
                 return;
             }
             if (hitResult.Equals(HitResult.Sunken))
             {
+                squaresHit.Add(lastTarget);
+                RecordOnMonitoringGrid(hitResult);
                 squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
                 targetSelector = new RandomShooting(monitoringGrid);
                 return;
+            }
+        }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch(hitResult)
+            {
+                case HitResult.Missed:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
+
+                case HitResult.Hit:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
+
+                case HitResult.Sunken:
+                    foreach(var s in squaresHit)
+                    {
+                        monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
+                    }
+                    //TODO: mark surrounding squares as missed
+                    break;
             }
         }
 
