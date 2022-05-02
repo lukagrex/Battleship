@@ -8,14 +8,16 @@ namespace Vsite.Battleship.Model
 {
     public class SurroundingShooting : INextTarget
     {
-        public SurroundingShooting(Grid grid, Square firstSquareHit)
+        public SurroundingShooting(Grid grid, Square firstSquareHit, int shipLength)
         {
             this.grid = grid;
             this.firstSquareHit = firstSquareHit;
+            this.shipLength = shipLength;
         }
 
         private Grid grid;
         private readonly Square firstSquareHit;
+        private readonly int shipLength;
         public Square NextTarget()
         {
             throw new NotImplementedException();

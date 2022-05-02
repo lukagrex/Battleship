@@ -40,7 +40,7 @@ namespace Vsite.Battleship.Model
                 squaresHit.Add(lastTarget);
                 RecordOnMonitoringGrid(hitResult);
                 currentTactics = ShootingTactics.Surrounding;
-                targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
+                targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First(), shipsToShoot.First());
             }
             else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
             {
