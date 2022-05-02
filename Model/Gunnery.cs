@@ -18,8 +18,19 @@ namespace Vsite.Battleship.Model
             
         }
         public void ProcessHitResult(HitResult hitResult)
-        { 
-            // For Homework
+        {
+            if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Random)
+            {
+                currentTactics = ShootingTactics.Surrounding;
+            }
+            else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
+            {
+                currentTactics = ShootingTactics.Inline;
+            }
+            else if (hitResult == HitResult.Sunken)
+            {
+                currentTactics = ShootingTactics.Random;
+            }
         }
         private ShootingTactics currentTactics = ShootingTactics.Random;
         public ShootingTactics ShootingTactics
