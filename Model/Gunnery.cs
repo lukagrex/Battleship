@@ -20,11 +20,13 @@ namespace Vsite.Battleship.Model
         {
             monitoringGrid = new Grid(rows, columns);
             ChangeToRandomTactics();
+            shipsToShoot = new List<int>(shipLengths);
         }
 
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
         private Square lastTarget;
+        private List<int> shipsToShoot;
 
         public Square NextTarget()
         {
@@ -47,6 +49,7 @@ namespace Vsite.Battleship.Model
                     break;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
+                    shipsToShoot.Remove(squaresHit.Count);
                     RecordOnMonitoringGrid(hitResult);
                     squaresHit.Clear();
                     break;
@@ -121,7 +124,7 @@ namespace Vsite.Battleship.Model
         private void ChangeToRandomTactics()
         {
             currentTactics = ShootingTactics.Random;
-            targetSelector = new RandomShooting(monitoringGrid);
+            targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
         }
 
         private INextTarget targetSelector;
