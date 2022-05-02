@@ -31,11 +31,6 @@ namespace Vsite.Battleship.Model
             return lastTarget;
         }
 
-        public void ProcessHitResult(HitResult hitResult)
-        {
-            sw
-        }
-
         private void ChangeToSurroundingTactics()
         {
             currentTactics = ShootingTactics.Surrounding;
@@ -61,6 +56,43 @@ namespace Vsite.Battleship.Model
             get
             {
                 return currentTactics;
+            }
+        }
+
+        public void ProcessHitResult(HitResult hitResult)
+        {
+            RecordOnMonitoringGrid(hitResult);
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    RecordOnMonitoringGrid(hitResult);
+                    break;
+                case HitResult.Hit:
+                    squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
+                    break;
+            }
+        }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
+                case HitResult.Hit:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
+                case HitResult.Sunk:
+                    foreach (var s in squaresHit)
+                    {
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Sunk);
+                    }
+                    //TODO mark surrounding squares as missed
+
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
             }
         }
 
