@@ -17,11 +17,38 @@ namespace Vsite.Battleship.Model
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
+            monitoringGrid = new Grid(rows, columns);
+            ChangeToRandomtactics();
+        }
 
+        private Grid monitoringGrid;
+        private List<Square> squaresHit = new List<Square>();
+
+        public Square NextTarget()
+        {
+            return targetSelector.NextTarget();
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
+
+        }
+
+        private void ChangeToSurroundingTactics()
+        {
+            currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
+        }
+
+        private void InlineShooting()
+        {
+            currentTactics = ShootingTactics.Inline;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit);
+        }
+
+        private void ChangeToRandomtactics()
+        {
+            currentTactics = ShootingTactics.Random;
 
         }
 
@@ -35,5 +62,6 @@ namespace Vsite.Battleship.Model
             }
         }
 
+        private INextTarget targetSelector;
     }
 }
