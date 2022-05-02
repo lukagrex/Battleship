@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Vsite.BattleShip.Model;
 
-namespace Vsite.BattleShip.Model
+namespace Vsite.Battleship.Model
 {
     public enum ShootingTactics
     {
@@ -9,58 +11,89 @@ namespace Vsite.BattleShip.Model
         Surrounding,
         Inline
     }
+
     public class Gunnery
     {
-        private Grid enemyGrid;
-        private Random random = new Random();
+        private Grid monitoringGrid;
+        private List<Square> squaresHit = new List<Square>();
 
-
-        //        private List<int> shipLengths;
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            this.enemyGrid = new Grid(rows, columns);
-            var availablePlacements = this.enemyGrid.Squares;
-
+            this.monitoringGrid = new Grid(rows, columns);
+            this.ChangeToRandomTactics();
         }
-        public void ProcessHitResults(HitResult hitResult)
+
+        public Square NextTarget()
+        {
+            return targetSelector.NextTarget();
+        }
+
+        public void ProcessHitResult(HitResult hitResult)
         {
             switch (hitResult)
             {
                 case HitResult.Missed:
-                    switch (this.currentTactics)
-                    {
-                        case ShootingTactics.Surrounding:
-                            // continue with surrounding
-                            this.currentTactics = ShootingTactics.Surrounding;
-                            break;
-
-                        case ShootingTactics.Inline:
-                            // check opposite side of the ship
-                            this.currentTactics = ShootingTactics.Inline;
-                            break;
-
-                        case ShootingTactics.Random:
-                        default:
-                            // continue with random
-                            this.currentTactics = ShootingTactics.Random;
-                            break;
-                    }
-                    break;
-
+                    return;
                 case HitResult.Hit:
-                    this.currentTactics = this.currentTactics == ShootingTactics.Random ? ShootingTactics.Surrounding : ShootingTactics.Inline;
+                    if (currentTactics == ShootingTactics.Inline)
+                        return;
                     break;
-
                 case HitResult.Sunken:
-                    // continue with random
-                    this.currentTactics = ShootingTactics.Random;
                     break;
+                default:
+                    Debug.Assert(false);
+                    return;
+            }
+            ChangeCurrentTactics(hitResult);
+        }
 
-                default: // throw error
-                    break;
+        private ShootingTactics currentTactics = ShootingTactics.Random;
+        public ShootingTactics ShootingTactics
+        {
+            get { return currentTactics; }
+        }
+
+        private void ChangeCurrentTactics(HitResult hitResult)
+        {
+            if (hitResult == HitResult.Sunken)
+            {
+                ChangeToRandomTactics();
+            }
+            else
+            {
+                switch (currentTactics)
+                {
+                    case ShootingTactics.Random:
+                        ChangeToSurroundingTactics();
+                        break;
+                    case ShootingTactics.Surrounding:
+                        ChangeToInlineTactics();
+                        break;
+                    default:
+                        Debug.Assert(false);
+                        break;
+                }
             }
         }
-        private ShootingTactics currentTactics = ShootingTactics.Random;
-        public ShootingTactics ShootingTactics => currentTactics;
+
+        private void ChangeToSurroundingTactics()
+        {
+            currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
+        }
+
+        private void ChangeToInlineTactics()
+        {
+            currentTactics = ShootingTactics.Inline;
+            targetSelector = new InlineShooting(monitoringGrid, squaresHit);
+        }
+
+        private void ChangeToRandomTactics()
+        {
+            currentTactics = ShootingTactics.Random;
+            targetSelector = new RandomShooting(monitoringGrid);
+        }
+
+        private INextTarget targetSelector;
     }
 }
