@@ -26,6 +26,7 @@ namespace Vsite.Battleship.Model
 
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
+        private Square lastTarget;
 
         public Square NextTarget()
         {
