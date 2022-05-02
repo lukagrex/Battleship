@@ -35,9 +35,11 @@ namespace Vsite.Battleship.Model
             switch (hitResult)
             {
                 case HitResult.Missed:
+                    RecordOnMonitoringGrid(hitResult);
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -54,6 +56,8 @@ namespace Vsite.Battleship.Model
                     }
                     return;
                 case HitResult.Sunken:
+                    squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
                     squaresHit.Clear();
                     ChangeToRandomTactics();
                     return;
@@ -62,6 +66,29 @@ namespace Vsite.Battleship.Model
                     break;
             }
 
+        }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    return;
+                case HitResult.Hit:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    return;
+                case HitResult.Sunken:
+                    foreach (var square in squaresHit)
+                    {
+                        monitoringGrid.ChangeSquareState(square.Row, square.Column, SquareState.Sunken);
+                    }
+                    //TODO Mark surrounding squares as Missed.
+                    return;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
 
         private void ChangeToRandomTactics()
