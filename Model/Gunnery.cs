@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Vsite.Battleship.Model
 {
@@ -12,11 +13,19 @@ namespace Vsite.Battleship.Model
     public class Gunnery
     {
         private ShootingTactics currentTactics = ShootingTactics.Random;
-        private EvidenceGrid evidenceGrid;
+        private Grid monitoringGrid;
+        private INextTarget targetSelector;
+        private List<Square> squaresHit = new List<Square>();
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            evidenceGrid = new EvidenceGrid(rows, columns);
+            monitoringGrid = new Grid(rows, columns);
+            ChangeToRandomTactics();
+        }
+
+        public Square NextTarget()
+        {
+            return targetSelector.NextTarget();
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -29,20 +38,44 @@ namespace Vsite.Battleship.Model
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
-                            currentTactics = ShootingTactics.Surrounding;
+                            ChangeToSurroundingTactics();
                             return;
                         case ShootingTactics.Surrounding:
-                            currentTactics = ShootingTactics.Inline;
+                            ChangeToInlineTactics();
                             return;
                         case ShootingTactics.Inline:
                             return;
+                        default:
+                            Debug.Assert(false);
+                            break;
                     }
                     return;
                 case HitResult.Sunken:
-                    currentTactics = ShootingTactics.Random;
+                    ChangeToRandomTactics();
                     return;
+                default:
+                    Debug.Assert(false);
+                    break;
             }
 
+        }
+
+        private void ChangeToRandomTactics()
+        {
+            currentTactics = ShootingTactics.Random;
+            targetSelector = new RandomShooting(monitoringGrid);
+        }
+
+        private void ChangeToSurroundingTactics()
+        {
+            currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit[0]);
+        }
+
+        private void ChangeToInlineTactics()
+        {
+            currentTactics = ShootingTactics.Inline;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit);
         }
 
         public ShootingTactics ShootingTactics => currentTactics;
