@@ -22,10 +22,12 @@ namespace Vsite.Battleship.Model
 
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
+        private Square lastTarget;
 
         public Square NextTarget()
         {
-            return targetSelector.NextTarget();
+            lastTarget = targetSelector.NextTarget();
+            return lastTarget;
         }
 
         public void ProcessHitResult(HitResult hitResult)
