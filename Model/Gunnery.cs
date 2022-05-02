@@ -32,30 +32,59 @@ namespace Vsite.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
+
             switch (hitResult)
             {
                 case HitResult.Missed:
+                    RecordOnMonitoringGrid(hitResult);
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
+
                     if (currentTactics == ShootingTactics.Inline)
                         return;
                     break;
                 case HitResult.Sunken:
+                    squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
                     squaresHit.Clear();
                     break;
+
                 default:
                     Debug.Assert(false);
                     return;
             }
-            ChangeCurrentTactics(hitResult);
+
+            this.ChangeCurrentTactics(hitResult);
+        }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    this.monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
+
+                case HitResult.Hit:
+                    this.monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
+
+                case HitResult.Sunken:
+                    foreach (var square in this.squaresHit)
+                    {
+                        this.monitoringGrid.ChangeSquareState(square.Row, square.Column, SquareState.Sunken);
+                    }
+
+                    // TODO Eliminate squares around ship as Missed
+
+                    break;
+            }
         }
 
         private ShootingTactics currentTactics = ShootingTactics.Random;
-        public ShootingTactics ShootingTactics
-        {
-            get { return currentTactics; }
-        }
+        public ShootingTactics ShootingTactics => currentTactics;
 
         private void ChangeCurrentTactics(HitResult hitResult)
         {
