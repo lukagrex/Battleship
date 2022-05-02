@@ -6,11 +6,13 @@ namespace Vsite.Battleship.Model
     {
         private Grid grid;
         private readonly Square firstSquareHit;
+        private int shipLength;
 
-        public SurroundingShooting(Grid grid, Square firstSquareHit)
+        public SurroundingShooting(Grid grid, Square firstSquareHit, int shipLength)
         {
             this.grid = grid;
             this.firstSquareHit = firstSquareHit;
+            this.shipLength = shipLength;
         }
         public Square NextTarget()
         {
