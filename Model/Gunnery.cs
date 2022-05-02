@@ -17,9 +17,17 @@ namespace Vsite.Battleship.Model
     public class Gunnery
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
-        { 
+        {
+            monitoringGrid = new Grid(rows, columns);
+            ChangeToRandomTactics();
         }
 
+        private Grid monitoringGrid;
+        private List<Square> squaresHit = new List<Square>();
+        public Square NextTarget()
+        {
+            return targetSelector.NextTarget();
+        }
         public void ProcessHitResult(HitResult hitResult)
         {
             switch (hitResult)
@@ -71,16 +79,21 @@ namespace Vsite.Battleship.Model
         private void ChangeToSurroundingTactics()
         {
             currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
         }
 
         private void ChangeToInlineTactics()
         {
             currentTactics = ShootingTactics.Inline;
+            targetSelector = new InlineShooting(monitoringGrid, squaresHit);
         }
 
         private void ChangeToRandomTactics()
         {
             currentTactics = ShootingTactics.Random;
+            targetSelector = new RandomShooting(monitoringGrid);
         }
+
+        private INextTarget targetSelector;
     }
 }
