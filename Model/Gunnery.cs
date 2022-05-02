@@ -19,12 +19,14 @@ namespace Vsite.Battleship.Model
         {
             monitoringGrid = new Grid(rows, columns);
             currentTactics = ShootingTactics.Random;
-            targetSelector = new RandomShooting(monitoringGrid);
+            targetSelector = new RandomShooting(monitoringGrid, shipsToShoot.First());
+            shipsToShoot = new List<int>(shipLengths);
         }
 
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
-        private Square lastTarget;
+        private Square lastTarget = new Square(0, 0);
+        private List<int> shipsToShoot;
 
         public ShootingTactics ShootingTactics
         {
@@ -58,10 +60,11 @@ namespace Vsite.Battleship.Model
             if (hitResult.Equals(HitResult.Sunken))
             {
                 squaresHit.Add(lastTarget);
+                shipsToShoot.Remove(squaresHit.Count());
                 RecordOnMonitoringGrid(hitResult);
                 squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
-                targetSelector = new RandomShooting(monitoringGrid);
+                targetSelector = new RandomShooting(monitoringGrid, shipsToShoot.First());
                 return;
             }
         }
