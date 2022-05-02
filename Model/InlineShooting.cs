@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Vsite.BattleShip.Model
 {
-    internal class InlineShooting : INextTarget
+    public class InlineShooting : INextTarget
     {
         private Grid grid;
         private List<Square> squaresHit;

@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SurroundingShooting.cs" />
     <Compile Include="TestSquare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestGrid.cs" />
@@ -58,6 +59,8 @@
     <Compile Include="TestSquareEliminator.cs" />
     <Compile Include="TestShipwright.cs" />
     <Compile Include="TestGunnery.cs" />
+    <Compile Include="TestSurroundingShooting.cs" />
+    <Compile Include="TestRandomShooting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

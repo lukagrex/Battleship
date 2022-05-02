@@ -9,12 +9,12 @@ namespace Vsite.BattleShip.Model
     public class Grid
     {
         public readonly int Rows;
-        public readonly int Columns;    
+        public readonly int Columns;
 
 
         private Square[,] squares;
 
-        public Grid (int rows, int columns)
+        public Grid(int rows, int columns)
         {
             this.Rows = rows;
             this.Columns = columns;
@@ -46,7 +46,7 @@ namespace Vsite.BattleShip.Model
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns),(i, j) => squares[i,j])
+            return this.GetPlacements(length, new LoopIndex(this.Rows, this.Columns), (i, j) => squares[i, j])
                        .Concat(this.GetPlacements(length, new LoopIndex(this.Columns, this.Rows), (i, j) => squares[j, i]));
         }
 
@@ -80,7 +80,7 @@ namespace Vsite.BattleShip.Model
             }
         }
 
-        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int,int, Square> squareSelect)
+        private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             var availableSquares = new List<SquareSequence>();
             foreach (var o in loopIndex.Outer())
@@ -88,7 +88,7 @@ namespace Vsite.BattleShip.Model
                 var queue = new LimitedQueue<Square>(length);
                 foreach (var i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null)
+                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)

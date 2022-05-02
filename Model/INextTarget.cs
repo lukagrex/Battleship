@@ -1,6 +1,6 @@
 ﻿namespace Vsite.BattleShip.Model
 {
-    internal interface INextTarget
+    public interface INextTarget
     {
         Square NextTarget();
     }

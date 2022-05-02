@@ -1,18 +1,27 @@
 ﻿using System;
+using System.Linq;
 
 namespace Vsite.BattleShip.Model
 {
-    internal class RandomShooting : INextTarget
+    public class RandomShooting : INextTarget
     {
         private Grid grid;
-        public RandomShooting(Grid grid)
+        private int shipLength;
+        private Random random = new Random();
+
+        public RandomShooting(Grid grid, int shipLength)
         {
             this.grid = grid;
+            this.shipLength = shipLength;
         }
 
         public Square NextTarget()
         {
-            throw new NotImplementedException();
+            var availablePlacements = grid.GetAvailablePlacements(this.shipLength);
+            var all = availablePlacements.SelectMany(pl => pl);
+            int index = random.Next(all.Count());
+
+            return all.ElementAt(index);
         }
     }
 }
