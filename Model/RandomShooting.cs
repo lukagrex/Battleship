@@ -8,15 +8,19 @@ namespace Vsite.Battleship.Model
 {
     public class RandomShooting : INextTarget
     {
-        public RandomShooting(Grid grid)
+        public RandomShooting(Grid grid, int shipLength)
         {
             this.grid = grid;
+            this.shipLength = shipLength;
         }
 
         private Grid grid;
+        private int shipLength;
+        private Random random = new Random();
         public Square NextTarget()
         {
-            throw new NotImplementedException();
+            var availablePlacements = grid.GetAvailablePlacements(shipLength);
+            availablePlacements.SelectMany(availablePlacements);
         }
     }
 }
