@@ -35,6 +35,7 @@ namespace Vsite.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
+            RecordOnMonitoringGrid(hitResult);
             switch (hitResult)
             {
                 case HitResult.Missed:
@@ -55,6 +56,26 @@ namespace Vsite.Battleship.Model
                 case HitResult.Sunken:
                     currentTactics = ShootingTactics.Random;
                     return;
+            }
+        }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
+                case HitResult.Hit:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
+                case HitResult.Sunken:
+                    foreach (var s in squaresHit)
+                    {
+                        monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
+                    }
+                    //TODO: mark surrounding squares as missed
+                    break;
             }
         }
 
