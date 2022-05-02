@@ -77,7 +77,7 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null)
+                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
