@@ -21,6 +21,15 @@ namespace Vsite.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             evidenceGrid = new EvidenceGrid(rows, columns);
+            monitoringGrid = new Grid(rows, columns);
+        }
+
+        private Grid monitoringGrid;
+        private List<Square> squaresHit = new List<Square>();
+
+        public Square NextTarget()
+        {
+            return targetSelector.NextTarget();
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -49,5 +58,7 @@ namespace Vsite.Battleship.Model
         }
 
         public ShootingTactics ShootingTactics => currentTactics;
+
+        private INextTarget targetSelector;
     }
 }
