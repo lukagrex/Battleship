@@ -24,6 +24,7 @@ namespace Vsite.Battleship.Model
 
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
+        private Square lastTarget;
 
         public ShootingTactics ShootingTactics
         {
@@ -32,25 +33,29 @@ namespace Vsite.Battleship.Model
 
         public Square NextTarget()
         {
-            return targetSelector.NextTarget();
+            lastTarget = targetSelector.NextTarget();
+            return lastTarget;
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
             if (currentTactics.Equals(ShootingTactics.Random) && hitResult.Equals(HitResult.Hit))
             {
+                squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Surrounding;
                 targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
                 return;
             }
             if (currentTactics.Equals(ShootingTactics.Surrounding) && hitResult.Equals(HitResult.Hit))
             {
+                squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Inline;
                 targetSelector = new InlineShooting(monitoringGrid, squaresHit);
                 return;
             }
             if (hitResult.Equals(HitResult.Sunken))
             {
+                squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
                 targetSelector = new RandomShooting(monitoringGrid);
                 return;
