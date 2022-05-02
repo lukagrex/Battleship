@@ -34,16 +34,19 @@ namespace Vsite.Battleship.Model
         {
             if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Random)
             {
+                squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Surrounding;
                 targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
             }
             else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
             {
+                squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Inline;
                 targetSelector = new InlineShooting(monitoringGrid, squaresHit);
             }
             else if (hitResult == HitResult.Sunken)
             {
+                squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
                 targetSelector = new RandomShooting(monitoringGrid);
             }
