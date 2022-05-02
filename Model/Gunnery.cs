@@ -37,13 +37,17 @@ namespace Vsite.Battleship.Model
             switch (hitResult)
             {
                 case HitResult.Missed:
+                    RecordOnMonitoringGrid(hitResult);
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
                     if (currentTactics == ShootingTactics.Inline)
                         return;
                     break;
                 case HitResult.Sunken:
+                    squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
                     squaresHit.Clear();
                     break;
                 default:
@@ -51,6 +55,26 @@ namespace Vsite.Battleship.Model
                     return;
             }
             ChangeCurrentTactics(hitResult);
+        }
+
+        private void RecordOnMonitoringGrid(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
+                case HitResult.Hit:
+                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    break;
+                case HitResult.Sunken:
+                    foreach (var s in squaresHit)
+                    {
+                        monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
+                    }
+                    // TODO: mark surrounding squares as Missed
+                    break;
+            }
         }
 
         private ShootingTactics currentTactics = ShootingTactics.Random;
