@@ -83,7 +83,8 @@ namespace Vsite.Battleship.Model
 
                 foreach (var i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null)
+                    //Mijenajno
+                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
                         listFound.Enqueue(squareSelect(o, i));
 

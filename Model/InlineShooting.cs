@@ -20,6 +20,7 @@ namespace Vsite.Battleship.Model
         {
             var isHorizontal = squaresAlreadyHit.All(squares => squares.Row == squaresAlreadyHit.First().Row);
             var isVertical = squaresAlreadyHit.All(squares => squares.Column == squaresAlreadyHit.First().Column);
+
             if (isVertical)
             {
                 squaresAlreadyHit.Sort((square, square1) => square.Row - square1.Row);
