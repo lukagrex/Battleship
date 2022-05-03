@@ -32,12 +32,6 @@ namespace Vsite.Battleship.Model
             }
 
             return largestGroup.FirstOrDefault();
-
-            //if (grid.Squares.Count() == 0)
-            //    return null;
-
-            //var nextElementIndex = randGen.Next(grid.Squares.Count());
-            //return grid.Squares.ElementAtOrDefault(nextElementIndex);
         }
     }
 }
