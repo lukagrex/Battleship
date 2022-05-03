@@ -15,12 +15,13 @@ namespace Vsite.Battleship.Model
             this.shipLength = shipLength;
         }
 
-        private readonly Square firstSquareHit;
-        private Grid grid;
-        private int shipLength;
         public Square NextTarget()
         {
             throw new NotImplementedException();
         }
+
+        private readonly Square firstSquareHit;
+        private Grid grid;
+        private int shipLength;
     }
 }

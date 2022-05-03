@@ -14,9 +14,6 @@ namespace Vsite.Battleship.Model
             this.shipLength = shipLength;
         }
 
-        private Grid grid;
-        private int shipLength;
-        private Random random = new Random();
         public Square NextTarget()
         {
             var availablePlacements = grid.GetAvailablePlacements(shipLength);
@@ -24,5 +21,9 @@ namespace Vsite.Battleship.Model
             int index = random.Next(all.Count());
             return all.ElementAt(index);
         }
+
+        private Grid grid;
+        private int shipLength;
+        private Random random = new Random();
     }
 }
