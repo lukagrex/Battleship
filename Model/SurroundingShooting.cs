@@ -21,7 +21,15 @@ namespace Vsite.Battleship.Model
 
         public Square NextTarget()
         {
-            throw new NotImplementedException();
+            int r = firstSquareHit.Row;
+            int c = firstSquareHit.Column;
+            var candidates = grid.Squares.Where(s => s.SquareState == SquareState.Initial && ((s.Row == r && (s.Column == c - 1 || s.Column == c + 1)) || (s.Column == c && (s.Row == r - 1 || s.Row == r + 1))));
+
+            if (!candidates.Any())
+                return null;
+
+            return candidates.FirstOrDefault();
+
         }
     }
 }
