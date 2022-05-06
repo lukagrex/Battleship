@@ -19,13 +19,13 @@ namespace Vsite.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             monitoringGrid = new Grid(rows, columns);
-            ChangeToRandomTactics();
             shipsToShoot = new List<int>(shipLengths);
+            ChangeToRandomTactics();
         }
 
         private Grid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
-        private Square lastTarget;
+        private Square lastTarget = new Square(0, 0);
         private List<int> shipsToShoot;
 
         public Square NextTarget()
