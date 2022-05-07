@@ -65,9 +65,19 @@ namespace Vsite.Battleship.Model
                 case HitResult.Sunken:
                     foreach (var s in squaresHit)
                     {
+                        int startRow = Math.Max(s.Row - 1, 0);
+                        int endIRow = Math.Min(s.Row + 1, monitoringGrid.Rows);
+                        int startColumn = Math.Max(s.Column - 1, 0);
+                        int endColumn = Math.Min(s.Column + 1, monitoringGrid.Columns);
+                        for (int r = startRow; r <= endIRow; ++r)
+                        {
+                            for (int c = startColumn; c <= endColumn; c++)
+                            {
+                                monitoringGrid.ChangeSquareState(r, c, SquareState.Missed);
+                            }
+                        }
                         monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
                     }
-                    // TODO: mark surrounding squares as Missed
                     break;
             }
         }
