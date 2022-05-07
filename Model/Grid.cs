@@ -38,6 +38,11 @@ namespace Vsite.Battleship.Model
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
 
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column];
+        }
+
         public IEnumerable<SquareSequence> GetAvailablePlacements (int length)
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
