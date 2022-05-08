@@ -40,6 +40,7 @@ namespace Vsite.Battleship.Model
                         return;
                     break;
                 case HitResult.Sunken:
+                    squaresHit.Clear();
                     break;
                 default:
                     Debug.Assert(false);
