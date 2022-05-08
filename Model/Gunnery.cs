@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,28 +26,21 @@ namespace Vsite.Battleship.Model
         
         public void ProcessHitResult(HitResult hitResult)
         {
-            // za DZ
             switch (hitResult)
             {
                 case HitResult.Missed:
                     return;
                 case HitResult.Hit:
-                    switch (ShootingTactics)
-                    {
-                        case ShootingTactics.Random:
-                            currentTactics = ShootingTactics.Surrounding;
-                            return;
-                        case ShootingTactics.Surrounding:
-                            currentTactics = ShootingTactics.Inline;
-                            return;
-                        case ShootingTactics.Inline:
-                            return;
-                    }
-                    return;
+                    if (currentTactics == ShootingTactics.Inline)
+                        return;
+                    break;
                 case HitResult.Sunken:
-                    currentTactics = ShootingTactics.Random;
+                    break;
+                default:
+                    Debug.Assert(false);
                     return;
             }
+            ChangeCurrentTactics(hitResult);
         }
         //
         public ShootingTactics currentTactics = ShootingTactics.Random;
@@ -56,5 +50,40 @@ namespace Vsite.Battleship.Model
             get { return currentTactics; }
         }
         // that can also be written as public ShootingTactics ShootingTactics => currentTactics;
+
+        private void ChangeCurrentTactics(HitResult hitResult)
+        {
+            if (hitResult == HitResult.Sunken)
+            {
+                ChangeToRandomTactics();
+            }
+            else
+            {
+                switch (currentTactics)
+                {
+                    case ShootingTactics.Random:
+                        ChangeToSurroundingTactics();
+                        break;
+                    case ShootingTactics.Surrounding:
+                        ChangeToInlineTactics();
+                        break;
+                    default:
+                        Debug.Assert(false);
+                        break;
+                }
+            }
+        }
+        private void ChangeToSurroundingTactics()
+        {
+            currentTactics = ShootingTactics.Surrounding;
+        }
+        private void ChangeToInlineTactics()
+        {
+            currentTactics = ShootingTactics.Inline;
+        }
+        private void ChangeToRandomTactics()
+        {
+            currentTactics = ShootingTactics.Random;
+        }
     }
 }
