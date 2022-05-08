@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
-    // does not recognize evidenceGrid
-    //private EvidenceGrid evidenceGrid; 
-
     public enum ShootingTactics
     {
         Random,
@@ -21,9 +18,17 @@ namespace Vsite.Battleship.Model
         // Konstruktor Gunnery-ja
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            //evidenceGrid = new EvidenceGrid(rows, columns);
+            // monitoringGrid
+            monitoringGrid = new Grid(rows, columns);
+            shipsToShoot = new List<int>(shipLengths);
+            ChangeToRandomTactics();
         }
-        
+
+        public Square NextTarget()
+        {
+            lastTarget = targetSelector.NextTarget();
+            return lastTarget;
+        }
         public void ProcessHitResult(HitResult hitResult)
         {
             switch (hitResult)
@@ -42,8 +47,6 @@ namespace Vsite.Battleship.Model
             }
             ChangeCurrentTactics(hitResult);
         }
-        //
-        public ShootingTactics currentTactics = ShootingTactics.Random;
 
         public ShootingTactics ShootingTactics
         {
@@ -76,14 +79,25 @@ namespace Vsite.Battleship.Model
         private void ChangeToSurroundingTactics()
         {
             currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
         }
         private void ChangeToInlineTactics()
         {
             currentTactics = ShootingTactics.Inline;
+            targetSelector = new InlineShooting(monitoringGrid, squaresHit);
         }
         private void ChangeToRandomTactics()
         {
             currentTactics = ShootingTactics.Random;
+            targetSelector = new RandomShooting(monitoringGrid);
         }
+
+        private Grid monitoringGrid;
+        private List<int> shipsToShoot;
+        private Square lastTarget = new Square(0, 0);
+        private List<Square> squaresHit = new List<Square>();
+        //public or private currentTactics
+        private ShootingTactics currentTactics = ShootingTactics.Random;        
+        private INextTarget targetSelector;
     }
 }
