@@ -39,6 +39,8 @@ namespace Vsite.Battleship.Model
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
 
+        public Square GetSquare(int row, int column) => squares[row, column];
+
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             //return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
@@ -76,28 +78,20 @@ namespace Vsite.Battleship.Model
 
             foreach (int o in loopIndex.Outer())
             {
-                int squaresInSequence = 0;
+                LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(0,i) != null)
+                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
-                        //umjesto ovog pomocu Queue napraviti da se ne provjerava duplo
-                        //znaci ako je duljina jednaka prekopiraj sve elemente u kju
-                        ++squaresInSequence;
-                        if (squaresInSequence >= length)
-                        {
-                            List<Square> s = new List<Square>();
-                            for (int cc = i - length + 1; cc <= i; ++cc)
-                            {
-                                s.Add(squares[o, cc]);
-                            }
-                            result.Add(s.ToArray());
-                        }
+                        lqueue.Enqueue(squareSelect(o, i));
+                        if (lqueue.Count <= length)
+                            result.Add(lqueue.ToArray());
                     }
                     else
-                        squaresInSequence = 0;
+                    {
+                        lqueue.Clear();
+                    }
                 }
-
             }
             return result;
         }
