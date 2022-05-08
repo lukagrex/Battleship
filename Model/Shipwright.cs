@@ -26,6 +26,12 @@ namespace Vsite.Battleship.Model
             foreach (var shipLength in shipLengths)
             {
                 var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                if (availablePlacements.Count() == 0)
+                {
+                    // TODO DZ
+                    break;
+                }
+                    
                 int index = random.Next(availablePlacements.Count());
                 var selectedPlacement = availablePlacements.ElementAt(index);
                 fleet.CreateShip(selectedPlacement);
