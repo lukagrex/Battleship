@@ -104,7 +104,7 @@ namespace Vsite.Battleship.Model
         private void ChangeToSurroundingTactics()
         {
             currentTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit[0], shipsToShoot[0]);
         }
 
         private void ChangeToInlineTactics()
