@@ -38,10 +38,15 @@ namespace Vsite.Battleship.Model
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
 
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column];
+        }
+
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
-                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i])).Where(pl => pl.Count() > 0);
 
         }
 
@@ -82,18 +87,16 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (!(squareSelect(o, i) != null || squareSelect(o, i).SquareState = SquareState.Initial))
-                    {
-                        lqueue = new LimitedQueue<Square>(length);
-                    }
-                    else
+                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
                         lqueue.Enqueue(squareSelect(o, i));
                         if (lqueue.Count >= length)
                         {
-                            result.Add(lqueue);
+                            result.Add(lqueue.ToArray());
                         }
                     }
+                    else
+                        lqueue.Clear();
                 }
             }
             return result;

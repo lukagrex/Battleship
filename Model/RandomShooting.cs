@@ -17,10 +17,13 @@ namespace Vsite.Battleship.Model
         private Grid grid;
         private int shipLength;
         private Random random = new Random();
+
         public Square NextTarget()
         {
             var availablePlacements = grid.GetAvailablePlacements(shipLength);
-            availablePlacements.SelectMany(availablePlacements);
+            var all = availablePlacements.SelectMany(x => x);
+            int index = random.Next(all.Count());
+            return all.ElementAt(index);
         }
     }
 }
