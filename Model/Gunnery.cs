@@ -71,7 +71,7 @@ namespace Vsite.Battleship.Model
                     {
                         monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
                     }
-                    // TODO: mark surrounding squares as Missed
+                    // TODO: mark surrounding squares as Missed (see square eiminator
                     break;
             }
         }
@@ -117,7 +117,7 @@ namespace Vsite.Battleship.Model
         private void ChangeToRandomTactics()
         {
             currentTactics = ShootingTactics.Random;
-            targetSelector = new RandomShooting(monitoringGrid);
+            targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
         }
 
         private Grid monitoringGrid;
