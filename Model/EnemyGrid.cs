@@ -15,6 +15,7 @@ namespace Vsite.Battleship.Model
 
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
+            // TODO: Prevent weakening square state (e.g. sunken -> hit)
             squares[row, column].ChangeState(newState);
         }
 
