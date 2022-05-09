@@ -44,5 +44,33 @@ namespace Vsite.Battleship
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
         }
+        [TestMethod]
+        public void GetAvailableSquaresReturns3SquaresLeftToSquare8_3OnGrid10x10()
+        {
+            Grid grid = new Grid(10, 10);
+            var result = grid.GetAvailableSquares(8, 3, Direction.Leftwards);
+            Assert.AreEqual(3, result.Count());
+        }
+        [TestMethod]
+        public void GetAvailableSquaresReturns6SquaresRightToSquare8_3OnGrid10x10()
+        {
+            Grid grid = new Grid(10, 10);
+            var result = grid.GetAvailableSquares(8, 3, Direction.Rightwards);
+            Assert.AreEqual(6, result.Count());
+        }
+        [TestMethod]
+        public void GetAvailableSquaresReturns8SquaresAboveSquare8_3OnGrid10x10()
+        {
+            Grid grid = new Grid(10, 10);
+            var result = grid.GetAvailableSquares(8, 3, Direction.Upwards);
+            Assert.AreEqual(8, result.Count());
+        }
+        [TestMethod]
+        public void GetAvailableSquaresReturns1SquareBelowSquare8_3OnGrid10x10()
+        {
+            Grid grid = new Grid(10, 10);
+            var result = grid.GetAvailableSquares(8, 3, Direction.Bottomwards);
+            Assert.AreEqual(1, result.Count());
+        }
     }
 }

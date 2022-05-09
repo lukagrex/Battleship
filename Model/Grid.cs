@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
+
+    public enum Direction
+    {
+        Leftwards,
+        Upwards,
+        Rightwards,
+        Bottomwards
+    }
     public class Grid
     {
         public Grid(int rows, int columns)
@@ -43,6 +51,40 @@ namespace Vsite.Battleship.Model
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
                 .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
+        }
+
+        public SquareSequence GetAvailableSquares(int row, int column, Direction direction)
+        {
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int counter = 0;
+            switch (direction)
+            {
+                case Direction.Leftwards:
+                    deltaColumn = -1;
+                    counter = column;
+                    break;
+                case Direction.Upwards:
+                    deltaRow = -1;
+                    counter = row;
+                    break;
+                case Direction.Rightwards:
+                    deltaColumn = +1;
+                    counter = Columns - column - 1;
+                    break;
+                case Direction.Bottomwards:
+                    deltaRow = +1;
+                    counter = Rows - row - 1;
+                    break;
+            }
+            List<Square> result = new List<Square>();
+            for (int i = 0; i < counter; ++i)
+            {
+                row += deltaRow;
+                column += deltaColumn;
+                result.Add(new Square(row, column));
+            }
+            return result;
         }
 
         class LoopIndex
