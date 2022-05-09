@@ -25,6 +25,7 @@ namespace Vsite.BattleShip.Model
 
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
+            // TODO: Prevent weak square state (e.g. if square is sunken, it cannot be hit
             squares[row, column].ChangeState(newState);
         }
 

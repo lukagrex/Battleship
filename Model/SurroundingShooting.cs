@@ -1,21 +1,24 @@
 ﻿using System;
+using Vsite.BattleShip.Model;
 
-namespace Vsite.BattleShip.Model
+namespace Vsite.Battleship.Model
 {
-    internal class SurroundingShooting : INextTarget
+    public class SurroundingShooting : INextTarget
     {
-        private EnemyGrid grid;
-        private Square firstSquareHit;
-
-        public SurroundingShooting(EnemyGrid grid, Square firstSquareHit)
+        public SurroundingShooting(EnemyGrid grid, Square firstSquareHit, int shipLength)
         {
             this.grid = grid;
             this.firstSquareHit = firstSquareHit;
+            this.shipLength = shipLength;
         }
 
         public Square NextTarget()
         {
             throw new NotImplementedException();
         }
+
+        private readonly Square firstSquareHit;
+        private EnemyGrid grid;
+        private int shipLength;
     }
 }
