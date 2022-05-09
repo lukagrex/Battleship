@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-    public class Grid
+    public abstract class Grid
     {
-
-        private Square[,] squares;
-
-        public IEnumerable<Square> Squares
-        {
-            get
-            {
-                return this.squares.Cast<Square>().Where(s => s != null);
-            }
-        }
-
-        public readonly int numOfRows;
         public readonly int numOfColumns;
+        public readonly int numOfRows;
+        protected Square[,] squares;
 
         public Grid(int numOfRows, int numOfColumns)
         {
@@ -42,19 +34,12 @@ namespace Vsite.Battleship.Model
             }
         }
 
-        public void ChangeSquareState(int row, int column, SquareState newState)
+        public IEnumerable<Square> Squares
         {
-            squares[row, column].ChangeState(newState);
-        }
-
-        public void EliminateSquare(int row, int column)
-        {
-            if (row < 0 || column < 0 || row >= numOfRows || column >= numOfColumns)
+            get
             {
-                throw new ArgumentException("index is out of grid");
+                return this.squares.Cast<Square>().Where(s => s != null);
             }
-
-            squares[row, column] = null;
         }
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int shipSize)
@@ -84,7 +69,7 @@ namespace Vsite.Battleship.Model
                 foreach (var i in loopIndex.Inner())
                 {
                     //Mijenajno
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    if (IsSquareAvailable(squareSelect(o, i)))
                     {
                         listFound.Enqueue(squareSelect(o, i));
 
@@ -103,6 +88,8 @@ namespace Vsite.Battleship.Model
 
             return availableSquares;
         }
+
+        protected abstract bool IsSquareAvailable(Square selectedSquare);
 
         class LoopIndex
         {
@@ -127,6 +114,5 @@ namespace Vsite.Battleship.Model
                     yield return i;
             }
         }
-
     }
 }

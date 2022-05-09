@@ -6,14 +6,14 @@ namespace Vsite.Battleship.Model
 {
     public class Shipwright
     {
-        private Grid grid;
+        private FleetGrid _fleetGrid;
         private IEnumerable<int> shipLengths;
         private Random random = new Random();
         private SquareEliminator squareEliminator;
 
         public Shipwright(int numOfRows, int numOfColumns, IEnumerable<int> shipLengths)
         {
-            grid = new Grid(numOfRows, numOfColumns);
+            _fleetGrid = new FleetGrid(numOfRows, numOfColumns);
             squareEliminator = new SquareEliminator(numOfRows, numOfColumns);
             this.shipLengths = shipLengths;
         }
@@ -25,12 +25,12 @@ namespace Vsite.Battleship.Model
             {
                 foreach (var shipLength in shipLengths)
                 {
-                    var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                    var availablePlacements = _fleetGrid.GetAvailablePlacements(shipLength);
                     if (availablePlacements.Count() == 0)
                     {
                         fleet = new Fleet();
-                        grid = new Grid(grid.numOfRows, grid.numOfRows);
-                        squareEliminator = new SquareEliminator(grid.numOfRows, grid.numOfRows);
+                        _fleetGrid = new FleetGrid(_fleetGrid.numOfRows, _fleetGrid.numOfRows);
+                        squareEliminator = new SquareEliminator(_fleetGrid.numOfRows, _fleetGrid.numOfRows);
                         break;
                     }
 
@@ -41,7 +41,7 @@ namespace Vsite.Battleship.Model
                     var squaresToEliminate = squareEliminator.ToEliminate(selectedPlacement);
                     foreach (var square in squaresToEliminate)
                     {
-                        grid.EliminateSquare(square.Row, square.Column);
+                        _fleetGrid.EliminateSquare(square.Row, square.Column);
                     }
                 }
             } while (fleet.Ships.Count() != shipLengths.Count());

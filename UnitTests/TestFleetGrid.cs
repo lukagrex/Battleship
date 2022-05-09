@@ -5,13 +5,13 @@ using Vsite.Battleship.Model;
 namespace Vsite.Battleship
 {
     [TestClass]
-    public class TestGrid
+    public class TestFleetGrid
     {
 
         [TestMethod]
         public void ConstructorCreatesGridOf100SquaresForAGridWith10Rows10Columns()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
 
             Assert.AreEqual(true, grid.Squares.Contains(new Square(0, 0)));
             Assert.AreEqual(true, grid.Squares.Contains(new Square(2, 2)));
@@ -25,7 +25,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void GetAvailablePlacementsReturns2PlacmentsForAShip3SquaresLongOnGrid1Rows4Columns()
         {
-            var grid = new Grid(1, 4);
+            var grid = new FleetGrid(1, 4);
 
             var availablePlacements = grid.GetAvailablePlacements(3);
 
@@ -36,7 +36,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void GetAvailablePlacementsReturns2PlacmentsForAShip3SquaresLongOnGrid5Rows1Columns()
         {
-            var grid = new Grid(5, 1);
+            var grid = new FleetGrid(5, 1);
 
             var availablePlacements = grid.GetAvailablePlacements(3);
 
@@ -47,7 +47,7 @@ namespace Vsite.Battleship
         public void
             GetAvailablePlacmentsReturn3PlacementsForAShip2SquaresLongOnGrid1Row6ColumnsAfterSquareInColumn2IsEliminated()
         {
-            var grid = new Grid(1, 6);
+            var grid = new FleetGrid(1, 6);
 
             grid.EliminateSquare(0, 2);
 
@@ -62,7 +62,7 @@ namespace Vsite.Battleship
         public void
             GetAvailablePlacmentsReturn3PlacementsForAShip2SquaresLongOnGrid5Row1ColumnsAfterSquareInRow1IsEliminated()
         {
-            var grid = new Grid(5, 1);
+            var grid = new FleetGrid(5, 1);
 
             grid.EliminateSquare(1, 0);
 

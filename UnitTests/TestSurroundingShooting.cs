@@ -11,7 +11,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitOne()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             var surroundingShooting = new SurroundingShooting(grid, new Square(3, 3));
 
@@ -33,7 +33,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitOneMarked2_3()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             var surroundingShooting = new SurroundingShooting(grid, new Square(3, 3));
@@ -54,7 +54,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitOneMarked4_3()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
             var surroundingShooting = new SurroundingShooting(grid, new Square(3, 3));
@@ -75,7 +75,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitOneMarked3_2()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
             var surroundingShooting = new SurroundingShooting(grid, new Square(3, 3));
@@ -96,7 +96,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitOneMarked3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
             var surroundingShooting = new SurroundingShooting(grid, new Square(3, 3));
@@ -118,7 +118,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitTwoMarked2_3And4_3()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
@@ -139,7 +139,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitTwoMarked2_3And3_2()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
@@ -160,7 +160,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitTwoMarked2_3And3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
@@ -181,7 +181,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitTwoMarked4_3And3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
@@ -202,7 +202,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitTwoMarked4_3And3_2()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
@@ -224,7 +224,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitTwoMarked3_2And3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
@@ -246,7 +246,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitThreeMarked2_3And4_3And3_2()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
@@ -267,7 +267,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitThreeMarked2_3And4_3And3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
@@ -288,7 +288,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitThreeMarked2_3And3_2And3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
@@ -309,7 +309,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresAroundHitThreeMarked4_3And3_2And3_4()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 2, SquareState.Hit);

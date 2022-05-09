@@ -15,7 +15,7 @@ namespace Vsite.Battleship.Model
     public class Gunnery
     {
         private INextTarget targetSelector;
-        private Grid monitoringGrid;
+        private EnemyGrid monitoringFleetGrid;
         private List<Square> squaresHit = new List<Square>();
         private Square lastTarget = new Square(0,0);
         private SquareEliminator squareEliminator;
@@ -24,9 +24,9 @@ namespace Vsite.Battleship.Model
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            monitoringGrid = new Grid(rows, columns);
+            monitoringFleetGrid = new EnemyGrid(rows, columns);
             liveShips = shipLengths.ToList();
-            this.targetSelector = new RandomShooting(monitoringGrid, liveShips.Max());
+            this.targetSelector = new RandomShooting(monitoringFleetGrid, liveShips.Max());
             this.squareEliminator = new SquareEliminator(rows, columns);
         }
 
@@ -54,19 +54,19 @@ namespace Vsite.Battleship.Model
             {
                 squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Surrounding;
-                this.targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First());
+                this.targetSelector = new SurroundingShooting(monitoringFleetGrid, squaresHit.First());
             }
             else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
             {
                 squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Inline;
-                this.targetSelector = new InlineShooting(monitoringGrid, squaresHit);
+                this.targetSelector = new InlineShooting(monitoringFleetGrid, squaresHit);
             }
             else if (hitResult == HitResult.Sunken)
             {
                 squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
-                this.targetSelector = new RandomShooting(monitoringGrid, liveShips.Max());
+                this.targetSelector = new RandomShooting(monitoringFleetGrid, liveShips.Max());
             }
         }
 
@@ -75,7 +75,7 @@ namespace Vsite.Battleship.Model
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
+                    monitoringFleetGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
                     break;
 
                 case HitResult.Sunken:
@@ -86,18 +86,18 @@ namespace Vsite.Battleship.Model
 
                     foreach (var square in squaresHit)
                     {
-                        monitoringGrid.ChangeSquareState(square.Row, square.Column, SquareState.Sunken);
+                        monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Sunken);
                     }
 
                     foreach (var square in squareEliminator.ToEliminate(squaresHit).Except(squaresHit))
                     {
-                        monitoringGrid.ChangeSquareState(square.Row, square.Column, SquareState.Missed);
+                        monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Missed);
                     }
 
                     break;
 
                 case HitResult.Missed:
-                    monitoringGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    monitoringFleetGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
                     break;
             }
         }

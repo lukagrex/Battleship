@@ -12,7 +12,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void RandomShootingSelectsOneOfSquaresFromEmptyGrid()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             var randomShooting = new RandomShooting(grid, 3);
 
             var nextTarget = randomShooting.NextTarget();

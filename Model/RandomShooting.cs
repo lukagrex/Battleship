@@ -9,18 +9,18 @@ namespace Vsite.Battleship.Model
     public class RandomShooting : INextTarget
     {
 
-        private Grid grid;
+        private EnemyGrid enemyGrid;
         private int shipLength;
         private Random randGen = new Random();
 
-        public RandomShooting(Grid grid, int shipLength)
+        public RandomShooting(EnemyGrid enemyGrid, int shipLength)
         {
-            this.grid = grid;
+            this.enemyGrid = enemyGrid;
             this.shipLength = shipLength;
         }
         public Square NextTarget()
         {
-            var availablePlacements = grid.GetAvailablePlacements(shipLength).SelectMany(x => x).GroupBy(x => x);
+            var availablePlacements = enemyGrid.GetAvailablePlacements(shipLength).SelectMany(x => x).GroupBy(x => x);
 
             var largestGroup = availablePlacements.FirstOrDefault();
             foreach (var availablePlacement in availablePlacements)
