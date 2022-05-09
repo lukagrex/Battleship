@@ -13,9 +13,9 @@ namespace Model
 
         public void Enqueue(T item)
         {
-            if (Count >= length)
+            if (this.Count >= this.length)
             {
-                Dequeue();
+                this.Dequeue();
             }
 
             base.Enqueue(item);

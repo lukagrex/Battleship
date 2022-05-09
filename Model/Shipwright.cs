@@ -7,14 +7,14 @@ namespace Model
     public class Shipwright
     {
         private readonly IEnumerable<int> shipLengths;
-        private readonly Grid grid;
+        private readonly FleetGrid fleetGrid;
         private readonly Random random = new Random();
         private readonly SquareEliminator squareEliminator;
 
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
             this.shipLengths = shipLengths;
-            this.grid = new Grid(rows, columns);
+            this.fleetGrid = new FleetGrid(rows, columns);
             this.squareEliminator = new SquareEliminator(rows, columns);
         }
 
@@ -23,7 +23,7 @@ namespace Model
             var fleet = new Fleet();
             foreach (var shipLength in shipLengths)
             {
-                var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                var availablePlacements = this.fleetGrid.GetAvailablePlacements(shipLength);
                 if (!availablePlacements.Any())
                 {
                     break;
@@ -47,7 +47,7 @@ namespace Model
                 var toEliminate =squareEliminator.ToEliminate(selectedPlacements);
                 foreach (var square in toEliminate)
                 {
-                    grid.EliminateSquare(square.Row, square.Column);
+                    this.fleetGrid.EliminateSquare(square.Row, square.Column);
                 }
             }
             return fleet;

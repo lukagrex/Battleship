@@ -18,19 +18,19 @@ namespace Model
 
         public HitResult Shoot(int row, int column)
         {
-            if (!Squares.Contains(new Square(row, column)))
+            if (!this.Squares.Contains(new Square(row, column)))
             {
                 return HitResult.Missed;
             }
 
-            var hitSquare = Squares.First(s => s.Row == row && s.Column == column);
+            var hitSquare = this.Squares.First(s => s.Row == row && s.Column == column);
             hitSquare.ChangeState(SquareState.Hit);
 
-            int squaresHit = Squares.Count(s => s.SquareState != SquareState.Missed && s.SquareState != SquareState.Initial);
+            int squaresHit = this.Squares.Count(s => s.SquareState != SquareState.Missed && s.SquareState != SquareState.Initial);
 
-            if (squaresHit == Squares.Count())
+            if (squaresHit == this.Squares.Count())
             {
-                foreach (var square in Squares)
+                foreach (var square in this.Squares)
                 {
                     square.ChangeState(SquareState.Sunken);
                 }
