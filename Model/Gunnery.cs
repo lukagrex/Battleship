@@ -110,7 +110,7 @@ namespace Vsite.Battleship.Model
         private void ChangeToInlineTactics()
         {
             currentTactics = ShootingTactics.Inline;
-            targetSelector = new InlineShooting(monitoringGrid, squaresHit);
+            targetSelector = new InlineShooting(monitoringGrid, squaresHit, shipsToShoot[0]);
         }
 
 
