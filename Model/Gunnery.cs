@@ -1,69 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
-    public enum ShootingTactics { 
+    public enum ShootingTactics
+    {
         Random,
         Surrounding,
         Inline
     }
+
     public class Gunnery
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            this.monitoringGrid = new Grid(rows, columns);
-            this.currentTactics = ShootingTactics.Random;
-            this.shipsToShoot = new List<int>(shipLengths);
-            this.targetSelector = new RandomShooting(monitoringGrid, shipsToShoot.First());
+            monitoringGrid = new EnemyGrid(rows, columns);
+            shipsToShoot = new List<int>(shipLengths);
+            ChangeToRandomTactics();
         }
-
-        private Grid monitoringGrid;
-        private List<Square> squaresHit = new List<Square>();
-        private Square lastTarget = new Square(0,0);
-        private List<int> shipsToShoot;
-
         public Square NextTarget()
         {
             lastTarget = targetSelector.NextTarget();
             return lastTarget;
         }
-
         public void ProcessHitResult(HitResult hitResult)
         {
-
-            if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Random)
+            switch (hitResult)
             {
-                squaresHit.Add(lastTarget);
-                RecordOnMonitoringGrid(hitResult);
-                currentTactics = ShootingTactics.Surrounding;
-                targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First(), shipsToShoot.First());
+                case HitResult.Missed:
+                    RecordOnMonitoringGrid(hitResult);
+                    return;
+                case HitResult.Hit:
+                    squaresHit.Add(lastTarget);
+                    RecordOnMonitoringGrid(hitResult);
+                    if (currentTactics == ShootingTactics.Inline)
+                        return;
+                    break;
+                case HitResult.Sunken:
+                    squaresHit.Add(lastTarget);
+                    shipsToShoot.Remove(squaresHit.Count);
+                    RecordOnMonitoringGrid(hitResult);
+                    squaresHit.Clear();
+                    break;
+                default:
+                    Debug.Assert(false);
+                    return;
             }
-            else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
-            {
-                squaresHit.Add(lastTarget);
-                RecordOnMonitoringGrid(hitResult);
-                currentTactics = ShootingTactics.Inline;
-                targetSelector = new InlineShooting(monitoringGrid, squaresHit);
-            }
-            else if (hitResult == HitResult.Sunken)
-            {
-                squaresHit.Add(lastTarget);
-                RecordOnMonitoringGrid(hitResult);
-                shipsToShoot.Remove(squaresHit.Count);
-                squaresHit.Clear();
-                currentTactics = ShootingTactics.Random;
-                targetSelector = new RandomShooting(monitoringGrid, shipsToShoot.First());
-            }
-            else if (hitResult == HitResult.Missed)
-            {
-                RecordOnMonitoringGrid(hitResult);
-            }
+            ChangeCurrentTactics(hitResult);
         }
-
         private void RecordOnMonitoringGrid(HitResult hitResult)
         {
             switch (hitResult)
@@ -79,20 +67,58 @@ namespace Vsite.Battleship.Model
                     {
                         monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
                     }
-
-                    //TODO: Mark surrounding squares as Missed
+                    // TODO: mark surrounding squares as Missed
                     break;
-
-
             }
         }
-
-        private ShootingTactics currentTactics = ShootingTactics.Random;
         public ShootingTactics ShootingTactics
         {
             get { return currentTactics; }
         }
+        private void ChangeCurrentTactics(HitResult hitResult)
+        {
+            if (hitResult == HitResult.Sunken)
+            {
+                ChangeToRandomTactics();
+            }
+            else
+            {
+                switch (currentTactics)
+                {
+                    case ShootingTactics.Random:
+                        ChangeToSurroundingTactics();
+                        break;
+                    case ShootingTactics.Surrounding:
+                        ChangeToInlineTactics();
+                        break;
+                    default:
+                        Debug.Assert(false);
+                        break;
+                }
+            }
+        }
+        private void ChangeToSurroundingTactics()
+        {
+            currentTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingShooting(monitoringGrid, squaresHit.First(), shipsToShoot[0]);
+        }
+        private void ChangeToInlineTactics()
+        {
+            currentTactics = ShootingTactics.Inline;
+            targetSelector = new InlineShooting(monitoringGrid, squaresHit, shipsToShoot[0]);
+        }
+        private void ChangeToRandomTactics()
+        {
+            currentTactics = ShootingTactics.Random;
+            targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
+        }
 
+        private EnemyGrid monitoringGrid;
+        private List<int> shipsToShoot;
+        private Square lastTarget = new Square(0, 0);
+        private List<Square> squaresHit = new List<Square>();
+
+        private ShootingTactics currentTactics = ShootingTactics.Random;
         private INextTarget targetSelector;
     }
 }

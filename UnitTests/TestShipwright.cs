@@ -17,7 +17,6 @@ namespace Vsite.Battleship
             var fleet = shipwright.CreateFleet();
             Assert.AreEqual(10, fleet.Ships.Count());
             Assert.AreEqual(1, fleet.Ships.Count(s => s.Squares.Count() == 5));
-            // Add tests for 2 boats of length 4, and for 4 boats with length 2
         }
     }
 }

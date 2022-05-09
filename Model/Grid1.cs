@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
+    using static Vsite.Battleship.Model.Square;
     using SquareSequence = IEnumerable<Square>;
-
-    public abstract class Grid
+    public class FleetGrid
     {
-        public Grid(int rows, int columns)
+        public FleetGrid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
@@ -24,6 +24,16 @@ namespace Vsite.Battleship.Model
             }
         }
 
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
+        public void ChangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column].ChangeState(newState);
+        }
+
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -32,7 +42,7 @@ namespace Vsite.Battleship.Model
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
-                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i])).Where(pl => pl.Count() > 0);
         }
 
         class LoopIndex
@@ -67,7 +77,7 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (IsSquareAvailable(o, i, squareSelect))
+                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
@@ -84,11 +94,9 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
-        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
-
         public readonly int Rows;
         public readonly int Columns;
 
-        protected Square[,] squares;
+        private Square[,] squares;
     }
 }
