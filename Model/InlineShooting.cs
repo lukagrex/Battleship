@@ -5,12 +5,12 @@ namespace Vsite.Battleship.Model
 {
     public class InlineShooting : INextTarget
     {
-        private Grid grid;
+        private EnemyGrid enemyGrid;
         private List<Square> squaresHit;
 
-        public InlineShooting(Grid grid, List<Square> squaresAlreadyHit)
+        public InlineShooting(EnemyGrid enemyGrid, List<Square> squaresAlreadyHit)
         {
-            this.grid = grid;
+            this.enemyGrid = enemyGrid;
             this.squaresHit = squaresAlreadyHit;
         }
 

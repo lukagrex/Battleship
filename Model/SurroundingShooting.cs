@@ -5,20 +5,20 @@ namespace Vsite.Battleship.Model
 {
     public class SurroundingShooting : INextTarget
     {
-        private Grid grid;
+        private EnemyGrid enemyGrid;
         private readonly Square firstSquareHit;
         private int shipLength;
         private Random random = new Random();
 
-        public SurroundingShooting(Grid grid, Square firstSquareHit, int shipLength)
+        public SurroundingShooting(EnemyGrid fleetGrid, Square firstSquareHit, int shipLength)
         {
-            this.grid = grid;
+            this.enemyGrid = fleetGrid;
             this.firstSquareHit = firstSquareHit;
             this.shipLength = shipLength;
         }
         public Square NextTarget()
         {
-            var all = grid.Squares.Where(s => s.SquareState == SquareState.Initial &&
+            var all = enemyGrid.Squares.Where(s => s.SquareState == SquareState.Initial &&
                                               (IsSameRowAdjacentSquare(s) || IsSameColumnAdjacentSquare(s)));
 
             int index = random.Next(all.Count());

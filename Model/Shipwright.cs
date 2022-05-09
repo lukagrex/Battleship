@@ -7,14 +7,14 @@ namespace Vsite.Battleship.Model
     public class Shipwright
     {
 
-        private Grid grid;
+        private FleetGrid fleetGrid;
         private IEnumerable<int> shipLengths;
         private Random random = new Random();
         private SquareEliminator squareEliminator;
 
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            grid = new Grid(rows, columns);
+            fleetGrid = new FleetGrid(rows, columns);
             squareEliminator = new SquareEliminator(rows, columns);
             this.shipLengths = shipLengths;
         }
@@ -28,11 +28,11 @@ namespace Vsite.Battleship.Model
             {
                 foreach (var shipLength in shipLengths)
                 {
-                    var availablePlacements = grid.GetAvailablePlacements(shipLength);
+                    var availablePlacements = fleetGrid.GetAvailablePlacements(shipLength);
                     if (!availablePlacements.Any())
                     {
                         fleet = new Fleet();
-                        grid = new Grid(grid.Rows, grid.Columns);
+                        fleetGrid = new FleetGrid(fleetGrid.Rows, fleetGrid.Columns);
                         break;
                     }
 
@@ -42,7 +42,7 @@ namespace Vsite.Battleship.Model
                     var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
                     foreach (var square in toEliminate)
                     {
-                        grid.EliminateSquare(square.Row, square.Column);
+                        fleetGrid.EliminateSquare(square.Row, square.Column);
                     }
 
                 }

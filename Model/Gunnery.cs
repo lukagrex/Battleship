@@ -13,7 +13,7 @@ namespace Vsite.Battleship.Model
     public class Gunnery
     {
         private ShootingTactics currentTactics = ShootingTactics.Random;
-        private Grid monitoringGrid;
+        private EnemyGrid monitoringGrid;
         private INextTarget targetSelector;
         private List<Square> squaresHit = new List<Square>();
         private Square lastTarget = new Square(0, 0);
@@ -21,7 +21,7 @@ namespace Vsite.Battleship.Model
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            monitoringGrid = new Grid(rows, columns);
+            monitoringGrid = new EnemyGrid(rows, columns);
             shipsToShoot = new List<int>(shipLengths);
             ChangeToRandomTactics();
         }

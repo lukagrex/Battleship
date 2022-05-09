@@ -5,19 +5,19 @@ namespace Vsite.Battleship.Model
 {
     public class RandomShooting : INextTarget
     {
-        private Grid grid;
+        private EnemyGrid enemyGrid;
         private int shipLength;
         private Random random = new Random();
 
-        public RandomShooting(Grid grid, int shipLength)
+        public RandomShooting(EnemyGrid enemyGrid, int shipLength)
         {
-            this.grid = grid;
+            this.enemyGrid = enemyGrid;
             this.shipLength = shipLength;
         }
 
         public Square NextTarget()
         {
-            var availablePlacements = grid.GetAvailablePlacements(shipLength);
+            var availablePlacements = enemyGrid.GetAvailablePlacements(shipLength);
             var all = availablePlacements.SelectMany(x => x);
 
             int index = random.Next(all.Count());
