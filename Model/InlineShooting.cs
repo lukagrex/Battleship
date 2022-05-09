@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -11,7 +8,7 @@ namespace Model
         private readonly EnemyGrid fleetGrid;
         private readonly List<Square> squaresAlreadyHit;
 
-        public InlineShooting(EnemyGrid fleetGrid, List<Square> squaresAlreadyHit)
+        public InlineShooting(EnemyGrid fleetGrid, List<Square> squaresAlreadyHit, int i)
         {
             this.fleetGrid = fleetGrid;
             this.squaresAlreadyHit = squaresAlreadyHit;

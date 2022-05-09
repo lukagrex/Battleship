@@ -13,6 +13,7 @@ namespace Model
 
         public void ChangeSquareState(int lastTargetRow, int lastTargetColumn, SquareState hit)
         {
+            //TODO prevent weakening square state (e.g. if square is sunken, it cannot be hit)
             this.squares[lastTargetRow, lastTargetColumn].ChangeState(hit);
         }
 
