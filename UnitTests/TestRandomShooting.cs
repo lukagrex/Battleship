@@ -11,7 +11,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void RandomShootingElectOneOfSquaresFromEmptyGrid()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             int shipLength = 3;
             var random = new RandomShooting(grid, shipLength);
             var next = random.NextTarget();
