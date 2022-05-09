@@ -8,7 +8,7 @@ namespace Vsite.Battleship.Model
 {
     public class SurroundingShooting : INextTarget
     {
-        public SurroundingShooting(Grid grid, Square firstSquareHit, int shipLength)
+        public SurroundingShooting(EnemyGrid grid, Square firstSquareHit, int shipLength)
         {
             this.grid = grid;
             this.firstSquareHit = firstSquareHit;
@@ -21,7 +21,7 @@ namespace Vsite.Battleship.Model
         }
 
         private readonly Square firstSquareHit;
-        private Grid grid;
+        private EnemyGrid grid;
         private int shipLength;
     }
 }

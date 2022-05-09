@@ -8,7 +8,7 @@ namespace Vsite.Battleship.Model
 {
     public class InlineShooting : INextTarget
     {
-        public InlineShooting(Grid grid, List<Square> squaresAlreadyHit, int shipLength)
+        public InlineShooting(EnemyGrid grid, List<Square> squaresAlreadyHit, int shipLength)
         {
             this.grid = grid;
             this.squaresHit = squaresAlreadyHit;
@@ -20,7 +20,7 @@ namespace Vsite.Battleship.Model
             throw new NotImplementedException();
         }
 
-        private Grid grid;
+        private EnemyGrid grid;
         private List<Square> squaresHit;
         private int shipLength;
      }

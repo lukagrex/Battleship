@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +8,7 @@ namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
 
-    public enum Direction
-    {
-        Leftwards,
-        Upwards,
-        Rightwards,
-        Bottomwards
-    }
-    public class Grid
+    public abstract class Grid
     {
         public Grid(int rows, int columns)
         {
@@ -32,16 +24,6 @@ namespace Vsite.Battleship.Model
             }
         }
 
-        public void EliminateSquare(int row, int column)
-        {
-            squares[row, column] = null;
-        }
-
-        public void ChangeSquareState(int row, int column, SquareState newState)
-        {
-            squares[row, column].ChangeState(newState);
-        }
-
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -51,44 +33,6 @@ namespace Vsite.Battleship.Model
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
                 .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i]));
-        }
-
-        public SquareSequence GetAvailableSquares(int row, int column, Direction direction)
-        {
-            int deltaRow = 0;
-            int deltaColumn = 0;
-            int counter = 0;
-            switch (direction)
-            {
-                case Direction.Leftwards:
-                    deltaColumn = -1;
-                    counter = column;
-                    break;
-                case Direction.Upwards:
-                    deltaRow = -1;
-                    counter = row;
-                    break;
-                case Direction.Rightwards:
-                    deltaColumn = +1;
-                    counter = Columns - column - 1;
-                    break;
-                case Direction.Bottomwards:
-                    deltaRow = +1;
-                    counter = Rows - row - 1;
-                    break;
-            }
-            List<Square> result = new List<Square>();
-            for (int i = 0; i < counter; ++i)
-            {
-                row += deltaRow;
-                column += deltaColumn;
-                if (squares[row, column].SquareState != SquareState.Initial)
-                {
-                    break;
-                }
-                result.Add(new Square(row, column));
-            }
-            return result;
         }
 
         class LoopIndex
@@ -123,7 +67,7 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    if (IsSquareAvailable(o, i, squareSelect))
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
@@ -140,9 +84,11 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
+        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
+
         public readonly int Rows;
         public readonly int Columns;
 
-        private Square[,] squares;
+        protected Square[,] squares;
     }
 }
