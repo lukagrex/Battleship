@@ -82,6 +82,10 @@ namespace Vsite.Battleship.Model
             {
                 row += deltaRow;
                 column += deltaColumn;
+                if (squares[row, column].SquareState != SquareState.Initial)
+                {
+                    break;
+                }
                 result.Add(new Square(row, column));
             }
             return result;
