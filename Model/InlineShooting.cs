@@ -8,7 +8,7 @@ namespace Vsite.Battleship.Model
         private EnemyGrid enemyGrid;
         private List<Square> squaresHit;
 
-        public InlineShooting(EnemyGrid enemyGrid, List<Square> squaresAlreadyHit)
+        public InlineShooting(EnemyGrid enemyGrid, List<Square> squaresAlreadyHit, int shipLength)
         {
             this.enemyGrid = enemyGrid;
             this.squaresHit = squaresAlreadyHit;
