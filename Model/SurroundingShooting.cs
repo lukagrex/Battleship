@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace Vsite.Battleship.Model
 {
@@ -10,18 +6,26 @@ namespace Vsite.Battleship.Model
     {
         public SurroundingShooting(Grid grid, Square firstSquareHit, int shipLength)
         {
-            this.firstSquareHit = firstSquareHit;
             this.grid = grid;
+            this.firstSquareHit = firstSquareHit;
             this.shipLength = shipLength;
         }
 
         private readonly Square firstSquareHit;
-        private readonly Grid grid;
+        private Grid grid;
         private int shipLength;
 
         public Square NextTarget()
         {
-            throw new NotImplementedException();
+            int r = firstSquareHit.Row;
+            int c = firstSquareHit.Column;
+            var candidates = grid.Squares.Where(s => s.SquareState == SquareState.Initial && ((s.Row == r && (s.Column == c - 1 || s.Column == c + 1)) || (s.Column == c && (s.Row == r - 1 || s.Row == r + 1))));
+
+            if (!candidates.Any())
+                return null;
+
+            return candidates.FirstOrDefault();
+
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Vsite.Battleship.Model;
 
 namespace Vsite.Battleship
@@ -11,11 +11,11 @@ namespace Vsite.Battleship
         [TestMethod]
         public void CreateFleetCreatesFleetForShipLengthsProvided()
         {
-            IEnumerable<int> shipLength = new List<int>() { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
-            var shipWright = new Shipwright(10, 10, shipLength);
-            var fleet = shipWright.CreateFleet();
-            Assert.AreEqual(fleet.Ships.Count(), 10);
-            Assert.AreEqual(fleet.Ships.Count(s => s.Squares.Count() == 5), 1);
+            IEnumerable<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2 };
+            var shipwright = new Shipwright(10, 10, shipLengths);
+            var fleet = shipwright.CreateFleet();
+            Assert.AreEqual(7, fleet.Ships.Count());
+            Assert.AreEqual(1, fleet.Ships.Count(s => s.Squares.Count() == 5));
         }
     }
 }
