@@ -11,7 +11,7 @@ namespace Vsite.BattleShip.Model
     {
         private IEnumerable<int> shipLengths;
 
-        private Grid grid;
+        private FleetGrid grid;
 
         private Random random = new Random();
 
@@ -34,7 +34,7 @@ namespace Vsite.BattleShip.Model
 
             do
             {
-                this.grid = new Grid(this.rows, this.columns);
+                this.grid = new FleetGrid(this.rows, this.columns);
                 this.squareEliminator = new SquareEliminator(this.rows, this.columns);
                 fleet = new Fleet();
 

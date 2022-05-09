@@ -14,14 +14,14 @@ namespace Vsite.Battleship.Model
 
     public class Gunnery
     {
-        private Grid monitoringGrid;
+        private EnemyGrid monitoringGrid;
         private List<Square> squaresHit = new List<Square>();
         private Square lastTarget = new Square(0, 0);
         private List<int> shipsToShoot;
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            this.monitoringGrid = new Grid(rows, columns);
+            this.monitoringGrid = new EnemyGrid(rows, columns);
             this.shipsToShoot = shipLengths.ToList();
             this.ChangeToRandomTactics();
         }

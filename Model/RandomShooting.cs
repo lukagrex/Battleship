@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Linq;
+using Vsite.BattleShip.Model;
 
-namespace Vsite.BattleShip.Model
+namespace Vsite.Battleship.Model
 {
     public class RandomShooting : INextTarget
     {
-        private Grid grid;
-        private int shipLength;
-        private Random random = new Random();
-
-        public RandomShooting(Grid grid, int shipLength)
+        public RandomShooting(EnemyGrid grid, int shipLength)
         {
             this.grid = grid;
             this.shipLength = shipLength;
@@ -17,11 +14,14 @@ namespace Vsite.BattleShip.Model
 
         public Square NextTarget()
         {
-            var availablePlacements = grid.GetAvailablePlacements(this.shipLength);
-            var all = availablePlacements.SelectMany(pl => pl);
+            var availablePlacements = grid.GetAvailablePlacements(shipLength);
+            var all = availablePlacements.SelectMany(x => x);
             int index = random.Next(all.Count());
-
             return all.ElementAt(index);
         }
+
+        private EnemyGrid grid;
+        private int shipLength;
+        private Random random = new Random();
     }
 }

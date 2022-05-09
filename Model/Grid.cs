@@ -6,13 +6,13 @@ namespace Vsite.BattleShip.Model
 {
     using SquareSequence = IEnumerable<Square>;
 
-    public class Grid
+    public abstract class Grid
     {
         public readonly int Rows;
         public readonly int Columns;
+        public Square[,] squares;
 
-
-        private Square[,] squares;
+        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
 
         public Grid(int rows, int columns)
         {
@@ -88,7 +88,7 @@ namespace Vsite.BattleShip.Model
                 var queue = new LimitedQueue<Square>(length);
                 foreach (var i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    if (this.IsSquareAvailable(o, i, squareSelect))
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)

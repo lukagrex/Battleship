@@ -4,10 +4,10 @@ namespace Vsite.BattleShip.Model
 {
     internal class SurroundingShooting : INextTarget
     {
-        private Grid grid;
+        private EnemyGrid grid;
         private Square firstSquareHit;
 
-        public SurroundingShooting(Grid grid, Square firstSquareHit)
+        public SurroundingShooting(EnemyGrid grid, Square firstSquareHit)
         {
             this.grid = grid;
             this.firstSquareHit = firstSquareHit;
