@@ -20,7 +20,12 @@ namespace Vsite.Battleship.Model
         }
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
-            //TODO: Prevent weakening square state (e.g. if square is sunken, it cannot be hit)
+            if (squares[row, column].SquareState == SquareState.Sunken || squares[row, column].SquareState == SquareState.Missed)
+            {
+                // Can not change Sunken and Missed states
+                return;
+            }
+            
             squares[row, column].ChangeState(newState);
         }
 
