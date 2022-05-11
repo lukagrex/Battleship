@@ -8,14 +8,14 @@ namespace Vsite.Battleship.Model
 {
     public class InlineShooting : INextTarget
     {
-        public InlineShooting(Grid grid, List<Square> squaresAlreadyHit, int shipLength)
+        public InlineShooting(EnemyGrid grid, List<Square> squaresAlreadyHit, int shipLength)
         {
             this.grid = grid;
             this.squaresAlreadyHit = squaresAlreadyHit;
             this.shipLength = shipLength;
         }
 
-        private Grid grid;
+        private EnemyGrid grid;
         private List<Square> squaresAlreadyHit;
         private int shipLength;
 

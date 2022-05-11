@@ -6,12 +6,12 @@ using System;
 namespace Vsite.Battleship
 {
     [TestClass]
-    public class TestGrid
+    public class TestFleetGrid
     {
         [TestMethod]
         public void ConstructorCreatesGridOf100SquaresForAGridWith10Rows10Columns()
         {
-            Grid grid = new Grid(10, 10);
+            FleetGrid grid = new FleetGrid(10, 10);
             Assert.AreEqual(100, grid.Squares.Count());
             Assert.IsTrue(grid.Squares.Contains(new Square(0, 0)));
             Assert.IsTrue(grid.Squares.Contains(new Square(9, 0)));
@@ -23,7 +23,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void GetAvailablePlacementsReturns2PlacementsForAShip3SquaresLongOnGrid1Rows4Columns()
         {
-            Grid grid = new Grid(1, 4);
+            FleetGrid grid = new FleetGrid(1, 4);
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(2, placements.Count());
         }
@@ -31,7 +31,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void GetAvailablePlacementsReturns3PlacementsForAShip3SquaresLongOnGrid5Rows1Columns()
         {
-            Grid grid = new Grid(5, 1);
+            FleetGrid grid = new FleetGrid(5, 1);
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(3, placements.Count());
         }
@@ -39,7 +39,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void GetAvailablePlacementsReturns14PlacementsForAShip3SquaresLongOnGrid3Rows5Columns()
         {
-            Grid grid = new Grid(3, 5);
+            FleetGrid grid = new FleetGrid(3, 5);
             var placements = grid.GetAvailablePlacements(3);
             Assert.AreEqual(14, placements.Count());
         }
@@ -47,18 +47,17 @@ namespace Vsite.Battleship
         [TestMethod]
         public void GetAlailablePlacementsReturns3PlacementsForAShip2SquaresLongOnGrid1Row6ColumnsAfterSquareInColumn2IsEliminated()
         {
-            Grid grid = new Grid(1, 6);
+            FleetGrid grid = new FleetGrid(1, 6);
             grid.EliminateSquare(0, 2);
             Assert.AreEqual(5, grid.Squares.Count());
             var placements = grid.GetAvailablePlacements(2);
             Assert.AreEqual(3, placements.Count());
-            //DZ TEST ZA SLUCAJ S VISE REDOVA
         }
 
         [TestMethod]
         public void GetAlailablePlacementsReturns3PlacementsForAShip2SquaresTallOnGrid6Rows1ColumnAfterSquareInRow2IsEliminated()
         {
-            Grid grid = new Grid(6, 1);
+            FleetGrid grid = new FleetGrid(6, 1);
             grid.EliminateSquare(2, 0);
             Assert.AreEqual(5, grid.Squares.Count());
             var placements = grid.GetAvailablePlacements(2);

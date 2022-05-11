@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-    public class Grid
+
+    public abstract class Grid
     {
         public Grid(int rows, int columns)
         {
@@ -23,24 +24,14 @@ namespace Vsite.Battleship.Model
             }
         }
 
-        public void EliminateSquare(int row, int column)
+        public Square GetSquare(int row, int column)
         {
-            squares[row, column] = null;
-        }
-
-        public void ChangeSquareState(int row, int column, SquareState newState)
-        {
-            squares[row, column].ChangeState(newState);
+            return squares[row, column];
         }
 
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
-        }
-
-        public Square GetSquare(int row, int column)
-        {
-            return squares[row, column];
         }
 
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
@@ -87,7 +78,7 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    if (IsSquareAvailable(o, i, squareSelect))
                     {
                         lqueue.Enqueue(squareSelect(o, i));
                         if (lqueue.Count >= length)
@@ -102,10 +93,11 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
+        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
+
         public readonly int Rows;
         public readonly int Columns;
 
-        private Square[,] squares;
-
+        protected Square[,] squares;
     }
 }
