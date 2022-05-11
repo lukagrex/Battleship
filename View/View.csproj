@@ -46,12 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GridForm.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GridForm.Designer.cs">
-      <DependentUpon>GridForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
