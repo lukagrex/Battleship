@@ -20,13 +20,14 @@ namespace Vsite.Battleship.Model
     {
         public EnemyGrid(int rows, int columns) : base(rows, columns)
         {
-                
+
         }
 
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
-            // TODO: Prevent weakening square state (e.g. if square is sunken, it cannot be hit)
-            squares[row, column].ChangeState(newState);
+            // Prevent weakening square state (e.g. if square is sunken, it cannot be hit)
+            if ((squares[row, column].SquareState == SquareState.Hit || squares[row, column].SquareState == SquareState.Initial) && squares[row, column].SquareState < newState)
+                squares[row, column].ChangeState(newState);
         }
 
         public SquareSequence GetAvailableSquares(int row, int column, Direction direction)
