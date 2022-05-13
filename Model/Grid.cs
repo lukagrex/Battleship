@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-
-    public class Grid
+    public abstract class Grid
     {
         public Grid(int rows, int columns)
         {
@@ -22,16 +21,6 @@ namespace Vsite.Battleship.Model
                     squares[r, c] = new Square(r, c);
                 }
             }
-        }
-
-        public void EliminateSquare(int row, int column)
-        {
-            squares[row, column] = null;
-        }
-
-        public void ChangeSquareState(int row, int column, SquareState newState)
-        {
-            squares[row, column].ChangeState(newState);
         }
 
         public IEnumerable<Square> Squares
@@ -81,7 +70,7 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    if (IsSquareAvailable(o, i, squareSelect))
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
@@ -98,9 +87,11 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
+        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
+
         public readonly int Rows;
         public readonly int Columns;
 
-        private Square[,] squares;
+        protected Square[,] squares;
     }
 }

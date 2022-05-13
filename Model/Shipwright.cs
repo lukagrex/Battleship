@@ -10,12 +10,12 @@ namespace Vsite.Battleship.Model
     {
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            grid = new Grid(rows, columns);
+            grid = new FleetGrid(rows, columns);
             this.shipLengths = shipLengths;
             squareEliminator = new SquareEliminator(rows, columns);
         }
         
-        private Grid grid;
+        private FleetGrid grid;
         private IEnumerable<int> shipLengths;
         private Random random = new Random();
         private SquareEliminator squareEliminator;

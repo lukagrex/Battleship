@@ -11,7 +11,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void ForEmptyGridSurroundingShootingTargetsOneOfSquaresArroundHitOne()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             var firstHit = new Square(3, 3);
             int shipLength = 3;
             var ss = new SurroundingShooting(grid, firstHit, shipLength);
@@ -22,7 +22,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void SurroundingShootingTargetsOnlySquaresThatAreNotMarked1()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
             var firstHit = new Square(3, 3);
             int shipLength = 3;
@@ -35,7 +35,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void SurroundingShootingTargetsOnlySquaresThatAreNotMarked2()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
             var firstHit = new Square(3, 3);
@@ -49,7 +49,7 @@ namespace Vsite.Battleship
         [TestMethod]
         public void SurroundingShootingTargetsOnlySquaresThatAreNotMarked3()
         {
-            var grid = new Grid(10, 10);
+            var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 2, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
