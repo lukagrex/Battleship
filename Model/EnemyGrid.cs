@@ -23,8 +23,21 @@ namespace Vsite.Battleship.Model
 
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
-            // TODO: Prevent weakening square state (e.g. if square is sunken, it cannot be hit)
-            squares[row, column].ChangeState(newState);
+            switch (squares[row, column].SquareState)
+            {
+                case SquareState.Initial:
+                    squares[row, column].ChangeState(newState);
+                    break;
+                case SquareState.Hit:
+                    if (newState == SquareState.Sunken)
+                        squares[row, column].ChangeState(newState);
+                    break;
+                case SquareState.Missed:
+                    break;
+                case SquareState.Sunken:
+                    break;
+            }
+            
         }
 
         public SquareSequence GetAvailableSquares(int row, int column, Direction direction)
