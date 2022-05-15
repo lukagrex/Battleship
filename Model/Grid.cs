@@ -7,31 +7,26 @@ using System.Threading.Tasks;
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-    public class Grid
+
+    public abstract class Grid
     {
         public Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
-
             squares = new Square[Rows, Columns];
-            for (int r=0; r<Rows; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
-                for (int c = 0; c< Columns; ++c)
+                for (int c = 0; c < Columns; ++c)
                 {
                     squares[r, c] = new Square(r, c);
                 }
             }
         }
 
-        public void EliminateSquare(int row, int column)
+        public Square GetSquare(int row, int column)
         {
-            squares[row, column] = null;
-        }
-
-        public void ChangeSquareState(int row, int column, SquareState newState)
-        {
-            squares[row, column].ChangeState(newState);
+            return squares[row, column];
         }
 
         public IEnumerable<Square> Squares
@@ -39,13 +34,11 @@ namespace Vsite.Battleship.Model
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
 
-        public Square GetSquare(int row, int column) => squares[row, column];
-
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
-            //return GetHorizontalPlacements(length).Concat(GetVerticalPlacements(length));
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
-                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i])).Where(pl => pl.Count()!=0);
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i])).Where(pl => pl.Count() > 0);
+
         }
 
         class LoopIndex
@@ -59,13 +52,17 @@ namespace Vsite.Battleship.Model
             public IEnumerable<int> Outer()
             {
                 for (int i = 0; i < outerBound; ++i)
+                {
                     yield return i;
+                }
             }
 
             public IEnumerable<int> Inner()
             {
                 for (int i = 0; i < innerBound; ++i)
+                {
                     yield return i;
+                }
             }
 
             private int outerBound;
@@ -81,24 +78,26 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> lqueue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    if (IsSquareAvailable(o, i, squareSelect))
                     {
                         lqueue.Enqueue(squareSelect(o, i));
-                        if (lqueue.Count <= length)
+                        if (lqueue.Count >= length)
+                        {
                             result.Add(lqueue.ToArray());
+                        }
                     }
                     else
-                    {
                         lqueue.Clear();
-                    }
                 }
             }
             return result;
         }
 
+        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
+
         public readonly int Rows;
         public readonly int Columns;
 
-        private Square[,] squares;
+        protected Square[,] squares;
     }
 }
