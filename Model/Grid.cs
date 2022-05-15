@@ -67,7 +67,7 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (IsSquareAvailable(o, i, squareSelect))
+                    if (IsSquareAvailable(squareSelect(o, i)))
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
@@ -84,7 +84,7 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
-        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
+        protected abstract bool IsSquareAvailable(Square square);
 
         public readonly int Rows;
         public readonly int Columns;

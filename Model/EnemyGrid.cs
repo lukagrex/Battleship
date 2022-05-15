@@ -65,9 +65,9 @@ namespace Vsite.Battleship.Model
             return result;
         }
 
-        protected override bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect)
+        protected override bool IsSquareAvailable(Square square)
         {
-            return squareSelect(i1, i2).SquareState == SquareState.Initial;
+            return square.SquareState == SquareState.Initial;
         }
     }
 }
