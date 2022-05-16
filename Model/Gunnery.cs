@@ -20,6 +20,7 @@ namespace Vsite.Battleship.Model
         {
             monitoringGrid = new EnemyGrid(rows, columns);
             shipsToShoot = new List<int>(shipLengths);
+            this.squareEliminator = new SquareEliminator(rows, columns);
             ChangeToRandomTactics();
         }
         public Square NextTarget()
@@ -68,6 +69,11 @@ namespace Vsite.Battleship.Model
                         monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
                     }
                     // TODO: mark surrounding squares as Missed
+                    var toEliminate = squareEliminator.ToEliminate(squaresHit);
+                    foreach(var square in toEliminate)
+                    {
+                        monitoringGrid.ChangeSquareState(square.Row, square.Column, SquareState.Elimnated);
+                    }
                     break;
             }
         }
@@ -117,6 +123,7 @@ namespace Vsite.Battleship.Model
         private List<int> shipsToShoot;
         private Square lastTarget = new Square(0, 0);
         private List<Square> squaresHit = new List<Square>();
+        private SquareEliminator squareEliminator;
 
         private ShootingTactics currentTactics = ShootingTactics.Random;
         private INextTarget targetSelector;
