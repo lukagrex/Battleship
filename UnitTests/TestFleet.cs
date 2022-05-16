@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vsite.Battleship.Model;
 using Vsite.BattleShip.Model;
 
 namespace Vsite.BattleShip.UnitTests

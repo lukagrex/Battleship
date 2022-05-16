@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Vsite.Battleship.Model;
 
 namespace Vsite.BattleShip.Model
 {
-    public  class Shipwright
+    public class Shipwright
     {
         private IEnumerable<int> shipLengths;
 
@@ -23,7 +21,7 @@ namespace Vsite.BattleShip.Model
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
             this.shipLengths = shipLengths;
-            this.rows= rows;
+            this.rows = rows;
             this.columns = columns;
         }
 

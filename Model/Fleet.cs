@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Vsite.BattleShip.Model;
 
-namespace Vsite.BattleShip.Model
+namespace Vsite.Battleship.Model
 {
     public enum HitResult
     {
@@ -15,18 +12,10 @@ namespace Vsite.BattleShip.Model
 
     public class Fleet
     {
-        private readonly List<Ship> ships = new List<Ship>();
-
-        public IEnumerable<Ship> Ships => ships;
-
-        public Fleet()
-        {
-            
-        }
-
         public void CreateShip(IEnumerable<Square> squares)
         {
-            this.ships.Add(new Ship(squares));
+            var ship = new Ship(squares);
+            ships.Add(ship);
         }
 
         public HitResult Shoot(int row, int column)
@@ -37,8 +26,12 @@ namespace Vsite.BattleShip.Model
                 if (hitResult != HitResult.Missed)
                     return hitResult;
             }
-
             return HitResult.Missed;
         }
+
+        public IEnumerable<Ship> Ships
+        { get { return ships; } }
+
+        private List<Ship> ships = new List<Ship>();
     }
 }

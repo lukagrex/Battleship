@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Vsite.BattleShip.Model;
 
-namespace Vsite.BattleShip.Model
+namespace Vsite.Battleship.Model
 {
     public class Ship
     {
-        public readonly IEnumerable<Square> Squares;
-
         public Ship(IEnumerable<Square> squares)
         {
             this.Squares = squares;
@@ -17,38 +13,23 @@ namespace Vsite.BattleShip.Model
 
         public HitResult Shoot(int row, int column)
         {
-            if (!Squares.Contains(new Square(row, column)))
-            {
-                // The square doesn't belong to any ship
+            var found = Squares.FirstOrDefault(s => s.Row == row && s.Column == column);
+            if (found == null)
                 return HitResult.Missed;
-            }
-
-            var hitSquare = Squares.First(s => s.Row == row && s.Column == column);
-            if (hitSquare.SquareState == SquareState.Initial)
+            if (found.SquareState == SquareState.Sunken)
+                return HitResult.Sunken;
+            if (found.SquareState == SquareState.Initial)
+                found.ChangeState(SquareState.Hit);
+            int squaresHit = Squares.Count(s => s.SquareState == SquareState.Hit);
+            if (squaresHit == Squares.Count())
             {
-                hitSquare.ChangeState(SquareState.Hit);
+                foreach (var square in Squares)
+                    square.ChangeState(SquareState.Sunken);
+                return HitResult.Sunken;
             }
-            else
-            {
-                // This square is already Missed or Hit or Sunken
-                return (HitResult)((int)hitSquare.SquareState - 1);
-            }
-
-            // Check how many ship squares are hit
-            var squaresHit = Squares.Count(s => s.SquareState == SquareState.Hit);
-            if (squaresHit != Squares.Count())
-            {
-                // The ship square is Hit
-                return HitResult.Hit;
-            }
-            
-            // All squares of the ship are hit --> Sunken
-            foreach (var square in Squares)
-            {
-                square.ChangeState(SquareState.Sunken);
-            }
-
-            return HitResult.Sunken;
+            return HitResult.Hit;
         }
+
+        public readonly IEnumerable<Square> Squares;
     }
 }
