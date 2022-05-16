@@ -6,6 +6,7 @@ namespace Vsite.Battleship.Model
     public enum SquareState
     {
         Initial,
+        Eliminated,
         Missed,
         Hit,
         Sunken

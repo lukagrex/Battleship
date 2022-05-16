@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
@@ -17,7 +14,7 @@ namespace Vsite.Battleship.Model
         private INextTarget targetSelector;
         private EnemyGrid monitoringFleetGrid;
         private List<Square> squaresHit = new List<Square>();
-        private Square lastTarget = new Square(0,0);
+        private Square lastTarget = new Square(0, 0);
         private SquareEliminator squareEliminator;
         private List<int> liveShips;
 
@@ -91,7 +88,7 @@ namespace Vsite.Battleship.Model
 
                     foreach (var square in squareEliminator.ToEliminate(squaresHit).Except(squaresHit))
                     {
-                        monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Missed);
+                        monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
                     }
 
                     break;
