@@ -9,6 +9,7 @@ namespace Vsite.Battleship.Model
     public enum SquareState
     {
         Initial,
+        Eliminated,
         Missed,
         Hit,
         Sunken
@@ -28,7 +29,8 @@ namespace Vsite.Battleship.Model
 
         public void ChangeState(SquareState newState)
         {
-            squareState = newState;
+            if ((int)squareState < (int)newState)
+                squareState = newState;
         }
 
         public SquareState SquareState { get { return squareState; } }
