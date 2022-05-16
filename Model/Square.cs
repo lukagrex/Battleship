@@ -5,6 +5,7 @@ namespace Vsite.Battleship.Model
     public enum SquareState
     {
         Initial,
+        Eliminated,
         Missed,
         Hit,
         Sunken
@@ -24,6 +25,10 @@ namespace Vsite.Battleship.Model
 
         public void ChangeState(SquareState newState)
         {
+            if ((int)squareState > (int)newState)
+            {
+                return;
+            }
             squareState = newState;
         }
 
