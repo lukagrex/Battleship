@@ -5,11 +5,15 @@ namespace Vsite.Battleship.Model
 {
     public class RandomShooting : INextTarget
     {
-        public RandomShooting(Grid grid, int shipLength)
+        public RandomShooting(EnemyGrid grid, int shipLength)
         {
             this.grid = grid;
             this.shipLength = shipLength;
         }
+
+        private EnemyGrid grid;
+        private int shipLength;
+        private Random random = new Random();
 
         public Square NextTarget()
         {
@@ -18,9 +22,5 @@ namespace Vsite.Battleship.Model
             int index = random.Next(all.Count());
             return all.ElementAt(index);
         }
-
-        private Grid grid;
-        private int shipLength;
-        private Random random = new Random();
     }
 }

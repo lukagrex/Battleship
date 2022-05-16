@@ -13,6 +13,7 @@ namespace Vsite.Battleship.Model
         {
             if (Count >= length)
                 Dequeue();
+
             base.Enqueue(item);
         }
 
