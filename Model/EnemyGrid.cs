@@ -55,7 +55,7 @@ namespace Model
             return result;
         }
 
-        public override bool IsSquareAvailable(Func<int, int, Square> squareSelect, int row, int column)
+        protected override bool IsSquareAvailable(Func<int, int, Square> squareSelect, int row, int column)
         {
             return squareSelect(row, column).SquareState == SquareState.Initial;
         }

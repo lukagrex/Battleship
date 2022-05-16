@@ -6,51 +6,49 @@ namespace Model
 {
     public class Shipwright
     {
-        private readonly IEnumerable<int> shipLengths;
-        private readonly FleetGrid fleetGrid;
-        private readonly Random random = new Random();
-        private readonly SquareEliminator squareEliminator;
+        private FleetGrid fleetGrid;
+        private IEnumerable<int> shipLengths;
+        private Random random = new Random();
+        private SquareEliminator squareEliminator;
 
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
+            fleetGrid = new FleetGrid(rows, columns);
+            squareEliminator = new SquareEliminator(rows, columns);
             this.shipLengths = shipLengths;
-            this.fleetGrid = new FleetGrid(rows, columns);
-            this.squareEliminator = new SquareEliminator(rows, columns);
         }
+
 
         public Fleet CreateFleet()
         {
             var fleet = new Fleet();
-            foreach (var shipLength in shipLengths)
+
+            do
             {
-                var availablePlacements = this.fleetGrid.GetAvailablePlacements(shipLength);
-                if (!availablePlacements.Any())
+                foreach (var shipLength in shipLengths)
                 {
-                    break;
-                }
-                int index = random.Next(availablePlacements.Count());
-                var selectedPlacements = availablePlacements.ElementAt(index);
-                for (int i = 0; i < 3; i++)
-                {
-                    fleet.CreateShip(selectedPlacements);
-                    if (fleet.Ships.Last().Squares.SequenceEqual(selectedPlacements))
+                    var availablePlacements = fleetGrid.GetAvailablePlacements(shipLength);
+                    if (!availablePlacements.Any())
                     {
+                        fleet = new Fleet();
+                        fleetGrid = new FleetGrid(fleetGrid.Rows, fleetGrid.Columns);
                         break;
                     }
 
-                    if (i == 2)
+                    int index = random.Next(availablePlacements.Count());
+                    var selectedPlacement = availablePlacements.ElementAt(index);
+                    fleet.CreateShip(selectedPlacement);
+                    var toEliminate = squareEliminator.ToEliminate(selectedPlacement);
+                    foreach (var square in toEliminate)
                     {
-                        throw new ArgumentOutOfRangeException();
+                        fleetGrid.EliminateSquare(square.Row, square.Column);
                     }
+
                 }
-                
-                var toEliminate =squareEliminator.ToEliminate(selectedPlacements);
-                foreach (var square in toEliminate)
-                {
-                    this.fleetGrid.EliminateSquare(square.Row, square.Column);
-                }
-            }
+            } while (fleet.Ships.Count() != shipLengths.Count());
+
             return fleet;
         }
+
     }
 }

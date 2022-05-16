@@ -101,7 +101,7 @@ namespace Model
         private void ChangeToInlineTactics()
         {
             this.currentTactics = ShootingTactics.Inline;
-            this.targetSelector = new InlineShooting(this.monitoringFleetGrid, this.squaresHit);
+            this.targetSelector = new InlineShooting(this.monitoringFleetGrid, this.squaresHit, this.shipsToShoot[0]);
         }
 
         private void ChangeToRandomTactics()

@@ -79,7 +79,7 @@ namespace Model
             return result;
         }
 
-        public abstract bool IsSquareAvailable(Func<int, int, Square> squareSelect, int row, int column);
+        protected abstract bool IsSquareAvailable(Func<int, int, Square> squareSelect, int row, int column);
 
     }
 }
