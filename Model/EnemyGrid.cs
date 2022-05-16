@@ -30,7 +30,40 @@ namespace Vsite.Battleship.Model
 
         public IEnumerable<Square> GetAvailableSquares(int row, int column, Direction direction)
         {
-            throw new NotImplementedException();
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int counter = 0;
+            switch (direction)
+            {
+                case Direction.Left:
+                    deltaColumn = -1;
+                    counter = column;
+                    break;
+                case Direction.Up:
+                    deltaRow = -1;
+                    counter = row;
+                    break;
+                case Direction.Right:
+                    deltaColumn = +1;
+                    counter = Columns - column - 1;
+                    break;
+                case Direction.Down:
+                    deltaRow = +1;
+                    counter = Rows - row - 1;
+                    break;
+            }
+            List<Square> result = new List<Square>();
+            for (int i = 0; i < counter; ++i)
+            {
+                row += deltaRow;
+                column += deltaColumn;
+                if (squares[row, column].SquareState != SquareState.Initial)
+                {
+                    break;
+                }
+                result.Add(new Square(row, column));
+            }
+            return result;
         }
 
         protected override bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect)
