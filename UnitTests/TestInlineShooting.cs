@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Vsite.Battleship.Model;
 using Vsite.BattleShip.Model;
 
 namespace Vsite.BattleShip.UnitTests
