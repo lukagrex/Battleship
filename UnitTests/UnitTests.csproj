@@ -61,6 +61,7 @@
     <Compile Include="TestGunnary.cs" />
     <Compile Include="TestSurroundingShooting.cs" />
     <Compile Include="RandomShootingTest.cs" />
+    <Compile Include="TestSortedSquares.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

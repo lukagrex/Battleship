@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using Vsite.Battleship.Model;
 
 namespace Vsite.Battleship
@@ -13,7 +13,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(3, 3),
                     new Square(4, 3),
@@ -39,7 +39,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(4, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(4, 3),
                     new Square(3, 3),
@@ -64,7 +64,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(3, 3, SquareState.Hit);
             grid.ChangeSquareState(3, 4, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(3, 3),
                     new Square(3, 4),
@@ -88,7 +88,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(1, 0, SquareState.Hit);
             grid.ChangeSquareState(1, 1, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(1, 0),
                     new Square(1, 1),
@@ -111,7 +111,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(0, 1, SquareState.Hit);
             grid.ChangeSquareState(1, 1, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(0, 1),
                     new Square(1, 1),
@@ -134,7 +134,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(1, 9, SquareState.Hit);
             grid.ChangeSquareState(1, 8, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(1, 9),
                     new Square(1, 8),
@@ -157,7 +157,7 @@ namespace Vsite.Battleship
             var grid = new EnemyGrid(10, 10);
             grid.ChangeSquareState(9, 1, SquareState.Hit);
             grid.ChangeSquareState(8, 1, SquareState.Hit);
-            var inlineShooting = new InlineShooting(grid, new List<Square>()
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
                 {
                     new Square(9, 1),
                     new Square(8, 1),

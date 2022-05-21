@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Vsite.Battleship.Model
 {
@@ -8,9 +6,9 @@ namespace Vsite.Battleship.Model
     {
 
         private EnemyGrid enemyGrid;
-        private List<Square> squaresAlreadyHit;
+        private SortedSquares squaresAlreadyHit;
 
-        public InlineShooting(EnemyGrid enemyGrid, List<Square> squaresAlreadyHit)
+        public InlineShooting(EnemyGrid enemyGrid, SortedSquares squaresAlreadyHit)
         {
             this.enemyGrid = enemyGrid;
             this.squaresAlreadyHit = squaresAlreadyHit;
@@ -30,7 +28,8 @@ namespace Vsite.Battleship.Model
                 {
                     return new Square(squaresAlreadyHit.First().Row - 1,
                         squaresAlreadyHit.First().Column);
-                }else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)
+                }
+                else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)
                                       .Contains(new Square(squaresAlreadyHit.Last().Row + 1,
                               squaresAlreadyHit.Last().Column)))
                 {
@@ -43,7 +42,7 @@ namespace Vsite.Battleship.Model
                 }
 
             }
-            else if(isHorizontal)
+            else if (isHorizontal)
             {
                 squaresAlreadyHit.Sort((square, square1) => square.Column - square1.Column);
                 if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)

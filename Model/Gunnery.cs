@@ -13,7 +13,7 @@ namespace Vsite.Battleship.Model
     {
         private INextTarget targetSelector;
         private EnemyGrid monitoringFleetGrid;
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
         private Square lastTarget = new Square(0, 0);
         private SquareEliminator squareEliminator;
         private List<int> liveShips;
@@ -39,6 +39,10 @@ namespace Vsite.Battleship.Model
 
         public Square NextTarget()
         {
+            if (liveShips.Count == 0)
+            {
+                return null;
+            }
             lastTarget = targetSelector.NextTarget();
             return lastTarget;
         }
@@ -58,6 +62,10 @@ namespace Vsite.Battleship.Model
                 squaresHit.Add(lastTarget);
                 currentTactics = ShootingTactics.Inline;
                 this.targetSelector = new InlineShooting(monitoringFleetGrid, squaresHit);
+            }
+            else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Inline)
+            {
+                squaresHit.Add(lastTarget);
             }
             else if (hitResult == HitResult.Sunken)
             {

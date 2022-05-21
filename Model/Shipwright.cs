@@ -6,14 +6,14 @@ namespace Vsite.Battleship.Model
 {
     public class Shipwright
     {
-        private FleetGrid _fleetGrid;
+        private FleetGrid fleetGrid;
         private IEnumerable<int> shipLengths;
         private Random random = new Random();
         private SquareEliminator squareEliminator;
 
         public Shipwright(int numOfRows, int numOfColumns, IEnumerable<int> shipLengths)
         {
-            _fleetGrid = new FleetGrid(numOfRows, numOfColumns);
+            fleetGrid = new FleetGrid(numOfRows, numOfColumns);
             squareEliminator = new SquareEliminator(numOfRows, numOfColumns);
             this.shipLengths = shipLengths;
         }
@@ -25,12 +25,12 @@ namespace Vsite.Battleship.Model
             {
                 foreach (var shipLength in shipLengths)
                 {
-                    var availablePlacements = _fleetGrid.GetAvailablePlacements(shipLength);
+                    var availablePlacements = fleetGrid.GetAvailablePlacements(shipLength);
                     if (availablePlacements.Count() == 0)
                     {
                         fleet = new Fleet();
-                        _fleetGrid = new FleetGrid(_fleetGrid.numOfRows, _fleetGrid.numOfRows);
-                        squareEliminator = new SquareEliminator(_fleetGrid.numOfRows, _fleetGrid.numOfRows);
+                        fleetGrid = new FleetGrid(fleetGrid.numOfRows, fleetGrid.numOfRows);
+                        squareEliminator = new SquareEliminator(fleetGrid.numOfRows, fleetGrid.numOfRows);
                         break;
                     }
 
@@ -41,7 +41,7 @@ namespace Vsite.Battleship.Model
                     var squaresToEliminate = squareEliminator.ToEliminate(selectedPlacement);
                     foreach (var square in squaresToEliminate)
                     {
-                        _fleetGrid.EliminateSquare(square.Row, square.Column);
+                        fleetGrid.EliminateSquare(square.Row, square.Column);
                     }
                 }
             } while (fleet.Ships.Count() != shipLengths.Count());
