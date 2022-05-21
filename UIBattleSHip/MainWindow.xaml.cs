@@ -27,6 +27,7 @@ namespace UIBattleShip
         private Brush sunkenColor = new SolidColorBrush(Colors.DarkBlue);
         private Brush missedColor = new SolidColorBrush(Colors.DodgerBlue);
         private Brush shipColor = new SolidColorBrush(Colors.Silver);
+        private Brush notHitShipsColor = new SolidColorBrush(Colors.DarkMagenta);
 
         public readonly int gridNumOfRows = 10;
         public readonly int gridNumOfColumns = 10;
@@ -67,6 +68,18 @@ namespace UIBattleShip
             this.computersGunnary = new Gunnery(gridNumOfRows, gridNumOfColumns, initShips);
         }
 
+        private void ShowRestOfComputersFleet()
+        {
+            foreach (var ship in this.computersFleet.Ships)
+            {
+                foreach (var square in ship.Squares.Where(s => s.SquareState != SquareState.Sunken && s.SquareState != SquareState.Hit))
+                {
+                    var button = this.GetComputersGridsSquare(square.Row, square.Column);
+                    button.Background = this.notHitShipsColor;
+                }
+            }
+        }
+
         private BattleShipButton GetInitGridLabel(bool isPlayerFleet)
         {
             var button = new BattleShipButton();
@@ -79,7 +92,7 @@ namespace UIBattleShip
 
         private void PlayerButton_OnClick(object sender, RoutedEventArgs args)
         {
-            if (playersTurn)
+            if (playersTurn || this.Random.IsEnabled)
                 return;
 
             playersTurn = true;
@@ -87,6 +100,11 @@ namespace UIBattleShip
             var hitResult = this.playersFleet.Shoot(battleButton.X, battleButton.Y);
             this.computersGunnary.ProcessHitResult(hitResult);
             this.ProcessShotResult(battleButton, hitResult, true);
+
+            if (!this.computersGunnary.HaveLiveShips())
+            {
+                this.ComputerWins();
+            }
             
         }
 
@@ -130,7 +148,7 @@ namespace UIBattleShip
 
         private void ComputerButton_OnClick(object sender, RoutedEventArgs args)
         {
-            if (!playersTurn)
+            if (!playersTurn || this.Random.IsEnabled)
                 return;
 
             playersTurn = false;
@@ -175,12 +193,11 @@ namespace UIBattleShip
 
         private void ComputerWins()
         {
+            this.ShowRestOfComputersFleet();
             string messageBoxText = "Computer wins :-)";
             string caption = "End of the Game";
-            MessageBoxButton button = MessageBoxButton.YesNoCancel;
-            MessageBoxImage icon = MessageBoxImage.Warning;
 
-            MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.None);
+            MessageBox.Show(messageBoxText, caption);
             this.RestartGame();
         }
 
@@ -188,10 +205,8 @@ namespace UIBattleShip
         {
             string messageBoxText = "Player wins :-)";
             string caption = "End of the Game";
-            MessageBoxButton button = MessageBoxButton.YesNoCancel;
-            MessageBoxImage icon = MessageBoxImage.Warning;
 
-            MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.None);
+            MessageBox.Show(messageBoxText, caption);
             this.RestartGame();
         }
 

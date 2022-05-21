@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UIBattleShip"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Battle Ship" Height="450" Width="800">
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width = "1*" />
@@ -43,8 +43,8 @@
                 </Grid.RowDefinitions>
             </Grid>
         <StackPanel Grid.Row="1" Grid.Column="0"  Orientation="Horizontal" Margin="10 0 10 0">
-            <Button Margin="10 0 10 0" Name="Random" Click="Random_OnClick">Random</Button>
-            <Button Margin="10 0 10 0" Name="Start" IsEnabled="False" Click="Start_OnClick">Start</Button>
+            <Button Margin="10 0 10 2" Name="Random" Click="Random_OnClick">Random</Button>
+            <Button Margin="10 0 10 2" Name="Start" IsEnabled="False" Click="Start_OnClick">Start</Button>
             </StackPanel>
         <Grid Grid.Row="0" Grid.Column="1" Name="ComputersGrid"  Margin="10" DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
@@ -72,7 +72,7 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
             </Grid>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 0">
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 2">
                 <Label>    </Label>
         </StackPanel>
     </Grid>

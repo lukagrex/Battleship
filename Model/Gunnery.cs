@@ -47,6 +47,16 @@ namespace Vsite.Battleship.Model
             return lastTarget;
         }
 
+        public bool HaveLiveShips()
+        {
+            if (liveShips.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void ProcessHitResult(HitResult hitResult)
         {
             RecordOnMonitoringGrid(hitResult);
@@ -71,6 +81,12 @@ namespace Vsite.Battleship.Model
             {
                 squaresHit.Clear();
                 currentTactics = ShootingTactics.Random;
+
+                if (liveShips.Count == 0)
+                {
+                    return;
+                }
+
                 this.targetSelector = new RandomShooting(monitoringFleetGrid, liveShips.Max());
             }
         }
