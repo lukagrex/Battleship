@@ -142,6 +142,7 @@ namespace UIBattleShip
             if (this.AllComputersShipsAreSunken())
             {
                 this.PlayerWins();
+                return;
             }
 
             this.ComputersTurn();
@@ -166,6 +167,7 @@ namespace UIBattleShip
             if (computersTarget == null)
             {
                 this.ComputerWins();
+                return;
             }
             var playersButton = this.GetPlayersGridsSquare(computersTarget.Row, computersTarget.Column);
             this.PlayerButton_OnClick(playersButton, null);
