@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
-
     public enum SquareState
     {
         Initial,
+        Eliminated,
         Missed,
         Hit,
         Sunken
@@ -25,15 +25,15 @@ namespace Vsite.Battleship.Model
 
         public readonly int Row;
         public readonly int Column;
-
         private SquareState squareState = SquareState.Initial;
 
         public void ChangeState(SquareState newState)
         {
-            squareState = newState;
+            if ((int)squareState < (int)newState)
+                squareState = newState;
         }
 
-        public SquareState SquareState => squareState;
+        public SquareState SquareState { get { return squareState; } }
 
         public bool Equals(Square other)
         {

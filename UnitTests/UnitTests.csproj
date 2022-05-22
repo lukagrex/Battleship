@@ -62,6 +62,7 @@
     <Compile Include="TestEnemyGrid.cs" />
     <Compile Include="TestFleetGrid.cs" />
     <Compile Include="TestInlineShooting.cs" />
+    <Compile Include="TestSortedSquare.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

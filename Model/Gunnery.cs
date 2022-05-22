@@ -19,6 +19,7 @@ namespace Vsite.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             monitoringGrid = new EnemyGrid(rows, columns);
+            squareEliminator = new SquareEliminator(rows, columns);
             shipsToShoot = new List<int>(shipLengths);
             ChangeToRandomTactics();
         }
@@ -65,6 +66,7 @@ namespace Vsite.Battleship.Model
                 case HitResult.Sunken:
                     foreach (var s in squaresHit)
                     {
+                        /*
                         int startRow = Math.Max(s.Row - 1, 0);
                         int endIRow = Math.Min(s.Row + 1, monitoringGrid.Rows);
                         int startColumn = Math.Max(s.Column - 1, 0);
@@ -76,7 +78,13 @@ namespace Vsite.Battleship.Model
                                 monitoringGrid.ChangeSquareState(r, c, SquareState.Missed);
                             }
                         }
+                        */
                         monitoringGrid.ChangeSquareState(s.Row, s.Column, SquareState.Sunken);
+                    }
+                    var toEliminate = squareEliminator.ToEliminate(squaresHit);
+                    foreach (var square in toEliminate)
+                    {
+                        monitoringGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
                     }
                     break;
             }
@@ -127,6 +135,7 @@ namespace Vsite.Battleship.Model
         private List<int> shipsToShoot;
         private Square lastTarget = new Square(0, 0);
         private List<Square> squaresHit = new List<Square>();
+        private SquareEliminator squareEliminator;
 
         private ShootingTactics currentTactics = ShootingTactics.Random;
         private INextTarget targetSelector;

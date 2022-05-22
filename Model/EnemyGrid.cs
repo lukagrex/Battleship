@@ -23,6 +23,7 @@ namespace Vsite.Battleship.Model
 
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
+            /*
             switch (squares[row, column].SquareState)
             {
                 case SquareState.Initial:
@@ -37,6 +38,8 @@ namespace Vsite.Battleship.Model
                 case SquareState.Sunken:
                     break;
             }
+            */
+            squares[row, column].ChangeState(newState);
 
         }
 

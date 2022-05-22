@@ -22,7 +22,7 @@ namespace Vsite.Battleship.Model
                 var last = squaresAlreadyHit.FirstOrDefault(x => x.Column == squaresAlreadyHit.Select(y => y.Column).Max());
 
                 var leftCount = grid.GetAvailableSquares(first.Row, first.Column, Direction.Leftwards).Count();
-                var rightCount = grid.GetAvailableSquares(first.Row, first.Column, Direction.Rightwards).Count();
+                var rightCount = grid.GetAvailableSquares(last.Row, last.Column, Direction.Rightwards).Count();
 
                 if (leftCount > 0)
                     hitList.Add(Direction.Leftwards, new Square(first.Row, first.Column - 1));
@@ -38,7 +38,7 @@ namespace Vsite.Battleship.Model
                 var last = squaresAlreadyHit.FirstOrDefault(x => x.Row == squaresAlreadyHit.Select(y => y.Row).Max());
 
                 var upCount = grid.GetAvailableSquares(first.Row, first.Column, Direction.Upwards).Count();
-                var bottomCount = grid.GetAvailableSquares(first.Row, first.Column, Direction.Bottomwards).Count();
+                var bottomCount = grid.GetAvailableSquares(last.Row, last.Column, Direction.Bottomwards).Count();
 
                 if (upCount > 0)
                     hitList.Add(Direction.Upwards, new Square(first.Row - 1, first.Column));
