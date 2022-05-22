@@ -120,7 +120,7 @@ namespace Vsite.Battleship.Model
             targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
         }
 
-        private FleetGrid monitoringGrid;
+        private EnemyGrid monitoringGrid;
         private List<int> shipsToShoot;
         private Square lastTarget = new Square(0, 0);
         private List<Square> squaresHit = new List<Square>();
