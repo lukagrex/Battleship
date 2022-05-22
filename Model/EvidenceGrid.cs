@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Battleship.Model
 {
-    public class EvidenceGrid : Grid
+    public class EvidenceGrid : FleetGrid
     {
         public EvidenceGrid(int rows, int columns) : base(rows, columns)
         {

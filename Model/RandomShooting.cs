@@ -8,12 +8,12 @@ namespace Vsite.Battleship.Model
 {
     public class RandomShooting : INextTarget
     {
-        public RandomShooting(Grid grid, int shipLength)
+        public RandomShooting(EnemyGrid grid, int shipLength)
         {
             this.grid = grid;
             this.shipLength = shipLength;
         }
-        private Grid grid;
+        private EnemyGrid grid;
         private int shipLength;
         private Random random = new Random();
         public Square NextTarget()

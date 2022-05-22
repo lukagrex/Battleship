@@ -13,6 +13,7 @@ namespace Vsite.Battleship.Model
         Missed,
         Hit,
         Sunken
+        //dodati bodove za square state, ako je sunken, ne može se promijeniti stanje u missed ili hit
     }
     public class Square : IEquatable<Square>
     {

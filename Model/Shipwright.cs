@@ -10,13 +10,13 @@ namespace Vsite.Battleship.Model
     {
         public Shipwright(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            grid = new Grid(rows, columns);
+            grid = new FleetGrid(rows, columns);
             this.shipLengths = shipLengths;
             squareEliminator = new SquareEliminator(rows, columns);
         }
 
         //private Fleet fleet = new Fleet();
-        private Grid grid;
+        private FleetGrid grid;
         private IEnumerable<int> shipLengths;
         private Random random = new Random();
         private SquareEliminator squareEliminator;
@@ -33,7 +33,7 @@ namespace Vsite.Battleship.Model
                     if (!availablePlacements.Any())
                     {
                         fleet = new Fleet();
-                        grid = new Grid(grid.Rows, grid.Columns);
+                        grid = new FleetGrid(grid.Rows, grid.Columns);
                         break;
                     }
 

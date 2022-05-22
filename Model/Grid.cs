@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Vsite.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-    public class Grid
+    // čim klasa sadrži apstraknu metodu, klasa je apstraktna
+    public abstract class Grid
     {
         public Grid(int rows, int columns)
         {
@@ -26,22 +27,12 @@ namespace Vsite.Battleship.Model
                 }
             }
         }
-        // iz mreže izvlačimo polja
-        // nul reference za svako polje
-        public void EliminateSquare(int row, int column)
+
+        public Square GetSquare(int row, int column)
         {
-           squares[row, column] = null;
+            return squares[row, column];
         }
 
-        //
-        public void ChangeSquareState(int row, int column, SquareState newState)
-        {
-            squares[row, column].ChangeState(newState); 
-
-        }
-
-
-        // enkapsuliramo dohvaćanje square-ova
         public IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
@@ -50,7 +41,8 @@ namespace Vsite.Battleship.Model
         public IEnumerable<SquareSequence> GetAvailablePlacements(int length)
         {
             return GetPlacements(length, new LoopIndex(Rows, Columns), (i, j) => squares[i, j])
-                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (j, i) => squares[j, i]));
+                .Concat(GetPlacements(length, new LoopIndex(Columns, Rows), (i, j) => squares[j, i])).Where(pl => pl.Count() > 0);
+
         }
 
         class LoopIndex
@@ -59,26 +51,27 @@ namespace Vsite.Battleship.Model
             {
                 this.outerBound = outerBound;
                 this.innerBound = innerBound;
-                // Ctrl+k+d ... podešavanje zagrada
-
             }
 
             public IEnumerable<int> Outer()
             {
                 for (int i = 0; i < outerBound; ++i)
+                {
                     yield return i;
+                }
             }
 
             public IEnumerable<int> Inner()
             {
                 for (int i = 0; i < innerBound; ++i)
+                {
                     yield return i;
+                }
             }
 
             private int outerBound;
             private int innerBound;
         }
-        //
         private IEnumerable<SquareSequence> GetPlacements(int length, LoopIndex loopIndex, Func<int, int, Square> squareSelect)
         {
             List<SquareSequence> result = new List<SquareSequence>();
@@ -87,7 +80,9 @@ namespace Vsite.Battleship.Model
                 LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
                 foreach (int i in loopIndex.Inner())
                 {
-                    if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
+                    // ovaj korak se razlikuje ovisno da li se radi o EnemyGrid ili FleetGrid
+                    if (IsSquareAvailable(o, i, squareSelect))
+                    //if (squareSelect(o, i) != null && squareSelect(o, i).SquareState == SquareState.Initial)
                     {
                         queue.Enqueue(squareSelect(o, i));
                         if (queue.Count >= length)
@@ -105,59 +100,13 @@ namespace Vsite.Battleship.Model
             }
             return result;
         }
-        //
-        //private IEnumerable<SquareSequence> GetHorizontalPlacements(int length)
-        //{
-        //    List<SquareSequence> result = new List<SquareSequence>();
-        //    for (int r = 0; r < Rows; ++r)
-        //    {
-        //        LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
-        //        for (int c = 0; c < Columns; ++c)
-        //        {
-        //            if (squares[r, c] != null)
-        //            {
-        //                queue.Enqueue(squares[r, c]);
-        //                if (queue.Count >= length)
-        //                {
-        //                    result.Add(queue);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                queue.Clear();
-        //            }
-        //        }
-        //    }
-        //    return result;
-        //}
-        //private IEnumerable<SquareSequence> GetVerticalPlacements(int length)
-        //{
-        //    List<SquareSequence> result = new List<SquareSequence>();
-        //    for (int c = 0; c < Columns; ++c)
-        //    {
-        //        LimitedQueue<Square> queue = new LimitedQueue<Square>(length);
-        //        for (int r = 0; r < Rows; ++r)
-        //        {
-        //            if (squares[r, c] != null)
-        //            {
-        //                queue.Enqueue(squares[r, c]);
-        //                if (queue.Count >= length)
-        //                {
-        //                    result.Add(queue);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                queue.Clear();
-        //            }
-        //        }
-        //    }
-        //    return result;
-        //}
+
+        protected abstract bool IsSquareAvailable(int i1, int i2, Func<int, int, Square> squareSelect);
 
         public readonly int Rows;
         public readonly int Columns;
 
-        private Square[,] squares;
+        protected Square[,] squares;
+
     }
 }
