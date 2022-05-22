@@ -7,58 +7,82 @@ namespace Model
 {
     public class Gunnery
     {
-        private ShootingTactics currentTactics = ShootingTactics.Random;
         private INextTarget targetSelector;
-        private readonly EnemyGrid monitoringFleetGrid;
+        private EnemyGrid monitoringFleetGrid;
+        private SortedSquares squaresHit = new SortedSquares();
         private Square lastTarget = new Square(0, 0);
-        private readonly List<int> shipsToShoot;
+        private SquareEliminator squareEliminator;
+        private List<int> liveShips;
 
 
-        private List<Square> squaresHit => new List<Square>();
-
-        public Gunnery(int rows, int columns, IEnumerable<int> shipLenghts)
+        public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            this.monitoringFleetGrid = new EnemyGrid(rows, columns);
-            this.shipsToShoot = new List<int>();
-            this.ChangeToRandomTactics();
+            monitoringFleetGrid = new EnemyGrid(rows, columns);
+            liveShips = shipLengths.ToList();
+            this.targetSelector = new RandomShooting(monitoringFleetGrid, liveShips.Max());
+            this.squareEliminator = new SquareEliminator(rows, columns);
         }
 
-        public ShootingTactics ShootingTactics => currentTactics;
+        private ShootingTactics currentTactics = ShootingTactics.Random;
+
+        public ShootingTactics ShootingTactics
+        {
+            get { return currentTactics; }
+        }
 
         public Square NextTarget()
         {
-            this.lastTarget = this.targetSelector.NextTarget();
-            return this.lastTarget;
+            if (liveShips.Count == 0)
+            {
+                return null;
+            }
+
+            lastTarget = targetSelector.NextTarget();
+            return lastTarget;
+        }
+
+        public bool HaveLiveShips()
+        {
+            if (liveShips.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            switch (hitResult)
-            {
-                case HitResult.Hit:
-                    this.RecordOnMonitoringGrid(hitResult);
-                    this.squaresHit.Add(this.lastTarget);
-                    if (this.currentTactics == ShootingTactics.Inline)
-                    {
-                        return;
-                    }
-                    break;
-                case HitResult.Missed:
-                    this.squaresHit.Add(this.lastTarget);
-                    this.RecordOnMonitoringGrid(hitResult);
-                    return;
-                case HitResult.Sunken:
-                    this.squaresHit.Add(this.lastTarget);
-                    this.shipsToShoot.Remove(this.squaresHit.Count());
-                    this.RecordOnMonitoringGrid(hitResult);
-                    this.squaresHit.Clear();
-                    break;
-                default:
-                    Debug.Assert(false);
-                    return;
-            }
+            RecordOnMonitoringGrid(hitResult);
 
-            this.ChangeCurrentTactics(hitResult);
+            if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Random)
+            {
+                squaresHit.Add(lastTarget);
+                currentTactics = ShootingTactics.Surrounding;
+                this.targetSelector = new SurroundingShooting(monitoringFleetGrid, squaresHit.First());
+            }
+            else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Surrounding)
+            {
+                squaresHit.Add(lastTarget);
+                currentTactics = ShootingTactics.Inline;
+                this.targetSelector = new InlineShooting(monitoringFleetGrid, squaresHit);
+            }
+            else if (hitResult == HitResult.Hit && currentTactics == ShootingTactics.Inline)
+            {
+                squaresHit.Add(lastTarget);
+            }
+            else if (hitResult == HitResult.Sunken)
+            {
+                squaresHit.Clear();
+                currentTactics = ShootingTactics.Random;
+
+                if (liveShips.Count == 0)
+                {
+                    return;
+                }
+
+                this.targetSelector = new RandomShooting(monitoringFleetGrid, liveShips.Max());
+            }
         }
 
         private void RecordOnMonitoringGrid(HitResult hitResult)
@@ -66,50 +90,31 @@ namespace Model
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    this.monitoringFleetGrid.ChangeSquareState(this.lastTarget.Row, this.lastTarget.Column, SquareState.Hit);
+                    monitoringFleetGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Hit);
                     break;
-                case HitResult.Missed:
-                    this.monitoringFleetGrid.ChangeSquareState(this.lastTarget.Row, this.lastTarget.Column, SquareState.Missed);
-                    break;
+
                 case HitResult.Sunken:
+
+                    squaresHit.Add(lastTarget);
+
+                    liveShips.Remove(squaresHit.Count);
+
                     foreach (var square in squaresHit)
                     {
-                        this.monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Sunken);
+                        monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Sunken);
                     }
-                    //TODO mark surrounding squares as missed
-                    
+
+                    foreach (var square in squareEliminator.ToEliminate(squaresHit).Except(squaresHit))
+                    {
+                        monitoringFleetGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
+                    }
+
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(hitResult), hitResult, null);
+
+                case HitResult.Missed:
+                    monitoringFleetGrid.ChangeSquareState(lastTarget.Row, lastTarget.Column, SquareState.Missed);
+                    break;
             }
         }
-
-        public void ChangeCurrentTactics(HitResult hitResult)
-        {
-            if (hitResult == HitResult.Sunken)
-            {
-                this.ChangeToRandomTactics();
-            }
-        }
-
-        private void ChangeToSurroundingTactics()
-        {
-            this.currentTactics = ShootingTactics.Surrounding;
-            this.targetSelector = new SurroundingShooting(this.monitoringFleetGrid, this.squaresHit.First(), this.shipsToShoot.First());
-        }
-
-        private void ChangeToInlineTactics()
-        {
-            this.currentTactics = ShootingTactics.Inline;
-            this.targetSelector = new InlineShooting(this.monitoringFleetGrid, this.squaresHit, this.shipsToShoot[0]);
-        }
-
-        private void ChangeToRandomTactics()
-        {
-            this.currentTactics = ShootingTactics.Random;
-            this.targetSelector = new RandomShooting(this.monitoringFleetGrid, this.shipsToShoot.First());
-        }
-
-
     }
 }

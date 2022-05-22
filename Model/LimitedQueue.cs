@@ -11,14 +11,17 @@ namespace Model
             this.length = length;
         }
 
-        public void Enqueue(T item)
+        public new void Enqueue(T item)
         {
-            if (this.Count >= this.length)
+            if (this.Count < this.length)
+            {
+                base.Enqueue(item);
+            }
+            else
             {
                 this.Dequeue();
+                base.Enqueue(item);
             }
-
-            base.Enqueue(item);
         }
     }
 }

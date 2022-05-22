@@ -12,6 +12,7 @@ namespace Model
         Missed,
         Hit,
         Sunken,
+        Eliminated
     }
 
     public class Square : IEquatable<Square>

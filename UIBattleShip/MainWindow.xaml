@@ -1,0 +1,79 @@
+﻿<Window x:Class="UIBattleShip.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UIBattleShip"
+        mc:Ignorable="d"
+        Title="Battle Ship" Height="450" Width="800">
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width = "1*" />
+            <ColumnDefinition Width = "1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "20*" />
+            <RowDefinition Height = "1*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Name="PlayersGrid" Margin="10" HorizontalAlignment="Stretch" 
+              VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="0"  Orientation="Horizontal" Margin="10 0 10 0">
+            <Button Margin="10 0 10 2" Name="Random" Click="Random_OnClick">Random</Button>
+            <Button Margin="10 0 10 2" Name="Start" IsEnabled="False" Click="Start_OnClick">Start</Button>
+        </StackPanel>
+        <Grid Grid.Row="0" Grid.Column="1" Name="ComputersGrid"  Margin="10" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+                <ColumnDefinition Width = "1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="10 0 10 2">
+            <Label></Label>
+        </StackPanel>
+    </Grid>
+</Window>

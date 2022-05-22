@@ -9,33 +9,170 @@ namespace UnitTests
     public class TestInlineShooting
     {
         [TestMethod]
-        public void NextTargetIsSquare2_3OrSquare5_3AfterSquares3_3And4_3AreHit()
+        public void For3_3and4_3InlineShootingTargetsIs2_3Or5_3()
         {
-            var enemyGrid = new EnemyGrid(10, 10);
-            var inline = new InlineShooting(enemyGrid, new List<Square> { new Square(3, 3), new Square(4, 3) }, 5);
-            var target = inline.NextTarget();
-            var expected = new List<Square> { new Square(2, 3), new Square(5, 3) };
-            CollectionAssert.Contains(expected, target);
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(3, 3, SquareState.Hit);
+            grid.ChangeSquareState(4, 3, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(3, 3),
+                    new Square(4, 3),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(2, 3),
+                new Square(5, 3),
+
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
+        }
+
+
+        [TestMethod]
+        public void For4_3and3_3InlineShootingTargetsIs2_3Or5_3()
+        {
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(4, 3, SquareState.Hit);
+            grid.ChangeSquareState(3, 3, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(4, 3),
+                    new Square(3, 3),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(2, 3),
+                new Square(5, 3),
+
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
         }
 
         [TestMethod]
-        public void NextTargetIsSquare2_3OrSquare5_3AfterSquares4_3And3_3AreHit()
+        public void For3_4and3_3InlineShootingTargetsIs3_2Or3_5()
         {
-            var enemyGrid = new EnemyGrid(10, 10);
-            var inline = new InlineShooting(enemyGrid, new List<Square> { new Square(4, 3), new Square(3, 3) }, 5);
-            var target = inline.NextTarget();
-            var expected = new List<Square> { new Square(2, 3), new Square(5, 3) };
-            CollectionAssert.Contains(expected, target);
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(3, 3, SquareState.Hit);
+            grid.ChangeSquareState(3, 4, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(3, 3),
+                    new Square(3, 4),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(3, 2),
+                new Square(3, 5),
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
         }
 
         [TestMethod]
-        public void NextTargetIsSquare4_2OrSquare4_7AfterSquares4_4And4_5And4_6And4_3AreHit()
+        public void For1_0and1_1InlineShootingTargetsIs1_2()
         {
-            var enemyGrid = new EnemyGrid(10, 10);
-            var inline = new InlineShooting(enemyGrid, new List<Square> { new Square(4, 4), new Square(4, 5), new Square(4, 6), new Square(4, 3) }, 5);
-            var target = inline.NextTarget();
-            var expected = new List<Square> { new Square(4, 2), new Square(4, 7) };
-            CollectionAssert.Contains(expected, target);
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(1, 0, SquareState.Hit);
+            grid.ChangeSquareState(1, 1, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(1, 0),
+                    new Square(1, 1),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(1, 2),
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
+        }
+
+        [TestMethod]
+        public void For0_1and1_1InlineShootingTargetsIs2_1()
+        {
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(0, 1, SquareState.Hit);
+            grid.ChangeSquareState(1, 1, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(0, 1),
+                    new Square(1, 1),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(2, 1),
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
+        }
+
+        [TestMethod]
+        public void For1_9and1_8InlineShootingTargetsIs1_7()
+        {
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(1, 9, SquareState.Hit);
+            grid.ChangeSquareState(1, 8, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(1, 9),
+                    new Square(1, 8),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(1, 7),
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
+        }
+
+        [TestMethod]
+        public void For9_1and8_1InlineShootingTargetsIs7_1()
+        {
+            var grid = new EnemyGrid(10, 10);
+            grid.ChangeSquareState(9, 1, SquareState.Hit);
+            grid.ChangeSquareState(8, 1, SquareState.Hit);
+            var inlineShooting = new InlineShooting(grid, new SortedSquares()
+                {
+                    new Square(9, 1),
+                    new Square(8, 1),
+                }
+            );
+
+            var candidates = new List<Square>()
+            {
+                new Square(7, 1),
+            };
+
+            var nextTarget = inlineShooting.NextTarget();
+
+            Assert.IsTrue(candidates.Contains(nextTarget));
         }
     }
 }

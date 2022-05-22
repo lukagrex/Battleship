@@ -6,45 +6,68 @@ namespace Model
 {
     public class InlineShooting : INextTarget
     {
-        private EnemyGrid enemyGrid;
-        private List<Square> squaresHit;
-        private Direction direction;
 
-        public InlineShooting(EnemyGrid enemyGrid, List<Square> squaresAlreadyHit, int shipLength)
+        private EnemyGrid enemyGrid;
+        private SortedSquares squaresAlreadyHit;
+
+        public InlineShooting(EnemyGrid enemyGrid, SortedSquares squaresAlreadyHit)
         {
-            if (squaresAlreadyHit.Count < 2)
-            {
-                throw new ArgumentException("Inline shooting requires at least 2 squares already hit!");
-            }
             this.enemyGrid = enemyGrid;
-            this.squaresHit = squaresAlreadyHit;
-            this.direction = squaresAlreadyHit[0].Row == squaresAlreadyHit[1].Row ? Direction.Leftwards : Direction.Upwards;
+            this.squaresAlreadyHit = squaresAlreadyHit;
         }
 
         public Square NextTarget()
         {
-            if (direction == Direction.Leftwards || direction == Direction.Rightwards)
+            var isHorizontal = squaresAlreadyHit.All(squares => squares.Row == squaresAlreadyHit.First().Row);
+            var isVertical = squaresAlreadyHit.All(squares => squares.Column == squaresAlreadyHit.First().Column);
+
+            if (isVertical)
             {
-                var row = squaresHit[0].Row;
-                var leftColumn = squaresHit.Min(p => p.Column);
-                var rightColumn = squaresHit.Max(p => p.Column);
+                squaresAlreadyHit.Sort((square, square1) => square.Row - square1.Row);
+                if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)
+                    .Contains(new Square(squaresAlreadyHit.First().Row - 1,
+                        squaresAlreadyHit.First().Column)))
+                {
+                    return new Square(squaresAlreadyHit.First().Row - 1,
+                        squaresAlreadyHit.First().Column);
+                }
+                else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)
+                         .Contains(new Square(squaresAlreadyHit.Last().Row + 1,
+                             squaresAlreadyHit.Last().Column)))
+                {
+                    return new Square(squaresAlreadyHit.Last().Row + 1,
+                        squaresAlreadyHit.Last().Column);
+                }
+                else
+                {
+                    return null;
+                }
 
-                var availableSquaresLeft = enemyGrid.GetAvailableSquares(row, leftColumn, Direction.Leftwards);
-                var availableSquaresRight = enemyGrid.GetAvailableSquares(row, rightColumn, Direction.Rightwards);
-
-                return availableSquaresRight.Count() > availableSquaresLeft.Count() ? availableSquaresRight.First() : availableSquaresLeft.First();
             }
-            else
+            else if (isHorizontal)
             {
-                var column = squaresHit[0].Column;
-                var upRow = squaresHit.Min(p => p.Row);
-                var downRow = squaresHit.Max(p => p.Row);
-
-                var availableSquaresUp = enemyGrid.GetAvailableSquares(upRow, column, Direction.Upwards);
-                var availableSquaresDown = enemyGrid.GetAvailableSquares(downRow, column, Direction.BottomWards);
-
-                return availableSquaresUp.Count() > availableSquaresDown.Count() ? availableSquaresUp.First() : availableSquaresDown.First();
+                squaresAlreadyHit.Sort((square, square1) => square.Column - square1.Column);
+                if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)
+                    .Contains(new Square(squaresAlreadyHit.First().Row,
+                        squaresAlreadyHit.First().Column - 1)))
+                {
+                    return new Square(squaresAlreadyHit.First().Row,
+                        squaresAlreadyHit.First().Column - 1);
+                }
+                else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial)
+                         .Contains(new Square(squaresAlreadyHit.Last().Row,
+                             squaresAlreadyHit.Last().Column + 1)))
+                {
+                    return new Square(squaresAlreadyHit.Last().Row,
+                        squaresAlreadyHit.Last().Column + 1);
+                }
+                else
+                {
+                    return null;
+                }
             }
+
+            return null;
         }
     }
 }

@@ -9,33 +9,35 @@ namespace Model
     public class SurroundingShooting : INextTarget
     {
         private EnemyGrid enemyGrid;
-        private readonly Square firstSquareHit;
-        private int shipLength;
-        private Random random = new Random();
+        private Square firstSquareHit;
 
-        public SurroundingShooting(EnemyGrid fleetGrid, Square firstSquareHit, int shipLength)
+        public SurroundingShooting(EnemyGrid enemyGrid, Square firstSquareHit)
         {
-            this.enemyGrid = fleetGrid;
+            this.enemyGrid = enemyGrid;
             this.firstSquareHit = firstSquareHit;
-            this.shipLength = shipLength;
         }
         public Square NextTarget()
         {
-            var all = enemyGrid.Squares.Where(s => s.SquareState == SquareState.Initial &&
-                                                   (IsSameRowAdjacentSquare(s) || IsSameColumnAdjacentSquare(s)));
-
-            int index = random.Next(all.Count());
-            return all.ElementAt(index);
-        }
-
-        private bool IsSameRowAdjacentSquare(Square square)
-        {
-            return square.Column == firstSquareHit.Column && (square.Row == firstSquareHit.Row + 1 || square.Row == firstSquareHit.Row - 1);
-        }
-
-        private bool IsSameColumnAdjacentSquare(Square square)
-        {
-            return square.Row == firstSquareHit.Row && (square.Column == firstSquareHit.Column + 1 || square.Column == firstSquareHit.Column - 1);
+            if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row - 1, this.firstSquareHit.Column)))
+            {
+                return new Square(this.firstSquareHit.Row - 1, this.firstSquareHit.Column);
+            }
+            else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row + 1, this.firstSquareHit.Column)))
+            {
+                return new Square(this.firstSquareHit.Row + 1, this.firstSquareHit.Column);
+            }
+            else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row, this.firstSquareHit.Column - 1)))
+            {
+                return new Square(this.firstSquareHit.Row, this.firstSquareHit.Column - 1);
+            }
+            else if (enemyGrid.Squares.Where(square => square.SquareState == SquareState.Initial).Contains(new Square(this.firstSquareHit.Row, this.firstSquareHit.Column + 1)))
+            {
+                return new Square(this.firstSquareHit.Row, this.firstSquareHit.Column + 1);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

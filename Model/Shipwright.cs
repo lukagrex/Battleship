@@ -31,7 +31,7 @@ namespace Model
                     if (!availablePlacements.Any())
                     {
                         fleet = new Fleet();
-                        fleetGrid = new FleetGrid(fleetGrid.Rows, fleetGrid.Columns);
+                        fleetGrid = new FleetGrid(fleetGrid.numOfRows, fleetGrid.numOfColumns);
                         break;
                     }
 
