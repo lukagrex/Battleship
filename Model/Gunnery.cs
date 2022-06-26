@@ -110,7 +110,8 @@ namespace Vsite.Battleship.Model
         private void ChangeToRandomTactics()
         {
             currentTactics = ShootingTactics.Random;
-            targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
+            if (shipsToShoot.Any())
+                targetSelector = new RandomShooting(monitoringGrid, shipsToShoot[0]);
         }
 
         private EnemyGrid monitoringGrid;
